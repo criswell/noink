@@ -1,0 +1,366 @@
+#!/usr/perl5/5.00503/bin/perl
+#==========================================================================
+# noNews-p2p - CGI version 0.0.1
+#
+# http://noink.sf.net/nonews-p2p/
+#
+# Copyright (c) 2000, 2001 by Sam "Criswell" Hart <criswell@geekcomix.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+#
+#==========================================================================
+
+$main::version = "0.0.1";
+
+use LWP::Simple;
+use FileHandle;
+use IO::Socket;
+STDOUT->autoflush(1);
+$main::NewsItem = '';
+$main::NewsTitle = '';
+@main::newsItems = ();
+%main::FORM = ();
+$main::rcode = '';
+@main::p2pserver_cfg = ();
+$#main::p2pserver_cfg = -1;
+$main::author = ''; # Place some default value here if needed
+$main::subject = ''; # Place some default value here if needed
+$main::NewsTitle = '';
+$main::NewsItem = '';
+undef $main::worked_once;
+
+my ($name, $value, $pair) = ();
+
+# Parse GET, POST data into pairs
+my $buffer = $ENV{'QUERY_STRING'};
+my @pairs = split(/&/, $buffer);
+if($ENV{'REQUEST_METHOD'} eq 'POST') {
+    $buffer = '';
+    read(STDIN, $buffer, $ENV{'CONTENT_LENGTH'});
+    push(@pairs,split(/&/, $buffer));
+}
+
+# Make GET/POST pair hash
+foreach $pair (@pairs) {
+    ($name, $value) = split(/=/, $pair);
+    $value =~ tr/+/ /;
+    $value =~ s/%([a-fA-F0-9][a-fA-F0-9])/pack("C",hex($1))/eg;
+    $main::FORM{$name}=$value;
+}
+
+$main::cfgName = '/opt/webscripts/nonews/nonews-p2p-cfg.pl';
+do $main::cfgName or die "Unable to load or parse $main::cfgName!";
+
+# Build a timestamp
+my @days = qw(Sun Mon Tue Wed Thu Fri Sat);
+my ($sec,$min,$hour,$mday,$mon,$year,$wday) = localtime(time + $newscfg::DateOffset);
+@main::months = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
+$main::date = sprintf "%i %s %i (%s), %02i:%02i",1900+$year,$main::months[$mon],$mday,$days[$wday],$hour,$min;
+
+$main::timestamp = "${year}${mon}${mday}${hour}${min}";
+$main::datefilestamp = sprintf "%i-%s", 1900+$year, $main::months[$mon];
+
+print "Content-type: text/html\n\n";
+
+#Who is asking us to do this?
+if(open(CFG, "${newscfg::cfg_dir}/p2p.cfg")) {
+	my @cfgtmp = <CFG>;
+	close CFG;
+	$main::p2pserver = $ENV{'SERVER_ADDR'};
+	foreach my $line (@cfgtmp) {
+		$#main::p2pserver_cfg = -1;
+		# 0 - comma separated list of possible servers
+		# 1 - where to go to get the html/info/rss files
+		# 2 - Who to email if things go wrong
+		my @test = split(/;/, $line);
+		my @servers = split(/,/, $test[0]);
+		CHECKSERVERS: foreach my $tline (@servers) {
+			if($tline eq $main::p2pserver) {
+				@main::p2pserver_cfg = @test;
+				last CHECKSERVERS;
+			}
+		}
+
+		if(defined $main::FORM{'postid'}) {
+			if($#main::p2pserver_cfg > -1) {
+				$main::worked_once = '1';
+				#Get the info file
+				my $postid = $main::FORM{'postid'};
+				my $infotmp = get("${main::p2pserver_cfg[1]}${postid}.info");
+				if(defined $infotmp) {
+					# 0 is the subject
+					# 1 is the author
+					my @info = split(/\n/, $infotmp);
+					$main::subject = $info[0];
+					$main::author = $info[1];
+				} else {
+					#Problem getting info file, for now, we fail silently
+				}
+
+				#Get the HTML file
+				my $htmltmp = get("${main::p2pserver_cfg[1]}${postid}.html");
+				if(defined $htmltmp) {
+					$main::NewsItem = $htmltmp;
+					$main::NewsTitle = "${main::subject} - <i>${main::author}</i>";
+					&post_item;
+					print "OK\n";
+					print "Task completed, thank you\n\n";
+				} else {
+					# Problem getting the HTML file
+					print "ERROR\n";
+					print "404\n";
+					print "${main::p2pserver_cfg[1]}${postid}.html not found....\n\n";
+				}
+			} else {
+				#Problem parsing p2pserver config file
+				if(defined $main::worked_once) {
+					#Fail silently, whitespace in config file
+				} else {
+    				print "ERROR\n";
+					print "<html><title>ERROR, p2pserver config file</title><body><p>ERROR parsing p2pserver config file. Check syntax...</p></body></html>\n\n";
+				}
+			}
+		} else {
+			# No postid requested
+			if(defined $main::worked_once) {
+				# Fail silelently, whitespace in config file
+			} else {
+				$main::worked_once = 1;
+				print "ERROR\n";
+				print "<html><title>ERROR, must have postid</title><body><p>ERROR! Must have postid, dork...</p></body></html>\n\n";
+			}
+		}
+	}
+} else {
+	# No P2P config file found!
+	print "<html><title>No Config File Found</title><body>\n\n<br><br>";
+	print "<blockquote>Congrats! You have noNews-p2p-cgi installed! Now you must place a configure file in place so I can work ";
+	print "properly! So..... GO DO THAT NOW!</blockquote>";
+	print "<br><br>\n\n<center>Your IP is ${ENV{'SERVER_ADDR'}}... in case you were wondering that ;-)</center></body></html>\n\n";
+}
+
+# function post_item - reads temp file in slurp mode, then reads in the
+# existing news items. New news items is prepended and an old item is
+# moved into the archive if needed. News items are then written back out.
+sub post_item {
+    my $i = 1;
+    my $line = '';
+    my $refdate = '';
+
+    # Read the temp file in slurp mode
+    #open TMPFILE, "< $main::tmpfile" or die "Can't open temp file $main::tmpfile!\n";
+    #undef $/;
+    #$main::NewsItem = <TMPFILE>;
+    #close TMPFILE;
+
+    #undef $/;
+    #open (TMPFILE, "${main::tmpfile}-2"); # No dying here, just accept it ;-)
+    #$main::NewsTitle = <TMPFILE>;
+    #close TMPFILE;
+
+    #unlink "${main::tmpfile}-2";
+
+    # Read the current news items
+    $/ = "\n";
+    if(-e $newscfg::newsFile) {
+	open TMPFILE, $newscfg::newsFile or die "Can't open $newscfg::newsFile for reading!\n";
+	@main::newsItems = <TMPFILE>;
+	close TMPFILE;
+    }
+    # Truncate the current news file and rewrite
+    $refdate = $main::date;
+    $refdate =~ s/\(\w{3}\)\,/-/;
+    $refdate =~ s/\s+//g;
+    open TMPFILE, ">$newscfg::newsFile" or die "Can't open $newscfg::newsFile for writing!\n";
+    print TMPFILE "<!--$main::date-->\n";
+    print TMPFILE "<a name='${main::timestamp}'><span class='nonewsTitle'>${main::NewsTitle}</span></a>:&nbsp;<span class='nonewsDate'>${main::date}</span><br>\n<span class='nonewsContent'>${main::NewsItem}</span><br><br>\n<!-- EOM -->\n";
+    #print TMPFILE "<b>$main::date<a name=\"$refdate\"></a></b>&nbsp;$main::NewsItem\n<p>\n<!-- EOM -->\n";
+    while($i < $newscfg::MaxItems) {
+	    if(($line = shift @main::newsItems)) {
+            print TMPFILE $line;
+	        if($line =~ m/^<!-- EOM -->/) { $i++; }
+	    }
+	    else { $i=$newscfg::MaxItems; last; }
+    }
+    close(TMPFILE);
+
+    &archive_items;
+
+    $i = 1;
+
+    # Now do the same thing with the headlines file
+    $/ = "\n";
+    if(-e $newscfg::headlineFile) {
+	open TMPFILE, $newscfg::headlineFile or die "Can't open $newscfg::headlineFile for reading!\n";
+	@main::newsItems = <TMPFILE>;
+	close TMPFILE;
+    }
+
+    # Truncate the current headline file and rewrite
+    $refdate = $main::date;
+    $refdate =~ s/\(\w{3}\)\,/-/;
+    $refdate =~ s/\s+//g;
+    open TMPFILE, ">$newscfg::headlineFile" or die "Can't open $newscfg::headlineFile for writing!\n";
+    print TMPFILE "<a href='${newscfg::mainURL}#${main::timestamp}'><span class='nonewsHeadline'>${main::NewsTitle}</span></a><br /><br />\n\n<!-- EOM -->\n\n";
+    #print TMPFILE "<b>$main::date<a name=\"$refdate\"></a></b>&nbsp;$main::NewsItem\n<p>\n<!-- EOM -->\n";
+    while($i < $newscfg::MaxItems) {
+	    if(($line = shift @main::newsItems)) {
+            print TMPFILE $line;
+	        if($line =~ m/^<!-- EOM -->/) { $i++; }
+	    }
+	    else { $i=$newscfg::MaxItems; last; }
+    }
+    close(TMPFILE);
+
+    #unlink $main::tmpfile;
+    my $redirectTime = 0;
+    if($newscfg::virguleCookie) { &post_advo; $redirectTime = 10; };
+    #print '<html><head>',"\n",'<meta http-equiv="refresh" content="',$redirectTime,';URL=',$newscfg::redirect,'">',"\n",
+    #      '<title>Posting Complete</title></head>',"\n",'<body bgcolor="#a0a0a0" link="#ffff00" vlink="#000088" alink="#00ffff">',
+	#  '<p>Posting completed. Your browser will shortly be redirected to your configured ',
+	#  'redirect page. Otherwise, click below to see your posted news entry<p>',
+    #      'News item posted to: <a href="',$newscfg::redirect,'">',$newscfg::redirect,'</a><br>',"\n";
+    #if($newscfg::virguleCookie) {
+	#print 'Duplicate posted to: <a href="',$newscfg::virguleRedirect,'">',$newscfg::virguleRedirect,'</a> Response: <b>',$main::rcode,'</b><br>';
+    #}
+    #print '</body></html>',"\n";
+}
+
+
+# function archive_items - handles the actual archiving of old news
+# item(s). A year-month value is determined for an item. A file with
+# a matching value is opened or created and the item is appended.
+# The old-news archive index.html file is regenerated to include
+# links to all archive pages. There will normally only be one item
+# to be archived unless the user has lowered the value of $maxItems
+# since the previous run.
+sub archive_items {
+    my $fsize = 0;
+    my $line = '';
+    my $arcName = '';
+    my @oldItems = ();
+    my @sortedList = ();
+    my $dd = "";
+
+    while(@main::newsItems) {
+        $main::newsItems[0] =~ m/^\D*(\d{4})\s+(\w*).*/;
+        $arcName = "$newscfg::archivePath/$1-$2$newscfg::arcSuffix";
+        #$arcName = "$newscfg::archivePath/${main::datefilestamp}$newscfg::arcSuffix";
+        #print "$1-$2-$3-$4-$5-$6-$7-$8-$9-$10\n";
+        #foreach $dd (@main::newsItems) {
+        #        print "1-$dd\n";
+        #}
+        #print $arcName;
+        if(-e $arcName) {
+            open FILE, $arcName or die "Can't open $arcName for reading!\n";
+            @oldItems = <FILE>;
+            close FILE;
+            open FILE, ">$arcName" or die "Can't open $arcName for writing!\n";
+	        while(($line = shift @oldItems)) {
+                if($line =~ m/^<!-- FOOTER -->/) { last; }
+                print FILE $line;
+            }
+        }
+        else {
+            open FILE, ">$arcName" or die "Can't open $arcName for writing!\n";
+            foreach my $temp (@newscfg::archiveHeader) {
+                open HEADERFILE, "$temp" or die "Can't open header $temp!\n";
+                my @headerIn = <HEADERFILE>;
+                close HEADERFILE;
+                print FILE @headerIn;
+            }
+            #print FILE $newscfg::archiveHeader;
+        }
+ 	    while(($line = shift @main::newsItems)) {
+            print FILE $line;
+	        if($line =~ m/^<!-- EOM -->/) { last; }
+	    }
+        print FILE "<!-- FOOTER -->\n";
+        foreach my $temp (@newscfg::archiveFooter) {
+            open FOOTERFILE, "$temp" or die "Can't open footer $temp!\n";
+            my @footerIn = <FOOTERFILE>;
+            close FOOTERFILE;
+            print FILE @footerIn;
+        }
+        #print FILE $newscfg::archiveFooter;
+        close FILE;
+    }
+    opendir DIR, $newscfg::archivePath or die "Can't open directory $newscfg::archivePath for reading!\n";
+    @oldItems = grep /^\d{4}/, readdir DIR;
+    closedir DIR;
+    if($newscfg::ArcSortAscending) { @sortedList = sort datesorter @oldItems; }
+    else { @sortedList = reverse sort datesorter @oldItems; }
+    open FILE, ">$newscfg::archivePath/index.shtml" or die "Can't open $newscfg::archivePath/index.shtml for writing!\n";
+    foreach my $temp (@newscfg::arcIndexHeader) {
+        open HEADERFILE, "$temp" or die "Can't open header $temp!\n";
+        my @headerIn = <HEADERFILE>;
+        close HEADERFILE;
+        print FILE @headerIn;
+    }
+    #print FILE $newscfg::arcIndexHeader;
+    print FILE '<table width="100%">';
+    foreach $line (@sortedList) {
+        if($line eq "index.shtml") { next; }
+	$fsize = -s "$newscfg::archivePath/$line";
+        $line =~ m/^(\d{4})-(\w{3}).*/;
+        print FILE qq(<tr><td width="50%"><font face=sans-serif><a href="$line"><b>News from $1 $2</font></b></a></td><td align="right"><font face=sans-serif>$fsize</font></td><td align="left"><font face=sans-serif>&nbsp;bytes</font></td></tr>\n);
+    }
+    print FILE '</table>';
+    foreach my $temp (@newscfg::arcIndexFooter) {
+        open HEADERFILE, "$temp" or die "Can't open footer $temp!\n";
+        my @headerIn = <HEADERFILE>;
+        close HEADERFILE;
+        print FILE @headerIn;
+    }
+    #print FILE $newscfg::arcIndexFooter;
+    close FILE;
+}
+
+# function datesorter - simple function to sort three-letter month
+# abbreviations + 4 digit years into the correct date order
+sub datesorter {
+    my ($aa, $bb, $ya, $yb) = ();
+    $a =~ m/^(\d{4})-(\w{3}).*/;
+    for($aa=0;$aa<12;$aa++) { if($main::months[$aa] eq $2) { $ya = $1; last; }}
+    $b =~ m/^(\d{4})-(\w{3}).*/;
+    for($bb=0;$bb<12;$bb++) { if($main::months[$bb] eq $2) { $yb = $1; last; }}
+    $ya <=> $yb or $aa <=> $bb;
+}
+
+# function post_advo - post the current news items to the Advogato user
+# diary set up in the config file
+#
+# Note: this function is a bit of kluge and will probably be replaced when
+# someone has time to work out an XML import format for the mod_virgule
+sub post_advo {
+    $main::NewsItem =~ s/([^a-zA-Z0-9.-])/uc sprintf("%%%02x",ord($1))/eg;
+    my $post = 'POST ' . $newscfg::virguleDiary . ' HTTP/1.0' . "\r\n" .
+               'User-Agent: newslog ' . $main::version . "\r\n" .
+	       'Host: ' . $newscfg::virguleDomain . "\r\n" .
+	       'Cookie: id=' . $newscfg::virguleCookie . "\r\n" .
+	       'Content-type: application/x-www-form-urlencoded' . "\r\n" .
+	       'Content-length: ' . (23+(length $main::NewsItem)) . "\r\n\r\n" .
+               'entry=' . $main::NewsItem . '&post=Post&key=-1' . "\r\n";
+
+    my $sock = IO::Socket::INET->new(PeerAddr => $newscfg::virguleDomain,
+                                     PeerPort => '80',
+				     Proto    => 'tcp',
+				     Type     => SOCK_STREAM);
+    if($sock) {
+	print $sock $post;
+	$main::rcode = <$sock>;
+	close $sock;
+    }
+}

@@ -1,0 +1,372 @@
+#!/usr/perl5/5.00503/bin/perl
+#==========================================================================
+# noNews-p2p - Mail version 0.0.1
+#
+# http://noink.sf.net/nonews-p2p/
+#
+# Copyright (c) 2000, 2001 by Sam "Criswell" Hart <criswell@geekcomix.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+#
+#==========================================================================
+
+$main::version = "0.0.1";
+
+use Mail::Internet;
+$main::mailer = "| /usr/bin/mail -t";
+
+use LWP::Simple;
+
+undef $error;
+
+my $message = new Mail::Internet \*STDIN;
+
+$main::cfgName = '/opt/webscripts/nonews/nonews-p2p-cfg.pl';
+do $main::cfgName or die "Unable to load or parse $main::cfgName!";
+
+#Get the list name
+$main::list_requested = $ENV{"LOCAL"};
+undef $main::list_extra;
+$#main::list_cfg = -1;
+$#main::user_info = -1;
+$main::body = $message->body(BODY);
+$main::subject = $message->head->get ("Subject");
+$main::html = "";
+$main::respond_msg = "";
+chomp(@$main::body);
+$main::datestamp = `/bin/date +\%Y\%j\%H\%M\%S`;
+chomp $main::datestamp;
+
+if($main::list_requested =~ /-/) {
+	my @temp = split(/-/, $main::list_requested);
+	$main::list_requested = $temp[0];
+	$main::list_extra = $temp[1];
+}
+
+#Match that up with the list
+if(open(LISTCFG, "${newscfg::cfg_dir}/lists.cfg")) {
+	my @cfgfile = <LISTCFG>;
+	close LISTCFG;
+	FILEPARSER: foreach my $line (@cfgfile) {
+		my @lsplit = split(/;/, $line);
+		# 0 contains the list name
+		# 1 contains the description
+		# 2 Is it subscribable? y or n
+		# 3 Does it authenticate posts? y or n
+		# 4 Other nonews-p2p locations to submit to
+		# 5 Temp path to store files in waiting for approval
+		# 6 Final path for approved files
+		if($main::list_requested eq $lsplit[0]) {
+			@main::list_cfg = @lsplit;
+			last FILEPARSER;
+		}
+	}
+	if($#main::list_cfg > 0) {
+		chomp @main::list_cfg;
+		# Okay, so was there a request?
+		if(defined $main::list_extra) {
+			# Parse the request per RFC2142 (http://www.ietf.org/rfc/rfc2142.txt)
+			if($main::list_extra =~ /^request$/i) {
+				# We've a valid request
+				# First, check if it's a subscription request
+				if($main::subject =~ /^unsubscribe$/i) {
+					# Unsubscribe this mofo
+				} elsif($main::subject =~ /^subscribe$/i) {
+					# Subscribe this mofo
+				} elsif($main::subject =~ /approve/i) {
+					# Must be a noNews-p2p specific request
+					my @subsplit = split(/\*/, $main::subject);
+					my $listname = '';
+					my $postid = '';
+					foreach my $line (@subsplit) {
+						my @lsplit = split(/\&/, $line);
+						foreach my $tline (@lsplit) {
+							my @keyval = split(/=/, $tline);
+							if($keyval[0] =~ /^list$/i) {
+								$listname = $keyval[1];
+							} elsif($keyval[0] =~ /^approve$/i) {
+								$postid = $keyval[1];
+							}
+						}
+					}
+					#print "$listname\t$postid\n";
+					if(length $listname > 0 && length $postid > 0) {
+						# Okay, let's see if this user is authorized
+						@main::user_info = ParseUserInfo("${newscfg::cfg_dir}/${main::list_cfg[0]}-users.cfg");
+						if($#main::user_info > -1) {
+							# Okay, here is where we need to do the actual approval
+							$main::respond_msg .= "Request for list '$listname' and post-id '$postid'\n\n";
+							$main::respond_msg .= "Results:\n";
+							$main::respond_msg .= "\tauthenticated ${main::datestamp}\n";
+							if(open(MSGTMP, "${main::list_cfg[5]}/${postid}.html")) {
+								if(open(MSGINFO, "${main::list_cfg[5]}/${postid}.info")) {
+									if(open(INFOUT, ">${main::list_cfg[6]}/${postid}.info")) {
+										print INFOUT <MSGINFO>;
+										close INFOUT;
+										chmod 0644, "${main::list_cfg[6]}/${postid}.info";
+									} else {
+										$main::respond_msg .= "\tNon-critical error: Could not write info file\n";
+									}
+									close MSGINFO;
+									unlink "${main::list_cfg[5]}/${postid}.info";
+								} else {
+									$main::respond_msg .= "\tNon-critical error: ${postid}.info file not found\n";
+								}
+								if(open(MSGOUT, ">${main::list_cfg[6]}/${postid}.html")) {
+									print MSGOUT <MSGTMP>;
+									close MSGOUT;
+									chmod 0644, "${main::list_cfg[6]}/${postid}.html";
+									# Contact all on p2p list! HERE I AM JH
+									my @p2plist = split(/,/, $main::list_cfg[4]);
+									foreach my $contact (@p2plist) {
+										my $results = get("${contact}postid=${postid}");
+										$main::respond_msg .= "\tFor ${contact}postid= * DO NOT CLICK * ${postid}\n";
+										$main::respond_msg .= $results;
+									}
+								} else {
+									$main::respond_msg .= "\tERROR! - Could not write to final HTML\n";
+									$main::respond_msg .= "\t\t'${main::list_cfg[6]}/${postid}.html' unable to open!\n";
+								}
+								close MSGTMP;
+								unlink ${main::list_cfg[5]}/${postid}.html";
+							} else {
+								# There was no html file by that name
+								$main::respond_msg .= "\tERROR! - There was no HTML for postid '$postid'\n";
+								$main::respond_msg .= "\t\t'${main::list_cfg[5]}/${postid}.html' does not exist!\n";
+							}
+							SendEmail("${ENV{'SENDER'}}",
+									"DO_NOT_REPLY",
+									"DO_NOT_REPLY",
+									"Post processed, thank you",
+									"${main::respond_msg}");
+						} else {
+							# Error, user not authorized
+							$main::respond_msg = "Sorry, but you are not authorized to post to this list. Please contact the list administrator...\n\n";
+							$main::respond_msg .= "The original message is as follows:\n\n";
+							foreach my $line (@$main::body) {
+								$main::respond_msg .= "$line\n";
+							}
+
+							SendEmail("${ENV{'SENDER'}}",
+									"DO_NOT_REPLY",
+									"DO_NOT_REPLY",
+									"Sorry, not authorized",
+									"${main::respond_msg}");
+						}
+					} else {
+						# Error, approve didn't work
+						$main::respond_msg = "Sorry, the approval request failed. Please contact the list administrator...\n\n";
+						$main::respond_msg .= "The original message is as follows:\n\n";
+						$main::respond_msg .= "${main::body}\n";
+							foreach my $line (@$main::body) {
+								$main::respond_msg .= "$line\n";
+							}
+						SendEmail("${ENV{'SENDER'}}",
+								"DO_NOT_REPLY",
+								"DO_NOT_REPLY",
+								"Error, approve failed",
+								"${main::respond_msg}");
+					}
+					print "${main::respond_msg}";
+				}
+			} else {
+				# Error! Not valid request!
+				$main::respond_msg = "Error, you submitted an invalid request. Please check list usage or contact the list administrator...\n\n";
+				$main::respond_msg .= "The original message is as follows:\n\n";
+							foreach my $line (@$main::body) {
+								$main::respond_msg .= "$line\n";
+							}
+				SendEmail("${ENV{'SENDER'}}",
+					"DO_NOT_REPLY",
+					"DO_NOT_REPLY",
+					"Error! NOT A VALID REQUEST!",
+					"${main::respond_msg}");
+			}
+		} else {
+			# We're just a normal post
+			my $proceed; undef $proceed;
+			if($main::list_cfg[3] =~ /^y/i) {
+				#The list is authenticatable
+				@main::user_info = ParseUserInfo("${newscfg::cfg_dir}/${main::list_cfg[0]}-users.cfg");
+				if($#main::user_info > -1) {
+					# Authenticated
+					chomp $main::subject;
+					chomp @main::user_info;
+					#$main::html .= "<p><b>${main::list_requested}: ${main::subject}</b> <i>by ${main::user_info[1]}</i></p>\n";
+					if(open(MSGINFO, ">${main::list_cfg[5]}/${main::user_info[0]}_${main::datestamp}.info")) {
+						print MSGINFO "${main::subject}\n${main::user_info[1]}\n";
+						close MSGINFO;
+					} else {
+						# Problem with user info file... for now fail silently
+					}
+					$main::html .= "<blockquote>\n";
+					$main::html .= ToHTML(@$main::body);
+					$main::html .= "</blockquote>\n";
+					if (open(MSGTMP, ">${main::list_cfg[5]}/${main::user_info[0]}_${main::datestamp}.html")) {
+						print MSGTMP $main::html;
+						close MSGTMP;
+						if (open(MSGTXT, ">${main::list_cfg[5]}/${main::user_info[0]}_${main::datestamp}.txt")) {
+							foreach my $line (@$main::body) {
+								print MSGTXT "$line\n";
+							}
+							close MSGTXT;
+						} else {
+							# For now, fail silently
+						}
+
+						$main::respond_msg .= "Your request to noNews-p2p has been received. Its subject was:\n\t${main::subject}\n\n";
+
+						$main::respond_msg .= "The list ${main::list_cfg[0]} requires authentication in order for ";
+						$main::respond_msg .= "messages to be posted. You now need to authorize your message for posting.\n\n";
+
+						$main::respond_msg .= "In order to authenticate this message, you will have to do one of two things:\n";
+						$main::respond_msg .= "\t1) Browse to the following URL and approve the message:\n";
+						#$main::respond_msg .= "\t\t${newscfg::authentication_url}list=${main::list_cfg[0]}&approve=${main::user_info[0]}_${main::datestamp}\n\n";
+						$main::respond_msg .= "\t\t- FEATURE NOT YET ENABLED!\n\n";
+
+						$main::respond_msg .= "\t2) Send email to the address ${main::list_cfg[0]}-request\@${ENV{'DOMAIN'}} ";
+						$main::respond_msg .= "with the following included in the subject line verbatim:\n";
+						$main::respond_msg .= "\t\t*list=${main::list_cfg[0]}&approve=${main::user_info[0]}_${main::datestamp}*\n\n";
+
+						$main::respond_msg .= "\tNote, that for most e-mail clients, simply replying to this message and leaving the ";
+						$main::respond_msg .= "subject line the same will work for authentication.\n\n";
+
+						$main::respond_msg .= "This has been noNews-p2p version ${main::version}\nEND OF MESSAGE\n";
+
+						SendEmail("${ENV{'SENDER'}}",
+									"${main::list_cfg[0]}-request\@${ENV{'DOMAIN'}}",
+									"${main::list_cfg[0]}-request\@${ENV{'DOMAIN'}}",
+									"Post processing: *list=${main::list_cfg[0]}&approve=${main::user_info[0]}_${main::datestamp}*, reply to approve",
+									$main::respond_msg);
+					} else {
+						# Error openning the tmp msg file
+						print "Error open tmp msg file\n";
+					}
+				} else {
+					# Didn't authenticate
+					$main::respond_msg = "You are not authorized to post, or the server could not authenticate you for another reason. Please check list usage or contact the list administrator...\n\n";
+					$main::respond_msg .= "The original message is as follows:\n\n";
+							foreach my $line (@$main::body) {
+								$main::respond_msg .= "$line\n";
+							}
+					SendEmail("${ENV{'SENDER'}}",
+						"DO_NOT_REPLY",
+						"DO_NOT_REPLY",
+						"You are not authorized to post",
+						"${main::respond_msg}");
+				}
+			} else {
+				#List requires no authentication
+				print "list requires no authentication\n";
+				$proceed = 1;
+			}
+		}
+	} else {
+		#Error! List not listed in lists.cfg
+		$main::respond_msg = "The list ${main::list_requested} does not exist. Please check spelling or contact the administrator...\n\n";
+		$main::respond_msg .= "The original message is as follows:\n\n";
+							foreach my $line (@$main::body) {
+								$main::respond_msg .= "$line\n";
+							}
+		SendEmail("${ENV{'SENDER'}}",
+			"DO_NOT_REPLY",
+			"DO_NOT_REPLY",
+			"${main::list_requested} does not exist",
+			"${main::respond_msg}");
+	}
+} else {
+	#ERROR! Cannot load lists.cfg
+	print "cannot open lists.cfg\n";
+}
+
+
+sub ToHTML {
+	my @body = @_; #$message->body(BODY);
+	#chomp(@$body);
+
+	my $body_html = "";
+	my $temp_counter = 0;
+
+	foreach my $temp_line (@body) {
+		$temp_line =~ s/</\&lt;/g;
+		$temp_line =~ s/>/\&gt;/g;
+		$body_html .= $temp_line . " ";
+		if(length($temp_line) == 0) {
+			if($temp_counter >= 1) {
+				$body_html .= "<br />\n";
+			} else {
+				$body_html .= "<br /><br />\n\n";
+			}
+		} elsif(length($temp_line) < $newscfg::min_line_length) {
+			$body_html .= "<br />\n";
+			$temp_counter = 1;
+		}
+	}
+
+	$_ = $body_html;
+#s{^(>.*)}       {<pre>$1</pre>}gm;      #quoted text
+s{\[URL:(.*?)\]}        {<A HREF="$1">$1</A>}gs         # embedded URL (good)
+        ||
+s{(http:(.*?)\S+)}      {<A HREF="$1">$1</A>}gs;        # guessed URL (bad)
+s{\~(\S+)\~}    {<i>$1</i>}g;           # /itallics/
+s{\*(\S+)\*}    {<B>$1</B>}g;           # *bold*
+s{\b_(\S+)\_\b} {<u>$1</u>}g;           # _underline_
+s{@(.*?)}       {(at)$1}gs;
+s{\[IMG:(.*?)\]}        {<img src="$1" />}gs; #/ WTF, Kate?
+
+    return $_;
+}
+
+#-----------------------------------------------------------------------
+# SendEmail : Send email, duh
+#-----------------------------------------------------------------------
+sub SendEmail {
+  my ($to, $from, $reply, $subject, $message) = @_;
+  #print "$to\n$from\n$reply\n$subject\n\n$message\n\n";
+  if(open(MAILER, "${main::mailer} $to")) {
+  	print MAILER "From: $from\n";
+	print MAILER "Reply-To: $reply\n";
+	print MAILER "Subject: $subject\n\n";
+	print MAILER $message . "\n";
+	close MAILER;
+  } else {
+  	# Uhm... error?
+  }
+}
+
+sub ParseUserInfo {
+	my ($filename) = @_;
+	@list = ();
+	$#list = -1;
+	if(open(USERS, "$filename")) {
+		my @users = <USERS>;
+		close(USERS);
+		USERPARSER: foreach my $line (@users) {
+			# 0 contains user id
+			# 1 contains full user name
+			# 2 contains comma seperated addys
+			my @udat = split(/;/, $line);
+			my @usplit = split(/,/, $udat[2]);
+			foreach my $addy (@usplit) {
+				if($addy =~ /^$ENV{'SENDER'}$/i) {
+					# We have a match
+					@list = @udat;
+					last USERPARSER;
+				}
+			}
+		}
+	}
+	return @list;
+}

@@ -1,0 +1,128 @@
+Changelog
+---------
+
+Requirements for 1.x acceptance:
+	(A) Fully working *.noi parser
+	(B) Forum options
+	(C) Full multi-user abilities
+		(personal info edit, password remind, group functionality [not
+		group editting], administrative features [delete, update,
+		add])
+	(D) Site archival features (with auto indexing of archive).
+	(E) Mostly stable (I know, I know, that's very vague! ;)
+		
+Versions 0.x changes:
+^^^^^^^^^^^^^^^^^^^^^
+	0.0.1 -	Initial code. Basic *.noi interpreting (not sectional).
+	0.0.5 -	Basic multi-user ability. Password files, cookies and forms in
+		use. Foundations of group working in place (no validation code
+		yet). Improved *.noi parsing.
+	0.0.6 - *.noi now sectional.
+	0.1.0 - *.noi now complete as initially defined. Multi-user ability
+		system administration (manually edit password file), but no
+		group functionality yet (likely 0.5.x). Basic system is
+		working, will display *.noi files and index automatically.
+	0.1.1 -	Added extra user files for extra functionality (basic
+		password file does not include room for URLs, e-mail
+		addresses, etc.) Extra specifics can be defined in noconf.pm.
+	0.1.2 -	*.noi options added - "<include>", "<link>" and "<nolink>"
+	0.1.5 -	*.noi options changed from being "<location>" indexed to being
+		"<sub>" indexed ("<sub>" added). This is to allow for multiple
+		image/include/etc files from the same directory (if the hash
+		is indexed against "<location>" you can only ever have one
+		thing for each field from that location.)
+	0.2.0 -	Redone multi-user functionality. Did not like the fact that
+		cookies were not secure, so implemented simple one-time-pad
+		style encryption for the passwords on cookies (via dynamic key
+		files stored on server in [hopefully] secure location ;) .
+		Thus, the only time the password is sent unencrypted is when
+		the user initially logs in (which I can't help without doing
+		something client side, such as Javascript, which would likely
+		alienate some users- which I do not want to do).
+	0.2.5 -	Updated and bug-fixed the *.noi parser. Now has options for
+		forum (which is, itself, yet to be implemented).
+	0.2.6 -	Fixed infinite loop problem in password decryption (only
+		happenned when a new key was created in place of an old key
+		which just so happened to be the key used in current session.)
+		Can we say, "doh!"?
+	0.2.9 - Began work on forum.
+	0.3.0 - Forum initially in place. Can post and reply. Does not seem to
+		work across archivals, though (important feature!).
+	0.3.5 -	Finished *.noi parser to work correctly with forums, indexes,
+		and archivals (1.x requirement (A) met). Further forum work
+		done.
+	0.4.0 -	Forums now work across archives. Forums complete (1.x
+		requirement (B) met). -NOTE ARCHIVAL OPTIONS NOT YET BEGUN!
+		ARCHIVALS MUST BE DONE MANUALLY!-
+	0.4.1 -	Lots of bugfixes.
+	0.4.2 -	More bugfixes (now accounting for user data from both a
+		previous post as well as cookie- pref. post over cookie).
+	0.5.0 -	Full multi-user options (1.x requirement (C) met). Diversion
+		of user/IP locking till 2.x requirements.
+	0.6.0 -	Site archival began. Works, mostly, but auto-indexing does
+		not work at all.
+	0.6.1 -	*.noi bugfix across archives (was looking in original source
+		of archive!)
+	0.6.5 -	Auto-indexing now works, but produces ugly results. Also,
+		on a side-note, looking at forum output, it is ugly as well.
+	0.7.0 - Archivals and auto-indexing of archivals now work. Forums
+		work only down 1 deep in archives (then forum management
+		looses track of where it is). Last issue remaining for (D).
+	0.7.1 -	Added forgotten forum clearing/thread deleting features.
+	0.7.5 -	Forums now work properly at all depths under archives (seem
+		to). (1.x requirement (D) met)
+	0.7.6 -	Bugfix for password encryption, eliminated control/split
+		characters from encryption source.
+	0.7.7 -	Bugfix for password encryption, fixed occassional double
+		encrypting (resulting in unsuccessful decryptions).
+	0.7.8 -	Many bugfixes. Split forum options into seperate file for
+		easier maintainence.
+	0.7.9 -	Further bugfixes (cookie loss with non-admin and over
+		forums, missing $msg_* outputs, cleaned up many debugging
+		outputs, password mangling).
+	0.8.2 -	Fixed problem with password decryption (second decryption
+		algorythm was performing an encryption on previous password
+		under old or new key, instead of decrypting. User would find
+		themselves suddenly and unexpectedly logged off).
+	0.8.5 -	Many minor bug-fixes (mostly involving typos in $msg_*).
+	0.8.6 -	Cleaned up look to forum and to archival process. (Not so
+		ugly.)
+	0.8.7 -	Minor bug-fix (after click on "more" for more forum entries,
+		system would display ALL entries rather than just the next
+		few. Problem was simple math error.
+	0.9.0 -	Bugfixes. 0.9.0 is candidate for 1.x- feature
+		freeze- will test for a week.
+	0.9.1 -	Ick, only testing for one hour and discover two nasty bugs!
+		I managed to fix one(sloppy removal of forums left forum
+		headers in place), but the other (weird activities on my
+		Geekcomix web-site not found on dev. site) is still
+		problematic.
+	0.9.2 - Added nobanner.pm (QND style, very bad) and a few bugfixes
+	0.9.3 -	Added QND background for screens (optional). Locked for
+		Development release.
+	0.9.5 - Bugfixes and stability fixes. Added work-around for external
+		page loading. Ready for dev release.
+	0.9.8 - More bugfixes, some code clean-up. Added <relative> tag for
+		file inclusion. Small stability fix in algorythms used.
+	0.9.9 - Fixed embarrasing archive next/prev bug (next/prev buttons
+		did not work past month/year boundaries).
+	1.0.0 - First stable release.
+	
+Requirements for 2.x acceptance:
+	(A) FILE UPLOADS (arbitrary! I must have the ability to
+		upload binary/text/etc. files! This should also
+		be integrated in the *noi file updation [next])
+	(B) Online *noi file updating and creation. This includes,
+		but is not limitted to:
+			i) Sub-dir creation/deletion
+			ii) *noi file templates
+			iii) *noi section creation
+			iv) *noi section removal
+	(C) Site archival auto-perusing (to reduce the number of
+		iterations that a browser must sift through. Also
+		an option allowing to go "back" from main page to
+		the  most recent page in archive).
+	(D) Incorporation of CSS as well as more striving towards]
+		W3C compliance (of which I suck at right now!)
+
+Version
