@@ -3,7 +3,6 @@
 ##BOILERPLATE_COPYRIGHT_END
 """
 
-
 from noink import mainDB
 
 class User(mainDB.Model):
@@ -42,4 +41,63 @@ class Event(mainDB.Model):
     def __repr__(self):
         return "<Event %s>" % self.event
 
-class
+class Tag(mainDB.Model):
+    __tablename__ = 'tags'
+
+    id = mainDB.Column(mainDB.Integer, primary_key=True)
+    tag = mainDB.Column(mainDB.String(20))
+
+    def __init__(self, tag):
+        self.tag = tag
+
+    def __repr__(self):
+        return "<Tag %s>" % self.tag
+
+class TagMapping(mainDB.Model):
+    __tablename__ = 'tagmap'
+
+    id = mainDB.Column(mainDB.Integer, primary_key=True)
+    tag = mainDB.relationship("Tag")
+    entry = mainDB.relationship("Entry")
+
+    def __init__(self, tag, entry):
+        self.tag = tag
+        self.entry = entry
+
+    def __repr__(self):
+        return "<Tag %s : Entry %s>" % (self.tag, self.entry)
+
+class Entry(mainDB.Model):
+    __tablename__ = 'entries'
+
+    id = mainDB.Column(mainDB.Integer, primary_key=True)
+    date = mainDB.Column(mainDB.DateTime())
+    title = mainDB.Column(mainDB.String(256))
+    entry = mainDB.Column(mainDB.String(40000))
+    author = mainDB.relationship("User")
+
+    def __init__(self, title, author, date, entry):
+        self.date = date
+        self.title = title
+        self.author = author
+        self.entry = entry
+
+    def __repr__(self):
+        return "<Entry ID: %s, Title %s>" % (self.id, self.title)
+
+class Activity(mainDB.Model):
+    __tablename__ = 'activities'
+
+    id = mainDB.Column(mainDB.Integer, primary_key=True)
+    activityType = mainDB.Column(mainDB.Integer)
+    parameter = mainDB.Column(mainDB.String(256))
+    dateAdded = mainDB.Column(mainDB.DateTime())
+
+    def __init__(self, activityType, parameter, dateAdded):
+        self.activityType = activityType
+        self.parameter = parameter
+        self.dateAdded = dateAdded
+
+    def __repre__(self):
+        return "<Type '%s', Param '%s'>" % (self.activityType, self.parameter)
+
