@@ -10,4 +10,4 @@ setting the environmental variable "NOINK_CONFIGURATION".
 """
 
 # The database URI for whatever DB you would like to use
-SQLALCHEMY_DATABASE_URI = "sqlite:///tmp/noink.db"
+SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/noink.db"

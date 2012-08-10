@@ -57,7 +57,9 @@ class TagMapping(mainDB.Model):
     __tablename__ = 'tagmap'
 
     id = mainDB.Column(mainDB.Integer, primary_key=True)
+    tag_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("tags.id"))
     tag = mainDB.relationship("Tag")
+    entry_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("entries.id"))
     entry = mainDB.relationship("Entry")
 
     def __init__(self, tag, entry):
@@ -74,6 +76,7 @@ class Entry(mainDB.Model):
     date = mainDB.Column(mainDB.DateTime())
     title = mainDB.Column(mainDB.String(256))
     entry = mainDB.Column(mainDB.String(40000))
+    author_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("users.id"))
     author = mainDB.relationship("User")
 
     def __init__(self, title, author, date, entry):
