@@ -21,6 +21,34 @@ class User(mainDB.Model):
     def __repr__(self):
         return "<User %s, id %s>" % (self.name, self.id)
 
+class Group(mainDB.Model):
+    __tablename__ = 'group'
+
+    id = mainDB.Column(mainDB.Integer, primary_key=True)
+    name = mainDB.Column(mainDB.String(60))
+
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return "<Group %s, id %s>" % (self.name, self.id)
+
+class GroupMapping(mainDB.Model):
+    __tablename__ = 'groupmap'
+
+    id = mainDB.Column(mainDB.Integer, primary_key=True)
+    group_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("group.id"))
+    group = mainDB.relationship('Group')
+    user_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("users.id"))
+    user = mainDB.relationship("Users")
+
+    def __init__(self, group, user):
+        self.group = group
+        self.user = user
+
+    def __repr__(self):
+        return "<Group %s : User %s>" % (self.group, self.user)
+
 class Event(mainDB.Model):
     __tablename__ = 'events'
 
