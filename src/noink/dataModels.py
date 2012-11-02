@@ -14,14 +14,14 @@ class User(mainDB.Model):
     actual user that must be in the database. If they do *not* exist in Noink,
     then we add it.
     '''
-    __tablename__ = 'users'
+    __tablename__ = 'user'
 
     id = mainDB.Column(mainDB.Integer, primary_key=True)
     name = mainDB.Column(mainDB.String(60))
     fullname = mainDB.Column(mainDB.String(80))
     bio = mainDB.Column(mainDB.String(4000))
 
-    def __init__(self, name, fullname, passwordHash, bio):
+    def __init__(self, name, fullname, bio):
         self.name = name
         self.fullname = fullname
         self.bio = bio
@@ -47,8 +47,8 @@ class GroupMapping(mainDB.Model):
     id = mainDB.Column(mainDB.Integer, primary_key=True)
     group_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("group.id"))
     group = mainDB.relationship('Group')
-    user_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("users.id"))
-    user = mainDB.relationship("Users")
+    user_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("user.id"))
+    user = mainDB.relationship("User")
 
     def __init__(self, group, user):
         self.group = group
@@ -124,7 +124,7 @@ class Entry(mainDB.Model):
     date = mainDB.Column(mainDB.DateTime())
     title = mainDB.Column(mainDB.String(256))
     entry = mainDB.Column(mainDB.String(40000))
-    author_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("users.id"))
+    author_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("user.id"))
     author = mainDB.relationship("User")
 
     def __init__(self, title, author, date, entry):

@@ -8,8 +8,10 @@ with the log in the database directly but this.
 ##BOILERPLATE_COPYRIGHT_END
 '''
 
+import datetime
+
 from noink import mainDB
-from noink.dataModuls import Event
+from noink.dataModels import Event
 from noink.eventsTable import eventTable
 
 class EventLog:
@@ -19,7 +21,7 @@ class EventLog:
     def __init__(self):
         self.__dict__ = self.__borg_state
 
-    def add(self, name, user, processed=False):
+    def add(self, name, user, processed=False, *args):
         '''
         Adds an event to the log.
 
@@ -29,4 +31,17 @@ class EventLog:
         '''
 
         if eventTable.has_key(name):
-            e = Event(name, eventTable[name],
+            now = datetime.datetime.now()
+            if len(args) > 0:
+                e = Event(name, eventTable[name] % args, now, user)
+            else:
+                e = Event(name, eventTable[name], now, user)
+
+            e.processed = processed
+            if processed:
+                e.processedDate = now
+
+            mainDB.session.add(e)
+            mainDB.session.commit()
+        else:
+            raise KeyError('%s not in eventTable!' % name)

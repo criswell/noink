@@ -17,6 +17,9 @@ SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/noink.db"
 # user in the database!
 ADMIN_USER = "admin"
 
+# The administrative user's fullname
+ADMIN_FULLNAME = "Administrator"
+
 # The name of the administrative group - Note that this field SHOULD NOT be
 # changed after the database has been created, as it will not update the admin
 # group in the database!
