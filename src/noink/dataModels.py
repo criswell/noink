@@ -6,6 +6,14 @@
 from noink import mainDB
 
 class User(mainDB.Model):
+    '''
+    Basic user class.
+
+    Currently, we leave authentication and, indeed, user management up to an
+    external source. By the time a user hits Noink, we assume they are a real,
+    actual user that must be in the database. If they do *not* exist in Noink,
+    then we add it.
+    '''
     __tablename__ = 'users'
 
     id = mainDB.Column(mainDB.Integer, primary_key=True)
@@ -96,6 +104,18 @@ class TagMapping(mainDB.Model):
 
     def __repr__(self):
         return "<Tag %s : Entry %s>" % (self.tag, self.entry)
+
+class DataType(mainDB.Model):
+    __tablename__ = 'datatype'
+
+    id = mainDB.Column(mainDB.Integer, primary_key=True)
+    name = mainDB.Column(mainDB.String(20))
+
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return "<Type %s, id %s>" % (self.name, self.id)
 
 class Entry(mainDB.Model):
     __tablename__ = 'entries'

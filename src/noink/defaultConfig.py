@@ -11,3 +11,14 @@ setting the environmental variable "NOINK_CONFIGURATION".
 
 # The database URI for whatever DB you would like to use
 SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/noink.db"
+
+# The name of the administrative user - Note that this field SHOULD NOT be
+# changed after the database has been created, as it will not update the admin
+# user in the database!
+ADMIN_USER = "admin"
+
+# The name of the administrative group - Note that this field SHOULD NOT be
+# changed after the database has been created, as it will not update the admin
+# group in the database!
+ADMIN_GROUP = "admin"
+
