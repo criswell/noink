@@ -17,6 +17,22 @@ class DuplicateUser(Exception):
     def __str__(self):
         return repr(self.value)
 
+class DuplicateGroup(Exception):
+
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        `return repr(self.value)
+
+class UserNotFound(Exception):
+
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return repr(self.value)
+
 class UserDB:
     __borg_state = {}
 
@@ -32,6 +48,8 @@ class UserDB:
         @param username: The username to add, must be unique.
         @param fullname: The user's full name
         @param bio: The user's bio (optional)
+
+        @return The user id for the user crated.
         '''
         exists = User.query.filter_by(name=username).first()
 
@@ -42,5 +60,30 @@ class UserDB:
             mainDB.session.add(u)
             mainDB.session.commit()
             self.eventLog.add('add_user', u.id, True, username)
+            return u.id
 
+    def addGroup(self, groupName, userId=None):
+        '''
+        Adds a new grou to the database.
 
+        @param groupName: The group name to add, must be unique.
+        @param userId: (Optional) Single or multiple user IDs to associate with this group.
+        '''
+
+        exists = Group.query.filter_by(name=groupName).first()
+
+        if exists:
+            raise DuplicateGroup("%s already exists in database with id '%s'" % (groupName, exists.id))
+        else:
+            g = Group(groupName)
+            mainDB.session.add(g)
+            if userId:
+                exists = User.query.filter_by(id=userId).first()
+                if exists:
+                    gm = GroupMapping(g.id, userId)
+                    mainDB.session.add(gm)
+                else:
+                    raise UserNotFound("%s not found in database to match with new group" % userId)
+
+            mainDB.session.commit()
+            self.eventLog.add('add_group', (groupName))

@@ -14,5 +14,6 @@ specific items here in future data parsing, searching, processing, etc.
 eventTable = {
     'db_setup' : 'Initial database creation',
     'db_finish' : 'Database initialization complete',
-    'add_user' : "User '%s' added"
+    'add_user' : "User '%s' added",
+    'add_group' : "Group '%s' added"
 }
