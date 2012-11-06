@@ -8,3 +8,4 @@ syntax: glob
 *.kate-swp
 tags
 *.pyc
+.directory
