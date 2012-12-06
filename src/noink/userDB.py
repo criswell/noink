@@ -3,35 +3,11 @@
 ##BOILERPLATE_COPYRIGHT_END
 '''
 
-import datetime
-
 from noink import mainDB
 from noink.dataModels import User, Group, GroupMapping
 from noink.eventLog import EventLog
 
-class DuplicateUser(Exception):
-
-    def __init__(self, value):
-        self.value = value
-
-    def __str__(self):
-        return repr(self.value)
-
-class DuplicateGroup(Exception):
-
-    def __init__(self, value):
-        self.value = value
-
-    def __str__(self):
-        `return repr(self.value)
-
-class UserNotFound(Exception):
-
-    def __init__(self, value):
-        self.value = value
-
-    def __str__(self):
-        return repr(self.value)
+from noink.exceptions import DuplicateUser, DuplicateGroup, UserNotFound
 
 class UserDB:
     __borg_state = {}
@@ -39,7 +15,9 @@ class UserDB:
     def __init__(self):
         self.__dict__ = self.__borg_state
 
-        self.eventLog = EventLog()
+        if not self._setup:
+            self.eventLog = EventLog()
+            self._setup = True
 
     def add(self, username, fullname, bio=""):
         '''
