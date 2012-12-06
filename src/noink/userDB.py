@@ -3,6 +3,8 @@
 ##BOILERPLATE_COPYRIGHT_END
 '''
 
+from types import IntType
+
 from noink import mainDB
 from noink.dataModels import User, Group, GroupMapping
 from noink.eventLog import EventLog
@@ -65,3 +67,18 @@ class UserDB:
 
             mainDB.session.commit()
             self.eventLog.add('add_group', (groupName))
+
+    def del(self, u):
+        '''
+        Deletes a user from the database.
+
+        @param u: A user to delete. Can be an integer for the uid or a user
+                  object
+        '''
+
+        user = u
+        if type(u) is IntType:
+            user = User.query.filter_by(id=u).first()
+         mainDB.session.delete(user)
+         mainDB.session.commit()
+

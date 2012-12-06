@@ -39,3 +39,4 @@ class entryDB:
         mainDB.session.commit()
 
         self.eventLog.add('add_entry', author.id, False, entry.title)
+
