@@ -29,7 +29,17 @@ class UserDB:
 
         @return The user objects found
         '''
-        return User.query.filter_by(name=username)
+        return User.query.filter_by(name=username).all()
+
+    def findUserById(self, uid):
+        '''
+        Finds a user by their user ID.
+
+        @param uid: The user's ID to find.
+
+        @return The user object found
+        '''
+        return User.query.get(uid)
 
     def add(self, username, fullname, bio=""):
         '''
@@ -41,7 +51,10 @@ class UserDB:
 
         @return The user id for the user crated.
         '''
-        exists = self.findUserByName(username).first()
+        try:
+            exists = self.findUserByName(username)
+        except:
+            exists = False
 
         if exists:
             raise DuplicateUser("%s already exists in database with id '%d'" % (username, exists.id))
