@@ -10,9 +10,17 @@ Adds a user to the Noink DB
 
 '''
 
+import unittest
+
 from noink import mainApp
 from noink.userDB import UserDB
 
-userDB = UserDB()
+class AddUserCase(unittest.TestCase):
+    def setUp(self):
+        self.userDB = UserDB()
 
+    def tearDown(self):
+        self.userDB = None
+
+    def test_AddUser(self):
 

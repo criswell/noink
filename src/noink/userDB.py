@@ -21,6 +21,16 @@ class UserDB:
             self.eventLog = EventLog()
             self._setup = True
 
+    def findUserByName(self, username):
+        '''
+        Finds a user by their username
+
+        @param username: The username to find.
+
+        @return The user objects found
+        '''
+        return User.query.filter_by(name=username)
+
     def add(self, username, fullname, bio=""):
         '''
         Adds a user to the database.
@@ -31,7 +41,7 @@ class UserDB:
 
         @return The user id for the user crated.
         '''
-        exists = User.query.filter_by(name=username).first()
+        exists = self.findUserByName(username).first()
 
         if exists:
             raise DuplicateUser("%s already exists in database with id '%d'" % (username, exists.id))
