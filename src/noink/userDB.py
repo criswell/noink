@@ -36,6 +36,16 @@ class UserDB:
         '''
         return User.query.filter_by(name=username)
 
+    def getUser(self, uid):
+        '''
+        Given a user id, returns the user object
+
+        @param uid: Integer user id.
+
+        @return the user objects found
+        '''
+        return User.query.filter_by(id=uid)
+
     def add(self, username, fullname, bio=""):
         '''
         Adds a user to the database.

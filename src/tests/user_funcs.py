@@ -23,22 +23,25 @@ class StandardUserTestCase(unittest.TestCase):
         self.invaliduser = 'johndoughboy70'
         self.validuser = 'killerpeadbody'
         self.validfull = 'Missy Pinky'
-        self.user = self.userDB.add(self.validuser, self.validfull)
+        self.userId = self.userDB.add(self.validuser, self.validfull)
+        self.user = self.userDB.getUser(self.userId)
+        print self.user
 
     def tearDown(self):
+        print self.user
         self.userDB.delete(self.user)
         self.userDB.delete(self.userDB.findUserByName(self.username).first())
         self.userDB = None
 
     def test_AddUser(self):
-        unittest.assertGreater(self.userDB.add(self.username, self.fullname), 0)
+        self.assertGreater(self.userDB.add(self.username, self.fullname), 0)
 
     def test_QueryUser(self):
-        unittest.assertIsNotNone(self.userDB.findUserByName(self.username))
+        self.assertIsNotNone(self.userDB.findUserByName(self.username))
 
     def test_DelUser(self):
         self.userDB.delete(self.user)
-        unittest.assertEqual(self.userDB.findUserByName(self.validuser).count(), 0)
+        self.assertEqual(self.userDB.findUserByName(self.validuser).count(), 0)
 
 if __name__ == '__main__':
     unittest.main()
