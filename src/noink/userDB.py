@@ -17,6 +17,11 @@ class UserDB:
     def __init__(self):
         self.__dict__ = self.__borg_state
 
+        try:
+            self._setup
+        except AttributeError:
+            self._setup = False
+
         if not self._setup:
             self.eventLog = EventLog()
             self._setup = True
@@ -40,6 +45,16 @@ class UserDB:
         @return The user object found
         '''
         return User.query.get(uid)
+
+    def getUser(self, uid):
+        '''
+        Given a user id, returns the user object
+
+        @param uid: Integer user id.
+
+        @return the user objects found
+        '''
+        return User.query.filter_by(id=uid)
 
     def add(self, username, fullname, bio=""):
         '''
@@ -80,10 +95,11 @@ class UserDB:
         else:
             g = Group(groupName)
             mainDB.session.add(g)
+            mainDB.session.flush()
             if userId:
                 exists = User.query.filter_by(id=userId).first()
                 if exists:
-                    gm = GroupMapping(g.id, userId)
+                    gm = GroupMapping(g, exists)
                     mainDB.session.add(gm)
                 else:
                     raise UserNotFound("%s not found in database to match with new group" % userId)
@@ -91,7 +107,7 @@ class UserDB:
             mainDB.session.commit()
             self.eventLog.add('add_group', (groupName))
 
-    def del(self, u):
+    def delete(self, u):
         '''
         Deletes a user from the database.
 
@@ -102,6 +118,6 @@ class UserDB:
         user = u
         if type(u) is IntType:
             user = User.query.filter_by(id=u).first()
-         mainDB.session.delete(user)
-         mainDB.session.commit()
+        mainDB.session.delete(user)
+        mainDB.session.commit()
 
