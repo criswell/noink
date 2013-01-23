@@ -12,20 +12,17 @@ Tests pertaining to users and the Noink DB
 
 import unittest
 
-from testMain import testMain
+from test_Root import RootClass
 
-from noink import mainApp
+#from noink import mainApp
 from noink.userDB import UserDB
 
-class AddUser(unittest.TestCase):
-    def setUp(self):
-        self.testMain = testMain()
-
-    def tearDown(self):
-        del(self.testMain)
+class AddUser(RootClass):
 
     def test_AddUser(self):
-        #
+        userDB = UserDB()
+        uid = userDB.add("jontest", "Jon Q. Testuser")
+        self.assertTrue(uid > 0)
 
 if __name__ == '__main__':
     unittest.main()

@@ -12,6 +12,7 @@ mainApp = Flask("noink")
 mainApp.config.from_object('noink.defaultConfig')
 try:
     mainApp.config.from_envvar('NOINK_CONFIGURATION')
+    print "USING NOINK_CONFIGURATION"
 except:
     pass
 
