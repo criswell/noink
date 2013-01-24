@@ -64,7 +64,7 @@ class UserDB:
         @param fullname: The user's full name
         @param bio: The user's bio (optional)
 
-        @return The user id for the user crated.
+        @return The user object for the user crated.
         '''
         try:
             exists = self.findUserByName(username)
@@ -78,7 +78,7 @@ class UserDB:
             mainDB.session.add(u)
             mainDB.session.commit()
             self.eventLog.add('add_user', u.id, True, username)
-            return u.id
+            return u
 
     def addGroup(self, groupName, userId=None):
         '''
@@ -86,6 +86,8 @@ class UserDB:
 
         @param groupName: The group name to add, must be unique.
         @param userId: (Optional) Single or multiple user IDs to associate with this group.
+
+        @return The group object created
         '''
 
         exists = Group.query.filter_by(name=groupName).first()
@@ -106,6 +108,7 @@ class UserDB:
 
             mainDB.session.commit()
             self.eventLog.add('add_group', (groupName))
+            return g
 
     def delete(self, u):
         '''

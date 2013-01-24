@@ -22,8 +22,8 @@ def setupDB():
     userDB = UserDB()
     mainDB.create_all()
     eventLog.add('db_setup', -1, True)
-    id = userDB.add(mainApp.config['ADMIN_USER'], mainApp.config['ADMIN_FULLNAME'])
-    userDB.addGroup(mainApp.config['ADMIN_GROUP'], id)
+    user = userDB.add(mainApp.config['ADMIN_USER'], mainApp.config['ADMIN_FULLNAME'])
+    userDB.addGroup(mainApp.config['ADMIN_GROUP'], user.id)
 
     eventLog.add('db_finish', -1, True)
 
