@@ -6,14 +6,19 @@
 import datetime
 
 from noink import mainDB
-from noink import Entry
+from noink.dataModels import Entry
 from noink.eventLog import EventLog
 
-class entryDB:
+class EntryDB:
     __borg_state = {}
 
     def __init__(self):
         self.__dict__ = self.__borg_state
+
+        try:
+            self._setup
+        except AttributeError:
+            self._setup = False
 
         if not self._setup:
             self.eventLog = EventLog()
@@ -30,6 +35,8 @@ class entryDB:
         @param title: The title of the post.
         @param entry: The entry of the post.
         @param author: The user object for the post's author
+
+        @return New entry object just added
         '''
 
         now = datetime.datetime.now()
@@ -39,4 +46,5 @@ class entryDB:
         mainDB.session.commit()
 
         self.eventLog.add('add_entry', author.id, False, entry.title)
+        return e
 
