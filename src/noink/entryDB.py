@@ -58,3 +58,17 @@ class EntryDB:
         '''
         return Entry.query.filter(Entry.Entry.title.like("%%%s%%" % title)).all()
 
+    def delete(self, e):
+        '''
+        Deletes an entry from the database.
+
+        @param e: An entry to delete. Can be an integer for the entry id or an
+                  entry object.
+        '''
+
+        entry = e
+        if type(e) is IntType:
+            entry = Entry.query.filter_by(id=e).first()
+        mainDB.session.delete(e)
+        mainDB.session.commit()
+
