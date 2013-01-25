@@ -48,3 +48,13 @@ class EntryDB:
         self.eventLog.add('add_entry', author.id, False, entry.title)
         return e
 
+    def findByTitle(self, title):
+        '''
+        Finds entries based upon the title. Can search using sub-strings.
+
+        @param title: The title of the post (or sub-string of title).
+
+        @return Array containing one or more entry objects, or None.
+        '''
+        return Entry.query.filter(Entry.Entry.title.like("%%%s%%" % title)).all()
+
