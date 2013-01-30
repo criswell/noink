@@ -16,5 +16,6 @@ eventTable = {
     'db_finish' : 'Database initialization complete',
     'add_user' : "User '%s' added",
     'add_group' : "Group '%s' added",
-    'add_entry' : "Entry '%s' added"
+    'add_entry' : "Entry '%s' added",
+    'add_url' : "URL '%s' added for entry '%s'"
 }

@@ -63,6 +63,16 @@ class EntryDB:
         '''
         return Entry.query.filter(Entry.Entry.title.like("%%%s%%" % title)).all()
 
+    def findById(self, num):
+        '''
+        Finds entries based upon the ID.
+
+        @param num: The numerical ID of the post.
+
+        @return The entry objects, or None.
+        '''
+        return Entry.query(Entry).get(num)
+
     def delete(self, e):
         '''
         Deletes an entry from the database.

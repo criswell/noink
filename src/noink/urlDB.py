@@ -9,7 +9,9 @@ from types import IntType, StringType
 
 from noink import mainDB
 from noink.dataModels import URL
+from noink.entryDB import EntryDB
 from noink.eventLog import EventLog
+from noink.exceptions import EntryNotFound
 
 class UrlDB:
     __borg_state = {}
@@ -24,6 +26,7 @@ class UrlDB:
 
         if not self._setup:
             self.eventLog = EventLog()
+            self.entryDB = EntryDB()
             self._setup = True
 
     def add(self, name, entry):
@@ -36,6 +39,16 @@ class UrlDB:
         @returns New URL object just added
         '''
 
-        # HERE I AM JH
-        # need to check entry type and add properly
-        u = URL(name, entry)
+        e = entry
+        if type(entry) is IntType:
+            e = self.entryDB.findById(entry)
+
+        if e:
+            u = URL(name, e)
+            mainDB.session.add(u)
+            mainDB.session.commit()
+
+            self.eventLog.add('add_url', e.author_id, True, (name, e.id))
+            return u
+        else:
+            raise EntryNotFound('The entry could not be found! Entry "%e"' % e)
