@@ -5,6 +5,8 @@
 
 import datetime
 
+from types import IntType, StringType
+
 from noink import mainDB
 from noink.dataModels import Entry
 from noink.eventLog import EventLog
@@ -24,7 +26,7 @@ class EntryDB:
             self.eventLog = EventLog()
             self._setup = True
 
-    def add(self, title, entry, author):
+    def add(self, title, entry, author, url=None):
         '''
         Adds an entry to the system.
 
@@ -35,6 +37,7 @@ class EntryDB:
         @param title: The title of the post.
         @param entry: The entry of the post.
         @param author: The user object for the post's author
+        @param url: The (optional) URL for this post.
 
         @return New entry object just added
         '''
@@ -42,6 +45,8 @@ class EntryDB:
         now = datetime.datetime.now()
 
         e = Entry(title, author, now, entry)
+        if type(url) is StringType:
+            #
         mainDB.session.add(e)
         mainDB.session.commit()
 

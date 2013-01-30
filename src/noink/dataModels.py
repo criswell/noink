@@ -117,6 +117,21 @@ class DataType(mainDB.Model):
     def __repr__(self):
         return "<Type %s, id %s>" % (self.name, self.id)
 
+class URL(mainDB.Model):
+    __tablename__ = 'urls'
+
+    id = mainDB.Column(mainDB.Integer, primary_key=True)
+    name = mainDB.Column(mainDB.String(32))
+    emtry_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("entries.id"))
+    entry = mainDB.relationship("Entry")
+
+    def __init__(self, name, entry):
+        self.name = name
+        self.entry = entry
+
+    def __repr__(self):
+        return "<URL %s : Entry %s>" % (self.name, self.entry_id)
+
 class Entry(mainDB.Model):
     __tablename__ = 'entries'
 

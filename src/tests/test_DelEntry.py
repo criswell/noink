@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 '''
-add user test
 
 ##BOILERPLATE_COPYRIGHT
 ##BOILERPLATE_COPYRIGHT_END
