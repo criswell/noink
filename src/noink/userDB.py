@@ -122,7 +122,7 @@ class UserDB:
         if type(u) is IntType:
             user = User.query.filter_by(id=u).first()
         uid = int(user.id)
-        uname = str(uder.name)
+        uname = str(user.name)
         mainDB.session.delete(user)
         mainDB.session.commit()
         self.eventLog.add('del_user', uid, True, None, uname)

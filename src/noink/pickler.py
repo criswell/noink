@@ -16,7 +16,7 @@ class PEntry:
         if url:
             self.url = copy(url.name)
 
-def pickle(self, obj):
+def pickle(obj):
     '''
     Takes an object to be pickled, will return the pickled string.
 
@@ -24,9 +24,9 @@ def pickle(self, obj):
 
     @return String of pickled object.
     '''
-    return dumps(objs)
+    return dumps(obj)
 
-def depickle(self, string):
+def depickle(string):
     '''
     Takes a pickled string, and returns the de-pickled object.
 
@@ -34,4 +34,4 @@ def depickle(self, string):
 
     @return De-pickled object.
     '''
-    return loads(objs)
+    return loads(string)

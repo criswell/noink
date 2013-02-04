@@ -8,7 +8,6 @@ import datetime
 from types import IntType, StringType
 
 from noink import mainDB
-from noink.urlDB import UrlDB
 from noink.dataModels import Entry
 from noink.pickler import PEntry, pickle, depickle
 from noink.eventLog import EventLog
@@ -27,8 +26,9 @@ class EntryDB:
 
         if not self._setup:
             self.eventLog = EventLog()
-            self.urlDB = UrlDB()
             self._setup = True
+            from noink.urlDB import UrlDB
+            self.urlDB = UrlDB()
 
     def add(self, title, entry, author, url=None):
         '''
@@ -50,18 +50,21 @@ class EntryDB:
         now = datetime.datetime.now()
 
         e = Entry(title, author, now, entry)
+        u = None
 
-       if type(url) is StringType:
+        if type(url) is StringType:
             if self.urlDB.findByName(url):
                 raise DuplicateURL('The URL "%s" was already found in the UrlDB!' % url)
             else:
                 mainDB.session.add(e)
                 mainDB.session.commit()
-                self.urlDB.add(url, e)
+                u = self.urlDB.add(url, e)
         else:
             mainDB.session.add(e)
             mainDB.session.commit()
-        self.eventLog.add('add_entry', author.id, False, str(entry.id), entry.title)
+
+        pe = PEntry(e, u)
+        self.eventLog.add('add_entry', author.id, False, pickle(pe), entry.title)
         return e
 
     def findByTitle(self, title):

@@ -9,7 +9,6 @@ from types import IntType, StringType
 
 from noink import mainDB
 from noink.dataModels import URL
-from noink.entryDB import EntryDB
 from noink.eventLog import EventLog
 from noink.exceptions import EntryNotFound
 
@@ -26,8 +25,9 @@ class UrlDB:
 
         if not self._setup:
             self.eventLog = EventLog()
-            self.entryDB = EntryDB()
             self._setup = True
+            from noink.entryDB import EntryDB
+            self.entryDB = EntryDB()
 
     def add(self, name, entry):
         '''
