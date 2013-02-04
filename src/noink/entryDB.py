@@ -5,10 +5,10 @@
 
 import datetime
 
-from types import IntType, StringType
+from types import IntType, StringType, ListType
 
 from noink import mainDB
-from noink.dataModels import Entry
+from noink.dataModels import Entry, Tag, TagMapping
 from noink.pickler import PEntry, pickle, depickle
 from noink.eventLog import EventLog
 from noink.exceptions import DuplicateURL
@@ -66,6 +66,49 @@ class EntryDB:
         pe = PEntry(e, u)
         self.eventLog.add('add_entry', author.id, False, pickle(pe), entry.title)
         return e
+
+    def addTag(self, tags, entry):
+        '''
+        Adds one or more tags to be associated with an entry. Or, if tags
+        already exist, updates them to also point to the entry.
+
+        @param tags: Array of one or more tags.
+        @param entry: An entry to associate with the tags.
+
+        @return Tag object.
+        '''
+        if type(tags) is ListType:
+            for tag in tags:
+                t = Tag.query.filter_by(tag=tag).first()
+                if t == None:
+                    t = Tag(tag)
+                    mainDB.session.add(t)
+                    self.eventLog.add('add_tag', entry.author_id, False, tag, tag)
+                exist = TagMapping.query.filter_by(tag_id=t.id)
+                if exist == None:
+                    tm = TagMapping(t, entry)
+                    mainDB.session.add(tm)
+
+            mainDB.session.commit()
+        else:
+            raise TypeError("Tags expected to be array")
+
+    def findTagsByEntry(self, entry):
+        '''
+        Given an entry, find all tags associated with it.
+
+        @param entry: The entry. Either an Entry object or entry id.
+
+        @return Array containing one or more tag objects.
+        '''
+        e = entry
+        if type(entry) is IntType:
+            e = self.findById(entry)
+        tags = []
+        for tm in TagMapping.query.filter_by(entry_i=e.id):
+            tags.append(tm.tag)
+
+        return tags
 
     def findByTitle(self, title):
         '''
