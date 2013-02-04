@@ -21,7 +21,7 @@ class EventLog:
     def __init__(self):
         self.__dict__ = self.__borg_state
 
-    def add(self, name, user, processed=False, *args):
+    def add(self, name, user, processed=False, blob='', *args):
         '''
         Adds an event to the log.
 
@@ -33,9 +33,9 @@ class EventLog:
         if eventTable.has_key(name):
             now = datetime.datetime.now()
             if len(args) > 0:
-                e = Event(name, eventTable[name] % args, now, user)
+                e = Event(name, eventTable[name] % args, now, user, blob)
             else:
-                e = Event(name, eventTable[name], now, user)
+                e = Event(name, eventTable[name], now, user, blob)
 
             e.processed = processed
             if processed:

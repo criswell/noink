@@ -65,14 +65,17 @@ class Event(mainDB.Model):
     description = mainDB.Column(mainDB.String(500))
     date = mainDB.Column(mainDB.DateTime())
     user = mainDB.Column(mainDB.Integer)
+    blob = mainDB.Column(mainDB.String(500))
     processed = mainDB.Column(mainDB.Boolean())
     processedDate = mainDB.Column(mainDB.DateTime())
 
-    def __init__(self, event, description, date, user):
+
+    def __init__(self, event, description, date, user, blob):
         self.event = event
         self.description = description
         self.date = date
         self.user = user
+        self.blob = blob
 
     def __repr__(self):
         return "<Event %s>" % self.event

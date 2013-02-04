@@ -17,5 +17,8 @@ eventTable = {
     'add_user' : "User '%s' added",
     'add_group' : "Group '%s' added",
     'add_entry' : "Entry '%s' added",
-    'add_url' : "URL '%s' added for entry '%s'"
+    'add_url' : "URL '%s' added for entry '%s'",
+    'del_url' : "URL '%s' deleted",
+    'del_entry' : "Entry '%s' deleted",
+    'del_user' : "User '%s' deleted"
 }

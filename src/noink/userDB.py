@@ -77,7 +77,7 @@ class UserDB:
             u = User(username, fullname, bio)
             mainDB.session.add(u)
             mainDB.session.commit()
-            self.eventLog.add('add_user', u.id, True, username)
+            self.eventLog.add('add_user', u.id, True, None, username)
             return u
 
     def addGroup(self, groupName, userId=None):
@@ -107,7 +107,7 @@ class UserDB:
                     raise UserNotFound("%s not found in database to match with new group" % userId)
 
             mainDB.session.commit()
-            self.eventLog.add('add_group', (groupName))
+            self.eventLog.add('add_group', 0, True, None, groupName)
             return g
 
     def delete(self, u):
@@ -121,6 +121,9 @@ class UserDB:
         user = u
         if type(u) is IntType:
             user = User.query.filter_by(id=u).first()
+        uid = int(user.id)
+        uname = str(uder.name)
         mainDB.session.delete(user)
         mainDB.session.commit()
+        self.eventLog.add('del_user', uid, True, None, uname)
 

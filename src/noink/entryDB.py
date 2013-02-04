@@ -8,8 +8,11 @@ import datetime
 from types import IntType, StringType
 
 from noink import mainDB
+from noink.urlDB import UrlDB
 from noink.dataModels import Entry
+from noink.pickler import PEntry, pickle, depickle
 from noink.eventLog import EventLog
+from noink.exceptions import DuplicateURL
 
 class EntryDB:
     __borg_state = {}
@@ -24,6 +27,7 @@ class EntryDB:
 
         if not self._setup:
             self.eventLog = EventLog()
+            self.urlDB = UrlDB()
             self._setup = True
 
     def add(self, title, entry, author, url=None):
@@ -32,7 +36,8 @@ class EntryDB:
 
         Will not perform any checks, it will just add this entry. It's not
         this method's responsibility to check whether or not your entry is a
-        duplicate.
+        duplicate. The one check it does do is to verify whether a URL is
+        unique or not.
 
         @param title: The title of the post.
         @param entry: The entry of the post.
@@ -45,12 +50,18 @@ class EntryDB:
         now = datetime.datetime.now()
 
         e = Entry(title, author, now, entry)
-        if type(url) is StringType:
-            #
-        mainDB.session.add(e)
-        mainDB.session.commit()
 
-        self.eventLog.add('add_entry', author.id, False, entry.title)
+       if type(url) is StringType:
+            if self.urlDB.findByName(url):
+                raise DuplicateURL('The URL "%s" was already found in the UrlDB!' % url)
+            else:
+                mainDB.session.add(e)
+                mainDB.session.commit()
+                self.urlDB.add(url, e)
+        else:
+            mainDB.session.add(e)
+            mainDB.session.commit()
+        self.eventLog.add('add_entry', author.id, False, str(entry.id), entry.title)
         return e
 
     def findByTitle(self, title):
@@ -80,10 +91,15 @@ class EntryDB:
         @param e: An entry to delete. Can be an integer for the entry id or an
                   entry object.
         '''
-
         entry = e
         if type(e) is IntType:
             entry = Entry.query.filter_by(id=e).first()
-        mainDB.session.delete(e)
+
+        url = self.urlDB.findByEntry(e)
+        pe = PEntry(e, url)
+        if url:
+            self.urlDB.delete(url)
+        mainDB.session.delete(entry)
         mainDB.session.commit()
+        self.eventLog.add('del_entry', 0, False, pickle(pe), entry.title)
 
