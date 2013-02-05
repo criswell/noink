@@ -16,5 +16,6 @@ try:
 except:
     pass
 
+mainApp.secret_key = mainApp.config['SECRET_KEY']
 mainDB = SQLAlchemy(mainApp)
 
