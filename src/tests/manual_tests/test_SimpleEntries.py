@@ -9,7 +9,7 @@
 
 from tests.testMain import testMain
 
-entries =
+entries = \
 [
     (
         'The Amazing Bambini',
@@ -32,6 +32,7 @@ entries =
     )
 ]
 
+from noink import mainApp
 from noink.userDB import UserDB
 from noink.entryDB import EntryDB
 
@@ -43,9 +44,16 @@ class SimpleEntries:
         self.userDB = UserDB()
         self.entryDB = EntryDB()
 
-        u = userDB.add("criswell", "Sam Hart")
-
+        u = self.userDB.add("criswell", "Sam Hart")
+        for e in entries:
+            entry = self.entryDB.add(e[0], e[1], u)
 
     def __del__(self):
         del(self.testMain)
 
+    def run(self):
+        mainApp.run()
+
+if __name__ == '__main__':
+    se = SimpleEntries()
+    se.run()
