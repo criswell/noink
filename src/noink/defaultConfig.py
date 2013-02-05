@@ -22,8 +22,10 @@ ADMIN_FULLNAME = "Administrator"
 # group in the database!
 ADMIN_GROUP = "admin"
 
-# The path to the HTML templates. Can be a relative path, or absolute.
-HTML_TEMPLATES = "../default_templates"
+# The path(s) to the HTML templates. Can be a relative path, or absolute.
+HTML_TEMPLATES = [
+    "../templates/default"
+]
 
 # The secret key is used by flask for session signing
 SECRET_KEY = 'Klaus Karl Kassbaum is Nick St. Nicholas'

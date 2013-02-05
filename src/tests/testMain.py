@@ -9,8 +9,11 @@ import os
 
 import tempfile
 import shutil
+import random
 
-#from noink import _setupDB
+from noink import mainApp
+from noink import reInit
+from noink import _setupDB
 
 class testMain(object):
     def __init__(self):
@@ -18,22 +21,24 @@ class testMain(object):
 
         # Need a temporary files and settings
         self.TEST_CONF_FILE = "%s/test.cfg" % self.TEST_ROOT
-        #os.environ['NOINK_CONFIGURATION'] = self.TEST_CONF_FILE
+        os.environ['NOINK_CONFIGURATION'] = self.TEST_CONF_FILE
 
         self.TEST_DB_FILE = "sqlite:///%s/noink.db" % self.TEST_ROOT
 
-        TEST_ADMINUSER = "admin"
-        TEST_ADMINFULL = "Administrator"
-        TEST_ADMINGROUP = "admin"
+        conf = [
+            'ADMIN_USER = "admin"\n',
+            'ADMIN_FULLNAME = "Administrator"\n',
+            'ADMIN_GROUP = "admin"\n',
+            'SQLALCHEMY_DATABASE_URI = "%s"\n' % self.TEST_DB_FILE,
+            'SECRET_KEY = "%032x"\n' % random.getrandbits(128),
+            'HTML_TEMPLATES = [ "../../templates/defaultPOO" ]\n'
+        ]
 
-        #confFile = open(self.TEST_CONF_FILE, 'w')
-        #confFile.writelines(['SQLALCHEMY_DATABASE_URI = "%s"' % self.TEST_DB_FILE])
-        #confFile.close()
+        with open(self.TEST_CONF_FILE, 'w') as f:
+            f.writelines(conf)
 
-        # Set ourselves up a test root for things
-        from noink import _setupDB
-        from noink import mainApp
-        mainApp.config['SQLALCHEMY_DATABASE_URI'] = self.TEST_DB_FILE
+        reInit()
+
         _setupDB.setupDB()
 
     def __del__(self):

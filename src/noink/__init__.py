@@ -8,14 +8,40 @@
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 
-mainApp = Flask("noink")
-mainApp.config.from_object('noink.defaultConfig')
-try:
-    mainApp.config.from_envvar('NOINK_CONFIGURATION')
-    print "USING NOINK_CONFIGURATION"
-except:
-    pass
+import os
 
-mainApp.secret_key = mainApp.config['SECRET_KEY']
-mainDB = SQLAlchemy(mainApp)
+try:
+    __setup
+except:
+    __setup = False
+
+def _parseConfig():
+    '''
+    '''
+    try:
+        mainApp.config.from_envvar('NOINK_CONFIGURATION')
+    except:
+        mainApp.config.from_object('noink.defaultConfig')
+
+    mainApp.secret_key = mainApp.config['SECRET_KEY']
+
+    # Setup our template pathing
+    if mainApp.config['HTML_TEMPLATES']:
+        __newTemplatePath = []
+        from os.path import abspath
+        for element in mainApp.config['HTML_TEMPLATES']:
+            __newTemplatePath.append(abspath(element))
+        mainApp.jinja_loader.searchpath = __newTemplatePath
+
+def reInit():
+    '''
+    Call this method when you want to re-initialize as much as possible.
+    '''
+    _parseConfig()
+
+if not __setup:
+    mainApp = Flask("noink")
+    _parseConfig()
+    mainDB = SQLAlchemy(mainApp)
+    __setup = True
 

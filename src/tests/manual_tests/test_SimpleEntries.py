@@ -52,6 +52,13 @@ class SimpleEntries:
         del(self.testMain)
 
     def run(self):
+        print "mainApp.jinja_env"
+        print "-----------------"
+        print dir(mainApp.jinja_env)
+        print "\nmainApp.jinja_loader"
+        print "___________________"
+        print dir(mainApp.jinja_loader)
+        print "\n%s" % mainApp.jinja_loader.searchpath
         mainApp.run()
 
 if __name__ == '__main__':
