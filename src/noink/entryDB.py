@@ -105,7 +105,7 @@ class EntryDB:
         if type(entry) is IntType:
             e = self.findById(entry)
         tags = []
-        for tm in TagMapping.query.filter_by(entry_i=e.id)i.first():
+        for tm in TagMapping.query.filter_by(entry_i=e.id).first():
             tags.append(tm.tag)
 
         return tags
