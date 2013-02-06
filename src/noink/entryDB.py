@@ -105,10 +105,33 @@ class EntryDB:
         if type(entry) is IntType:
             e = self.findById(entry)
         tags = []
-        for tm in TagMapping.query.filter_by(entry_i=e.id):
+        for tm in TagMapping.query.filter_by(entry_i=e.id)i.first():
             tags.append(tm.tag)
 
         return tags
+
+    def findByTags(self, tags):
+        '''
+        Given one or more tags, find all entries tagged with them.
+
+        @param tags: One or more tags. Tags can be tag ids, tag objects, or
+                     tag strings. Tags must be iterable.
+
+        @return Array contating the entry objects.
+        '''
+        e = []
+        for tag in tags:
+            tagObj = tag
+            if type(tag) is IntType:
+                tagObj = Tag.query.filter_by(id=tag).first()
+            elif type(tag) is StringType:
+                tagObj = Tag.query.filter_by(tag=tag).first()
+
+            if tagObj != None:
+                for mapping in TagMapping.query.filter_by(tagObj.id):
+                    e = e + mapping.entry
+
+        return e
 
     def findByTitle(self, title):
         '''
