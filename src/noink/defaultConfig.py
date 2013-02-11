@@ -30,3 +30,8 @@ HTML_TEMPLATES = [
 # The secret key is used by flask for session signing
 SECRET_KEY = 'Klaus Karl Kassbaum is Nick St. Nicholas'
 
+# This defines the number of entries per page options
+NUM_ENTRIES_PER_PAGE = [
+    20, 50, 100
+]
+

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+  <head>
+    <title>Something something SPACE MARINE!</title>
+  </head>
+  <body>
+    {% for entry in entries %}
+      <h2>{{ entry.title }}</h2>
+      <h3>{{ entry.author.fullname }}</h3>
+      <i>{{ entry.date }}</i><br /><br />
+      <p>{{ entry.entry }}</p>
+    {% endfor %}
+  </body>
+</html>
+

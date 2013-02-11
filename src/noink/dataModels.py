@@ -172,3 +172,9 @@ class Activity(mainDB.Model):
     def __repre__(self):
         return "<Type '%s', Param '%s'>" % (self.activityType, self.parameter)
 
+#class SiteConfig(mainDB.Model):
+#    __tablename__ = 'siteconfig'
+#
+#    id = mainDB.Column(mainDB.Integer, primary_key=True)
+#    version = mainDB.i
+
