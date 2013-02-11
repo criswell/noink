@@ -133,6 +133,24 @@ class EntryDB:
 
         return e
 
+    def findRecentByNum(self, num, weight=True):
+        '''
+        Finds the most recent entries with a maximum of 'num'.
+
+        @param num: The number of entries to find
+        @param weight: If the weight should be taken into account (defaults to
+                       true.
+
+        @return Array containing the entry objects.
+        '''
+        if type(num) is IntType:
+            if weight:
+                return Entry.query.order_by(Entry.date, Entry.weight).limit(num).all()
+            else:
+                return Entry.query.order_by(Entry.date).limit(num).all()
+        else:
+            raise TypeError("Expected integer for num")
+
     def findByTitle(self, title):
         '''
         Finds entries based upon the title. Can search using sub-strings.
