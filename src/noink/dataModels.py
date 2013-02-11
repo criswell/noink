@@ -144,12 +144,14 @@ class Entry(mainDB.Model):
     entry = mainDB.Column(mainDB.String(40000))
     author_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("user.id"))
     author = mainDB.relationship("User")
+    weight = mainDB.Column(mainDB.Integer)
 
-    def __init__(self, title, author, date, entry):
+    def __init__(self, title, author, date, entry, weight=0):
         self.date = date
         self.title = title
         self.author = author
         self.entry = entry
+        self.weight = weight
 
     def __repr__(self):
         return "<Entry ID: %s, Title %s>" % (self.id, self.title)

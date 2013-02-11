@@ -128,7 +128,7 @@ class EntryDB:
                 tagObj = Tag.query.filter_by(tag=tag).first()
 
             if tagObj != None:
-                for mapping in TagMapping.query.filter_by(tagObj.id):
+                for mapping in TagMapping.query.filter_by(tagObj.id).oder_by(Entry.weight, Entry.date):
                     e = e + mapping.entry
 
         return e
