@@ -33,7 +33,7 @@ class testMain(object):
             'SECRET_KEY = "%032x"\n' % random.getrandbits(128),
             'HTML_TEMPLATES = [ "../../templates/default" ]\n',
             'NUM_ENTRIES_PER_PAGE = [ 20, 50 ]\n',
-            'BREAK_IDENTIFIER = "<!--break-->"'
+            'BREAK_IDENTIFIER = "<!--break-->"\n'
         ]
 
         with open(self.TEST_CONF_FILE, 'w') as f:
