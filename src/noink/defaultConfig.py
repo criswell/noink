@@ -35,3 +35,6 @@ NUM_ENTRIES_PER_PAGE = [
     20, 50, 100
 ]
 
+# Some string which defines your post breaks in entries.
+BREAK_IDENTIFIER = "<!--break-->"
+

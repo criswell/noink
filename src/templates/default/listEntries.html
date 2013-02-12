@@ -9,7 +9,7 @@
       <h2>{{ entry.title }}</h2>
       <h3>{{ entry.author.fullname }}</h3>
       <i>{{ entry.date }}</i><br /><br />
-      <p>{{ entry.entry }}</p>
+      <p>{{ entry.entry|breakSplit|first }}</p>
     {% endfor %}
   </body>
 </html>

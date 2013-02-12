@@ -32,7 +32,8 @@ class testMain(object):
             'SQLALCHEMY_DATABASE_URI = "%s"\n' % self.TEST_DB_FILE,
             'SECRET_KEY = "%032x"\n' % random.getrandbits(128),
             'HTML_TEMPLATES = [ "../../templates/default" ]\n',
-            'NUM_ENTRIES_PER_PAGE = [ 20, 50 ]'
+            'NUM_ENTRIES_PER_PAGE = [ 20, 50 ]\n',
+            'BREAK_IDENTIFIER = "<!--break-->"'
         ]
 
         with open(self.TEST_CONF_FILE, 'w') as f:

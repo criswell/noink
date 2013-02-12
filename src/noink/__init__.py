@@ -44,6 +44,9 @@ if not __setup:
     _parseConfig()
     mainDB = SQLAlchemy(mainApp)
 
+    # filters
+    from noink.filters import breakSplit
+
     # blueprints
     from noink.blueprints.listEntries import listEntries
     mainApp.register_blueprint(listEntries)
