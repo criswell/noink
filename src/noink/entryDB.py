@@ -169,7 +169,7 @@ class EntryDB:
 
         @return The entry objects, or None.
         '''
-        return Entry.query(Entry).get(num)
+        return Entry.query.get(num)
 
     def delete(self, e):
         '''

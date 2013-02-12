@@ -49,7 +49,9 @@ if not __setup:
 
     # blueprints
     from noink.blueprints.listEntries import listEntries
+    from noink.blueprints.node import node
     mainApp.register_blueprint(listEntries)
+    mainApp.register_blueprint(node)
 
     __setup = True
 

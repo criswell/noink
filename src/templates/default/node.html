@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+  <head>
+    <title>{{ entry.title }}</title>
+  </head>
+  <body>
+    {% if url == none %}
+      {% set path = "/node/" ~ entry.id %}
+      {% set e = entry %}
+    {% else %}
+      {% set path = url.name %}
+      {% set e = url.entry %}
+    {% endif %}
+    <a href="{{ path }}"><h2>{{ e.title }}</h2></a>
+    <h3>{{ e.author.fullname }}</h3>
+    <i>{{ e.date }}</i><br /><br />
+    <p>{{ e.entry }}</p>
+  </body>
+</html>
+
