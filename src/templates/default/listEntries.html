@@ -6,10 +6,11 @@
   </head>
   <body>
     {% for entry in entries %}
-      <h2>{{ entry.title }}</h2>
+    <a href="/node/{{ entry.id }}"><h2>{{ entry.title }}</h2></a>
       <h3>{{ entry.author.fullname }}</h3>
       <i>{{ entry.date }}</i><br /><br />
       <p>{{ entry.entry|breakSplit|first }}</p>
+      <a href="/node/{{ entry.id }}">more...</a>
     {% endfor %}
   </body>
 </html>
