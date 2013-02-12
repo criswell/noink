@@ -43,5 +43,10 @@ if not __setup:
     mainApp = Flask("noink")
     _parseConfig()
     mainDB = SQLAlchemy(mainApp)
+
+    # blueprints
+    from noink.blueprints.listEntries import listEntries
+    mainApp.register_blueprint(listEntries)
+
     __setup = True
 

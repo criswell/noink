@@ -31,7 +31,8 @@ class testMain(object):
             'ADMIN_GROUP = "admin"\n',
             'SQLALCHEMY_DATABASE_URI = "%s"\n' % self.TEST_DB_FILE,
             'SECRET_KEY = "%032x"\n' % random.getrandbits(128),
-            'HTML_TEMPLATES = [ "../../templates/default" ]\n'
+            'HTML_TEMPLATES = [ "../../templates/default" ]\n',
+            'NUM_ENTRIES_PER_PAGE = [ 20, 50 ]'
         ]
 
         with open(self.TEST_CONF_FILE, 'w') as f:

@@ -51,7 +51,7 @@ class SimpleEntries:
     def __del__(self):
         del(self.testMain)
 
-    def run(self):
+    def run(self, debug):
         print "mainApp.jinja_env"
         print "-----------------"
         print dir(mainApp.jinja_env)
@@ -59,8 +59,8 @@ class SimpleEntries:
         print "___________________"
         print dir(mainApp.jinja_loader)
         print "\n%s" % mainApp.jinja_loader.searchpath
-        mainApp.run()
+        mainApp.run(debug=debug)
 
 if __name__ == '__main__':
     se = SimpleEntries()
-    se.run()
+    se.run(True)
