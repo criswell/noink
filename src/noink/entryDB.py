@@ -11,7 +11,6 @@ from noink import mainDB
 from noink.dataModels import Entry, Tag, TagMapping
 from noink.pickler import PEntry, pickle, depickle
 from noink.eventLog import EventLog
-from noink.exceptions import DuplicateURL
 
 class EntryDB:
     __borg_state = {}
@@ -27,10 +26,8 @@ class EntryDB:
         if not self._setup:
             self.eventLog = EventLog()
             self._setup = True
-            from noink.urlDB import UrlDB
-            self.urlDB = UrlDB()
 
-    def add(self, title, entry, author, url=None):
+    def add(self, title, entry, author, weight=0, url=None):
         '''
         Adds an entry to the system.
 
@@ -49,21 +46,19 @@ class EntryDB:
 
         now = datetime.datetime.now()
 
-        e = Entry(title, author, now, entry)
-        u = None
+        e = Entry(title, author, now, entry, weight, url)
 
         if type(url) is StringType:
-            if self.urlDB.findByName(url):
+            if self.findByURL(url):
                 raise DuplicateURL('The URL "%s" was already found in the UrlDB!' % url)
             else:
                 mainDB.session.add(e)
                 mainDB.session.commit()
-                u = self.urlDB.add(url, e)
         else:
             mainDB.session.add(e)
             mainDB.session.commit()
 
-        pe = PEntry(e, u)
+        pe = PEntry(e)
         self.eventLog.add('add_entry', author.id, False, pickle(pe), entry.title)
         return e
 
@@ -92,6 +87,16 @@ class EntryDB:
             mainDB.session.commit()
         else:
             raise TypeError("Tags expected to be array")
+
+    def findByURL(self, url):
+        """
+        Given a URL, find all entries associated with it.
+
+        @param url: The URL string.
+
+        @return Array containing one or more entries.
+        """
+        return Entry.query.filter_by(url=url).all()
 
     def findTagsByEntry(self, entry):
         '''

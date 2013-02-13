@@ -10,11 +10,9 @@ from pickle import dumps, loads
 
 # Entries
 class PEntry:
-    def __init__(self, entry, url):
+    def __init__(self, entry):
         self.id = copy(entry.id)
         self.title = copy(entry.title)
-        if url:
-            self.url = copy(url.name)
 
 def pickle(obj):
     '''

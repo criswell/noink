@@ -120,21 +120,6 @@ class DataType(mainDB.Model):
     def __repr__(self):
         return "<Type %s, id %s>" % (self.name, self.id)
 
-class URL(mainDB.Model):
-    __tablename__ = 'urls'
-
-    id = mainDB.Column(mainDB.Integer, primary_key=True)
-    name = mainDB.Column(mainDB.String(32))
-    emtry_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("entries.id"))
-    entry = mainDB.relationship("Entry")
-
-    def __init__(self, name, entry):
-        self.name = name
-        self.entry = entry
-
-    def __repr__(self):
-        return "<URL %s : Entry %s>" % (self.name, self.entry_id)
-
 class Entry(mainDB.Model):
     __tablename__ = 'entries'
 
@@ -145,13 +130,15 @@ class Entry(mainDB.Model):
     author_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("user.id"))
     author = mainDB.relationship("User")
     weight = mainDB.Column(mainDB.Integer)
+    url = mainDB.Column(mainDB.String(32))
 
-    def __init__(self, title, author, date, entry, weight=0):
+    def __init__(self, title, author, date, entry, weight=0, url=None):
         self.date = date
         self.title = title
         self.author = author
         self.entry = entry
         self.weight = weight
+        self.url = url
 
     def __repr__(self):
         return "<Entry ID: %s, Title %s>" % (self.id, self.title)

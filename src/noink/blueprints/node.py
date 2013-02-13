@@ -10,7 +10,6 @@ from jinja2 import TemplateNotFound
 
 from noink import mainApp
 from noink.entryDB import EntryDB
-from noink.urlDB import UrlDB
 
 node = Blueprint('node', __name__)
 
@@ -24,13 +23,16 @@ def showNode(num, name):
     url = None
     print "Name %s and node %s" % (name, num)
     if num < 0 and name:
-        urlDB = UrlDB()
-        url = urlDB.findByName(name)
+        entryDB = EntryDB()
+        try:
+            entry = entryDB.findByURL(name)[0]
+        except:
+            abort(404)
     else:
         entryDB = EntryDB()
         entry = entryDB.findById(num)
     if entry == None and url == None:
         abort(404)
 
-    return render_template('node.html', entry=entry, url=name)
+    return render_template('node.html', entry=entry)
 
