@@ -14,6 +14,11 @@
     <h3>{{ entry.author.fullname }}</h3>
     <i>{{ entry.date }}</i><br /><br />
     <p>{{ entry.entry }}</p>
+    <ul>
+    {% for tm in entry.tagmap %}
+      <li>{{ tm.tag.tag }}</li>                                                                              
+    {% endfor %}
+    </ul>     
   </body>
 </html>
 

@@ -99,7 +99,7 @@ class TagMapping(mainDB.Model):
     tag_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("tags.id"))
     tag = mainDB.relationship("Tag")
     entry_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("entries.id"))
-    entry = mainDB.relationship("Entry")
+    entry = mainDB.relationship("Entry", backref=mainDB.backref("tagmap", order_by=id))
 
     def __init__(self, tag, entry):
         self.tag = tag
