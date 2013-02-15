@@ -1,0 +1,8 @@
+{% macro nomacro_entryURL(entry) %}
+  {% if entry.url == none %}
+    /node/{{ entry.id }}
+  {% else %}
+    /{{ entry.url }}
+  {% endif %}
+{%- endmacro %}
+

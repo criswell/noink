@@ -1,8 +1,5 @@
-    {% if entry.url == none %}
-      {% set path = "/node/" ~ entry.id %}
-    {% else %}
-      {% set path = "/" ~ entry.url %}
-    {% endif %}
+{% from "macros.html" import nomacro_entryURL %}
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
@@ -10,7 +7,7 @@
     <title>{{ entry.title }}</title>
   </head>
   <body>
-    <a href="{{ path }}"><h2>{{ entry.title }}</h2></a>
+    <a href="{{ nomacro_entryURL(entry) }}"><h2>{{ entry.title }}</h2></a>
     <h3>{{ entry.author.fullname }}</h3>
     <i>{{ entry.date }}</i><br /><br />
     <p>{{ entry.entry }}</p>

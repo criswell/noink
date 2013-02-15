@@ -7,8 +7,8 @@
 
 from noink import mainApp
 
-@mainApp.template_filter('breakSplit')
-def breakSplit(s):
+@mainApp.template_filter('nofilter_breakSplit')
+def nofilter_breakSplit(s):
     """
     Given a string, will return an array with that string broken into segments
     on the BREAK identifier defined in config.

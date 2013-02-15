@@ -1,3 +1,5 @@
+{% from "macros.html" import nomacro_entryURL %}
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
@@ -6,11 +8,11 @@
   </head>
   <body>
     {% for entry in entries %}
-    <a href="/node/{{ entry.id }}"><h2>{{ entry.title }}</h2></a>
+    <a href="{{ nomacro_entryURL(entry) }}"><h2>{{ entry.title }}</h2></a>
       <h3>{{ entry.author.fullname }}</h3>
       <i>{{ entry.date }}</i><br /><br />
-      <p>{{ entry.entry|breakSplit|first }}</p>
-      <a href="/node/{{ entry.id }}">more...</a>
+      <p>{{ entry.entry|nofilter_breakSplit|first }}</p>
+      <a href="{{ nomacro_entryURL(entry) }}">more...</a>
     {% endfor %}
   </body>
 </html>
