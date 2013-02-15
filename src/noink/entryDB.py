@@ -69,24 +69,25 @@ class EntryDB:
 
         @param tags: Array of one or more tags.
         @param entry: An entry to associate with the tags.
-
-        @return Tag object.
         '''
-        if type(tags) is ListType:
-            for tag in tags:
-                t = Tag.query.filter_by(tag=tag).first()
-                if t == None:
-                    t = Tag(tag)
-                    mainDB.session.add(t)
-                    self.eventLog.add('add_tag', entry.author_id, False, tag, tag)
-                exist = TagMapping.query.filter_by(tag_id=t.id)
-                if exist == None:
-                    tm = TagMapping(t, entry)
-                    mainDB.session.add(tm)
+        for tag in tags:
+            t = Tag.query.filter_by(tag=tag).first()
+            if t == None:
+                t = Tag(tag)
+                mainDB.session.add(t)
+                self.eventLog.add('add_tag', entry.author_id, False, tag, tag)
+            exist = TagMapping.query.filter_by(tag_id=t.id).all()
+            if exist == []:
+                print "Adding tm"
+                tm = TagMapping(t, entry)
+                mainDB.session.add(tm)
+                print tm
 
-            mainDB.session.commit()
-        else:
-            raise TypeError("Tags expected to be array")
+        mainDB.session.commit()
+        tags = self.findTagsByEntry(entry)
+        print "The tags are:::"
+        for tag in tags:
+            print tag
 
     def findByURL(self, url):
         """
@@ -110,7 +111,7 @@ class EntryDB:
         if type(entry) is IntType:
             e = self.findById(entry)
         tags = []
-        for tm in TagMapping.query.filter_by(entry_i=e.id).first():
+        for tm in TagMapping.query.filter_by(entry_id=e.id).all():
             tags.append(tm.tag)
 
         return tags

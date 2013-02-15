@@ -97,16 +97,16 @@ class TagMapping(mainDB.Model):
 
     id = mainDB.Column(mainDB.Integer, primary_key=True)
     tag_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("tags.id"))
-    tag = mainDB.relationship("Tag")
+    tag = mainDB.relationship("Tag", backref=mainDB.backref('tagmap'))
     entry_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("entries.id"))
-    entry = mainDB.relationship("Entry", backref=mainDB.backref("tagmap", order_by=id))
+    #ientry = mainDB.relationship("Entry")
 
     def __init__(self, tag, entry):
         self.tag = tag
-        self.entry = entry
+        self.entry_id = entry.id
 
     def __repr__(self):
-        return "<Tag %s : Entry %s>" % (self.tag, self.entry)
+        return "<Tag %s : Entry %s>" % (self.tag, self.entry_id)
 
 class DataType(mainDB.Model):
     __tablename__ = 'datatype'
@@ -131,6 +131,7 @@ class Entry(mainDB.Model):
     author = mainDB.relationship("User")
     weight = mainDB.Column(mainDB.Integer)
     url = mainDB.Column(mainDB.String(32))
+    tagmap = mainDB.relationship('TagMapping', backref=mainDB.backref('entries'))
 
     def __init__(self, title, author, date, entry, weight=0, url=None):
         self.date = date

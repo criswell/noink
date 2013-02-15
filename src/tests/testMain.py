@@ -16,8 +16,11 @@ from noink import reInit
 from noink import _setupDB
 
 class testMain(object):
-    def __init__(self):
-        self.TEST_ROOT = tempfile.mkdtemp()
+    def __init__(self, tempPath=None):
+        if tempPath:
+            self.TEST_ROOT = tempPath
+        else:
+            self.TEST_ROOT = tempfile.mkdtemp()
 
         # Need a temporary files and settings
         self.TEST_CONF_FILE = "%s/test.cfg" % self.TEST_ROOT

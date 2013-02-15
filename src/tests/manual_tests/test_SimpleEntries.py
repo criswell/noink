@@ -9,28 +9,7 @@
 
 from tests.testMain import testMain
 
-entries = \
-[
-    (
-        'The Amazing Bambini',
-        "So, my daughter is pretty amazing. She's got all sorts of mad skillz.\n\n" + \
-        "She says 'eww yucky' when I fart. She can climb just about anything. She can " + \
-        "run really fast and hide really well (usually when I am trying to change her " + \
-        "diaper.)\n\n" + \
-        "<!--break-->\n\n" + \
-        "She loves Yo Gabba Gabba, for some silly reason- likely all that communism... " + \
-        "babies <i>love</i> communism, just ask Billy O'!"
-    ),
-    (
-        'Rabbit Rabbit Rabbit',
-        "Rabbit rabbit rabbit, rabbit rabbit rabbit rabbit? Rabbit, rabbit rabbit. " + \
-        "Rabbit! Rabbit, rabbit, rabbit!\n\n" + \
-        "Rabbit rabbit rabbit rabbit..... rabbit... rabbit rabbit, rabbit? Rabbit- rabbit " + \
-        "rabbit rabbit. Rabbit rabbit rabbit rabbit rabbit rabbit rabbit. Rabbit rabbit " + \
-        "rabbit rabbit. <!--break--> Rabbit, rabbit? Rabbit, rabbit!\n\n" + \
-        "Rabbit rabbit rabbit rabbit rabbit rabbit cheesecake artichoke!"
-    )
-]
+from entries import entries
 
 from noink import mainApp
 from noink.userDB import UserDB
@@ -46,7 +25,10 @@ class SimpleEntries:
 
         u = self.userDB.add("criswell", "Sam Hart")
         for e in entries:
-            entry = self.entryDB.add(e[0], e[1], u)
+            entry = self.entryDB.add(e[0], e[1], u, e[2], e[3])
+            if e[4]:
+                self.entryDB.addTag(e[4], entry)
+            print entry.tagmap
 
     def __del__(self):
         del(self.testMain)
