@@ -83,9 +83,6 @@ class EntryDB:
 
         mainDB.session.commit()
         tags = self.findTagsByEntry(entry)
-        print "The tags are:::"
-        for tag in tags:
-            print tag
 
     def findByURL(self, url):
         """
@@ -134,7 +131,6 @@ class EntryDB:
             if tagObj != None:
                 for mapping in TagMapping.query.filter_by(tag=tagObj).all(): #.order_by(Entry.weight, Entry.date).all():
                     e.append(Entry.query.get(mapping.entry_id))
-                    print "FOUND ONE " + str(mapping.entry_id)
 
         return e
 

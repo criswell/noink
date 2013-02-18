@@ -28,7 +28,6 @@ class SimpleEntries:
             entry = self.entryDB.add(e[0], e[1], u, e[2], e[3], e[5])
             if e[4]:
                 self.entryDB.addTag(e[4], entry)
-            print entry.tagmap
 
     def __del__(self):
         del(self.testMain)
