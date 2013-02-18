@@ -11,7 +11,7 @@
     <a href="{{ nomacro_entryURL(entry) }}"><h2>{{ entry.title }}</h2></a>
       <h3>{{ entry.author.fullname }}</h3>
       <i>{{ entry.date }}</i><br /><br />
-      <p>{{ entry.entry|nofilter_breakSplit|first }}</p>
+      <p>{{ entry.entry|nofilter_breakSplit|first|escape|nofilter_newLines|safe }}</p>
       <a href="{{ nomacro_entryURL(entry) }}">more...</a>
     {% endfor %}
   </body>
