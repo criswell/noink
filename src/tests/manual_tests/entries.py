@@ -5,34 +5,30 @@
 
 '''
 
-entries = \
-[
-    (
-        'The Amazing Bambini',
-        "So, my daughter is pretty amazing. She's got all sorts of mad skillz.\n\n" + \
-        "She says 'eww yucky' when I fart. She can climb just about anything. She can " + \
-        "run really fast and hide really well (usually when I am trying to change her " + \
-        "diaper.)\n\n" + \
-        "<!--break-->\n\n" + \
-        "She loves Yo Gabba Gabba, for some silly reason- likely all that communism... " + \
-        "babies <i>love</i> communism, just ask Billy O'!",
-        0,
-        "amazing_bambini",
-        ('Baby', 'Fart', 'Yucky'),
-        True
-    ),
-    (
-        'Rabbit Rabbit Rabbit',
-        "Rabbit rabbit rabbit, rabbit rabbit rabbit rabbit? Rabbit, rabbit rabbit. " + \
-        "Rabbit! Rabbit, rabbit, rabbit!\n\n" + \
-        "Rabbit rabbit rabbit rabbit..... rabbit... rabbit rabbit, rabbit? Rabbit- rabbit " + \
-        "rabbit rabbit. Rabbit rabbit rabbit rabbit rabbit rabbit rabbit. Rabbit rabbit " + \
-        "rabbit rabbit. <!--break--> Rabbit, rabbit? Rabbit, rabbit!\n\n" + \
-        "Rabbit rabbit rabbit rabbit rabbit rabbit cheesecake artichoke!",
-        -10,
-        None,
-        None,
-        False
-    )
-]
+from loremipsum import get_paragraphs, get_sentences
+
+from random import randint, sample
+
+entries = []
+
+all_tags = ['Foo', 'Bar', 'Snaz', 'Loop', 'Core', 'Nugget', 'Piddle', 'Snappy']
+
+for i in range(randint(20, 50)):
+    title = get_sentences(1)[0]
+    p = get_paragraphs(randint(4, 20))
+    index = randint(1,3)
+    entry = '\n\n'.join(p[0:index])
+    entry = entry + "<!--break-->" + '\n\n'.join(p[index:])
+    weight = randint(-5, 5)
+    url = None
+    if randint(0,1):
+        url = '_'.join(get_sentences(1)[0][:-1].split())
+
+    tags = None
+    if randint(0,1):
+        tags = sample(all_tags, randint(1, len(all_tags)-1))
+
+    e = ( title, entry, weight, url, tags, False )
+    entries.append(e)
+
 
