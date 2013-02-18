@@ -18,7 +18,8 @@ entries = \
         "babies <i>love</i> communism, just ask Billy O'!",
         0,
         "amazing_bambini",
-        ('Baby', 'Fart', 'Yucky')
+        ('Baby', 'Fart', 'Yucky'),
+        True
     ),
     (
         'Rabbit Rabbit Rabbit',
@@ -30,7 +31,8 @@ entries = \
         "Rabbit rabbit rabbit rabbit rabbit rabbit cheesecake artichoke!",
         -10,
         None,
-        None
+        None,
+        False
     )
 ]
 

@@ -10,7 +10,11 @@
     <a href="{{ nomacro_entryURL(entry) }}"><h2>{{ entry.title }}</h2></a>
     <h3>{{ entry.author.fullname }}</h3>
     <i>{{ entry.date }}</i><br /><br />
-    <p>{{ entry.entry }}</p>
+    {% if entry.html %}
+      <p>{{ entry.entry|nofilter_breakClean|safe }}</p>
+    {% else %}
+      <p>{{ entry.entry|nofilter_breakClean }}</p>
+    {% endif %}
     <ul>
     {% for tm in entry.tagmap %}
       <li>{{ tm.tag.tag }}</li>                                                                              

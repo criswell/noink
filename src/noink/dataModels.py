@@ -132,14 +132,16 @@ class Entry(mainDB.Model):
     weight = mainDB.Column(mainDB.Integer)
     url = mainDB.Column(mainDB.String(32))
     tagmap = mainDB.relationship('TagMapping', backref=mainDB.backref('entries'))
+    html = mainDB.Column(mainDB.Boolean)
 
-    def __init__(self, title, author, date, entry, weight=0, url=None):
+    def __init__(self, title, author, date, entry, weight=0, url=None, html=False):
         self.date = date
         self.title = title
         self.author = author
         self.entry = entry
         self.weight = weight
         self.url = url
+        self.html = html
 
     def __repr__(self):
         return "<Entry ID: %s, Title %s>" % (self.id, self.title)

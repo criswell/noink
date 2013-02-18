@@ -19,3 +19,13 @@ def nofilter_breakSplit(s):
     """
     return s.split(mainApp.config['BREAK_IDENTIFIER'])
 
+@mainApp.template_filter('nofilter_breakClean')
+def nofilter_breakClean(s):
+    """
+    Given a string, will return a string with all BREAK identifiers cleaned.
+
+    @param s: The string.
+
+    @return: A string which has BREAK purged.
+    """
+    return ' '.join(s.split(mainApp.config['BREAK_IDENTIFIER']))

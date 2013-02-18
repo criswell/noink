@@ -27,7 +27,7 @@ class EntryDB:
             self.eventLog = EventLog()
             self._setup = True
 
-    def add(self, title, entry, author, weight=0, url=None):
+    def add(self, title, entry, author, weight=0, url=None, html=False):
         '''
         Adds an entry to the system.
 
@@ -46,7 +46,7 @@ class EntryDB:
 
         now = datetime.datetime.now()
 
-        e = Entry(title, author, now, entry, weight, url)
+        e = Entry(title, author, now, entry, weight, url, html)
 
         if type(url) is StringType:
             if self.findByURL(url):
