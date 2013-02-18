@@ -76,12 +76,10 @@ class EntryDB:
                 t = Tag(tag)
                 mainDB.session.add(t)
                 self.eventLog.add('add_tag', entry.author_id, False, tag, tag)
-            exist = TagMapping.query.filter_by(tag_id=t.id).all()
+            exist = TagMapping.query.filter_by(tag_id=t.id).filter_by(entry_id=entry.id).all()
             if exist == []:
-                print "Adding tm"
                 tm = TagMapping(t, entry)
                 mainDB.session.add(tm)
-                print tm
 
         mainDB.session.commit()
         tags = self.findTagsByEntry(entry)
@@ -136,6 +134,7 @@ class EntryDB:
             if tagObj != None:
                 for mapping in TagMapping.query.filter_by(tag=tagObj).all(): #.order_by(Entry.weight, Entry.date).all():
                     e.append(Entry.query.get(mapping.entry_id))
+                    print "FOUND ONE " + str(mapping.entry_id)
 
         return e
 

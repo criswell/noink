@@ -24,10 +24,10 @@ for i in range(randint(20, 50)):
     if randint(0,1):
         url = '_'.join(get_sentences(1)[0][:-1].split())
 
-    tags = None
-    if randint(0,1):
-        tags = sample(all_tags, randint(1, len(all_tags)-1))
-
+#    tags = None
+#    if randint(0,8) > 1:
+    tags = sample(all_tags, randint(1, len(all_tags)-1))
+    print tags
     e = ( title, entry, weight, url, tags, False )
     entries.append(e)
 
