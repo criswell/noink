@@ -45,7 +45,8 @@ if not __setup:
     mainDB = SQLAlchemy(mainApp)
 
     # filters
-    from noink.filters import nofilter_breakSplit, nofilter_breakClean
+    from noink.filters import nofilter_breakSplit, nofilter_breakClean, \
+            nofilter_newLines
 
     # blueprints
     from noink.blueprints.listEntries import listEntries

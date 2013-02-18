@@ -38,3 +38,5 @@ NUM_ENTRIES_PER_PAGE = [
 # Some string which defines your post breaks in entries.
 BREAK_IDENTIFIER = "<!--break-->"
 
+# Line break tag
+LINEBREAK_TAG = "<br />"

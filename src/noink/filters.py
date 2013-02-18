@@ -29,3 +29,14 @@ def nofilter_breakClean(s):
     @return: A string which has BREAK purged.
     """
     return ' '.join(s.split(mainApp.config['BREAK_IDENTIFIER']))
+
+@mainApp.template_filter('nofilter_newLines')
+def nofilter_newLines(s):
+    """
+    Given a string, will replace all new lines with line break tags.
+
+    @param s: The string
+
+    @return: A string with new lines replaced with line break tags
+    """
+    return mainApp.config['LINEBREAK_TAG'].join(s.split('\n'))

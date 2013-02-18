@@ -11,9 +11,9 @@
     <h3>{{ entry.author.fullname }}</h3>
     <i>{{ entry.date }}</i><br /><br />
     {% if entry.html %}
-      <p>{{ entry.entry|nofilter_breakClean|safe }}</p>
+      <p>{{ entry.entry|nofilter_breakClean|nofilter_newLines|safe }}</p>
     {% else %}
-      <p>{{ entry.entry|nofilter_breakClean }}</p>
+      <p>{{ entry.entry|nofilter_breakClean|escape|nofilter_newLines|safe }}</p>
     {% endif %}
     <ul>
     {% for tm in entry.tagmap %}
