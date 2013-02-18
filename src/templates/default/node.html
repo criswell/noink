@@ -1,4 +1,4 @@
-{% from "macros.html" import nomacro_entryURL %}
+{% from "macros.html" import nomacro_entryURL, nomacro_tagURL %}
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -17,7 +17,7 @@
     {% endif %}
     <ul>
     {% for tm in entry.tagmap %}
-    <li>{{ tm.tag.tag }}</li>
+    <li><a href="{{ nomacro_tagURL(tm.tag) }}">{{ tm.tag.tag }}</a></li>
     {% endfor %}
     </ul>     
   </body>

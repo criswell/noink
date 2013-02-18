@@ -14,7 +14,7 @@ from noink.entryDB import EntryDB
 listEntries = Blueprint('listEntries', __name__)
 
 @listEntries.route("/", defaults={'tag':None})
-@listEntries.route("/tag/<tag>")
+@listEntries.route("/tag/<int:tag>")
 def show(tag):
     '''
     Renders a page containing those entries defined by tag. If tag is None,
@@ -22,7 +22,7 @@ def show(tag):
     '''
     entryDB = EntryDB()
     if tag:
-        entries = entryDB.findByTags(tag.split())
+        entries = entryDB.findByTags([tag])
     else:
         entries = entryDB.findRecentByNum(mainApp.config['NUM_ENTRIES_PER_PAGE'][0])
 

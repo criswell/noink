@@ -130,12 +130,18 @@ class EntryDB:
             tagObj = tag
             if type(tag) is IntType:
                 tagObj = Tag.query.filter_by(id=tag).first()
+                print "Int"
             elif type(tag) is StringType:
+                print "Str"
                 tagObj = Tag.query.filter_by(tag=tag).first()
 
+            print tagObj.id
+            print "THAT WAS TAGOBJ"
+            print type(tagObj)
             if tagObj != None:
-                for mapping in TagMapping.query.filter_by(tagObj.id).oder_by(Entry.weight, Entry.date):
-                    e = e + mapping.entry
+                for mapping in TagMapping.query.filter_by(tag=tagObj).all(): #.order_by(Entry.weight, Entry.date).all():
+                #for entry in Entry.query.filter_by(tagmap.tag=tagObj).order_by(Entry.weight, Entry.date).all():
+                    e.append(Entry.query.get(mapping.entry_id))
 
         return e
 
