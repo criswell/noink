@@ -147,7 +147,7 @@ class Entry(mainDB.Model):
         self.url = url
         self.html = html
         if parent:
-            self.parenty_id = parent.id
+            self.parent_id = parent.id
 
     def __repr__(self):
         return "<Entry ID: %s, Title %s>" % (self.id, self.title)

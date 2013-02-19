@@ -16,6 +16,11 @@
       <p>{{ entry.entry|nofilter_breakClean|escape|nofilter_newLines|safe }}</p>
     {% endif %}
     <ul>
+    {% for child in entry.children %}
+    <li><a href="{{ nomacro_entryURL(child) }}"><h4>{{ child.title }}</h4></a></li>
+    {% endfor %}
+    </ul>
+    <ul>
     {% for tm in entry.tagmap %}
     <li><a href="{{ nomacro_tagURL(tm.tag) }}">{{ tm.tag.tag }}</a></li>
     {% endfor %}

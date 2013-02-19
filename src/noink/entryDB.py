@@ -27,8 +27,8 @@ class EntryDB:
             self.eventLog = EventLog()
             self._setup = True
 
-    def add(self, title, entry, author, weight=0, url=None, html=False):
-        '''
+    def add(self, title, entry, author, weight=0, url=None, html=False, parent=None):
+        """
         Adds an entry to the system.
 
         Will not perform any checks, it will just add this entry. It's not
@@ -40,13 +40,15 @@ class EntryDB:
         @param entry: The entry of the post.
         @param author: The user object for the post's author
         @param url: The (optional) URL for this post.
+        @param html: Flag detailing whether this post is in HTML or not
+        @param parent: The (optional) parent for this post.
 
         @return New entry object just added
-        '''
+        """
 
         now = datetime.datetime.now()
 
-        e = Entry(title, author, now, entry, weight, url, html)
+        e = Entry(title, author, now, entry, weight, url, html, parent)
 
         if type(url) is StringType:
             if self.findByURL(url):
