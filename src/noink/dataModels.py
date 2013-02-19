@@ -108,6 +108,7 @@ class TagMapping(mainDB.Model):
     def __repr__(self):
         return "<Tag %s : Entry %s>" % (self.tag, self.entry_id)
 
+# XXX CURRENTLY UNUSED
 class DataType(mainDB.Model):
     __tablename__ = 'datatype'
 
@@ -133,8 +134,11 @@ class Entry(mainDB.Model):
     url = mainDB.Column(mainDB.String(32))
     tagmap = mainDB.relationship('TagMapping', backref=mainDB.backref('entries'))
     html = mainDB.Column(mainDB.Boolean)
+    parent_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("entries.id"))
+    children = mainDB.relationship('Entry', backref=mainDB.backref('parent',
+        remote_side=[id]))
 
-    def __init__(self, title, author, date, entry, weight=0, url=None, html=False):
+    def __init__(self, title, author, date, entry, weight=0, url=None, html=False, parent=None):
         self.date = date
         self.title = title
         self.author = author
@@ -142,10 +146,13 @@ class Entry(mainDB.Model):
         self.weight = weight
         self.url = url
         self.html = html
+        if parent:
+            self.parenty_id = parent.id
 
     def __repr__(self):
         return "<Entry ID: %s, Title %s>" % (self.id, self.title)
 
+# XXX CURRENTLY UNUSED
 class Activity(mainDB.Model):
     __tablename__ = 'activities'
 
