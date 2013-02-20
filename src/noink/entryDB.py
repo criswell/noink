@@ -114,25 +114,32 @@ class EntryDB:
         return tags
 
     def findByTags(self, tags):
-        '''
+        """
         Given one or more tags, find all entries tagged with them.
 
         @param tags: One or more tags. Tags can be tag ids, tag objects, or
                      tag strings. Tags must be iterable.
 
         @return Array contating the entry objects.
-        '''
+        """
+        # FIXME - The following should order them by weight and date, instead
+        # it will cluster them first by tags.
         e = []
+        clauses = []
         for tag in tags:
             tagObj = tag
             if type(tag) is IntType:
                 tagObj = Tag.query.filter_by(id=tag).first()
             elif type(tag) is StringType:
                 tagObj = Tag.query.filter_by(tag=tag).first()
-
             if tagObj != None:
-                for mapping in TagMapping.query.filter_by(tag=tagObj).all(): #.order_by(Entry.weight, Entry.date).all():
-                    e.append(Entry.query.get(mapping.entry_id))
+                clauses.append(TagMapping.tag == tagObj)
+
+        # Yeah, double loops is bad
+        if len(clauses) > 0:
+            where = mainDB.or_(*clauses)
+            for mapping in TagMapping.query.filter(where).order_by(TagMapping.entry_id).all():
+                e.append(Entry.query.get(mapping.entry_id))
 
         return e
 
