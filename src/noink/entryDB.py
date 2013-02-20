@@ -138,7 +138,7 @@ class EntryDB:
         # Yeah, double loops is bad
         if len(clauses) > 0:
             where = mainDB.or_(*clauses)
-            for mapping in TagMapping.query.filter(where).order_by(TagMapping.entry_id).all():
+            for mapping in TagMapping.query.filter(where).join(Entry).order_by(Entry.weight).order_by(Entry.date).all():
                 e.append(Entry.query.get(mapping.entry_id))
 
         return e
