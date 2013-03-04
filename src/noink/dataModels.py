@@ -166,12 +166,22 @@ class Activity(mainDB.Model):
         self.parameter = parameter
         self.dateAdded = dateAdded
 
-    def __repre__(self):
+    def __repr__(self):
         return "<Type '%s', Param '%s'>" % (self.activityType, self.parameter)
 
-#class SiteConfig(mainDB.Model):
-#    __tablename__ = 'siteconfig'
-#
-#    id = mainDB.Column(mainDB.Integer, primary_key=True)
-#    version = mainDB.i
+class SiteConfig(mainDB.Model):
+    __tablename__ = 'siteconfig'
+
+    id = mainDB.Column(mainDB.Integer, primary_key=True)
+    version = mainDB.Column(mainDB.Integer)
+    siteName = mainDB.Column(mainDB.String(64))
+    adminEmail = mainDB.Column(mainDB.String(64))
+
+    def __init__(self, version):
+        self.version = version
+        self.siteName = "Noink website"
+        self.adminEmail = None
+
+    def __repr__(self):
+        return "<Version '%s'>" % (self.version)
 

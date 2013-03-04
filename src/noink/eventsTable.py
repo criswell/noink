@@ -19,5 +19,7 @@ eventTable = {
     'add_entry' : "Entry '%s' added",
     'del_entry' : "Entry '%s' deleted",
     'del_user' : "User '%s' deleted",
-    'add_tag' : "Tag '%s' added"
+    'add_tag' : "Tag '%s' added",
+    'update_siteconf' : "Site config updated to version '%s'",
+    'update_sitename' : "Site name updated to '%s'"
 }

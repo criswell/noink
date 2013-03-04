@@ -40,3 +40,13 @@ BREAK_IDENTIFIER = "<!--break-->"
 
 # Line break tag
 LINEBREAK_TAG = "<br />"
+
+##################
+## Starting Values
+# The following values are for initial site setup
+
+# This is the site name
+SITE_NAME = None
+
+# This is the site administrator's email address
+SITE_ADMIN_EMAIL = None

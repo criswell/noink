@@ -10,6 +10,8 @@ from flask.ext.sqlalchemy import SQLAlchemy
 
 import os
 
+__version__ = "2.9.0"
+
 try:
     __setup
 except:
@@ -41,6 +43,7 @@ def reInit():
 
 if not __setup:
     mainApp = Flask("noink")
+    mainApp.noinkVersion = __version__
     _parseConfig()
     mainDB = SQLAlchemy(mainApp)
 
