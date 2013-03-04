@@ -30,13 +30,13 @@ class _SiteConfig:
         sc.version = version
         if name:
             sc.siteName = name
-            self.eventLog('update_sitename', False, '', name)
+            self.eventLog.add('update_sitename', -1, False, '', name)
         if email:
             sc.adminEmail = email
 
         mainDB.session.add(sc)
         mainDB.session.commit()
-        self.eventLog('update_siteconf', False, '', str(version))
+        self.eventLog.add('update_siteconf', -1, False, '', str(version))
 
     def getCurrent(self):
         return SiteConfig.query.order_by(SiteConfig.id.desc()).first()
