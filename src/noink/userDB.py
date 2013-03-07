@@ -72,7 +72,7 @@ class UserDB:
             exists = False
 
         if exists:
-            raise DuplicateUser("%s already exists in database with id '%d'" % (username, exists.id))
+            raise DuplicateUser("%s already exists in database with id '%s'" % (username, str(exists)))
         else:
             u = User(username, fullname, bio)
             mainDB.session.add(u)
