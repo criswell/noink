@@ -10,6 +10,7 @@ from jinja2 import TemplateNotFound
 
 from noink import mainApp
 from noink.entryDB import EntryDB
+from noink.state import getState
 
 listEntries = Blueprint('listEntries', __name__)
 
@@ -26,5 +27,5 @@ def show(tag):
     else:
         entries = entryDB.findRecentByNum(mainApp.config['NUM_ENTRIES_PER_PAGE'][0])
 
-    return render_template('listEntries.html', entries=entries)
+    return render_template('listEntries.html', entries=entries, state=getState())
 

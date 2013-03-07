@@ -38,7 +38,8 @@ class testMain(object):
             'NUM_ENTRIES_PER_PAGE = [ 20, 50 ]\n',
             'BREAK_IDENTIFIER = "<!--break-->"\n',
             'LINEBREAK_TAG = "<br />"\n',
-            'SITE_NAME = "Johnny\s speedboat factory"\n'
+            'SITE_NAME = "Johnny\'s speedboat factory"\n',
+            'SITE_ADMIN_EMAIL = "foo@bar.com"\n'
         ]
 
         with open(self.TEST_CONF_FILE, 'w') as f:

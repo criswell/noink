@@ -10,6 +10,7 @@ from jinja2 import TemplateNotFound
 
 from noink import mainApp
 from noink.entryDB import EntryDB
+from noink.state import getState
 
 node = Blueprint('node', __name__)
 
@@ -34,5 +35,5 @@ def showNode(num, name):
     if entry == None and url == None:
         abort(404)
 
-    return render_template('node.html', entry=entry)
+    return render_template('node.html', entry=entry, state=getState())
 

@@ -20,8 +20,9 @@ def getState():
 
     currentSiteConfig = _SiteConfig().getCurrent()
     s.noinkVersion = currentSiteConfig.version
-    s.siteName = currentSiteConifg.siteName
+    s.siteName = currentSiteConfig.siteName
     s.adminEmail = currentSiteConfig.adminEmail
 
     # TODO - populate breadcrumbs here
 
+    return s
