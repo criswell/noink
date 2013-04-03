@@ -45,3 +45,16 @@ class EventLog:
             mainDB.session.commit()
         else:
             raise KeyError('%s not in eventTable!' % name)
+
+
+    def getNextUnprocessed(self):
+        """
+        Returns the next unprocessed log entry
+        """
+        pass
+
+    def markAsProcessed(self, entry):
+        """
+        Marks an unprocessed entry as processed.
+        """
+        pass
