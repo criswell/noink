@@ -27,7 +27,7 @@ class EntryDB:
             self.eventLog = EventLog()
             self._setup = True
 
-    def add(self, title, entry, author, weight=0, url=None, html=False, parent=None):
+    def add(self, title, entry, author, weight=0, url=None, html=False, parent=None, static=False):
         """
         Adds an entry to the system.
 
@@ -42,13 +42,14 @@ class EntryDB:
         @param url: The (optional) URL for this post.
         @param html: Flag detailing whether this post is in HTML or not
         @param parent: The (optional) parent for this post.
+        @param static: (Optional) Whether or not the post is static.
 
         @return New entry object just added
         """
 
         now = datetime.datetime.now()
 
-        e = Entry(title, author, now, entry, weight, url, html, parent)
+        e = Entry(title, author, now, entry, weight, url, html, parent, static)
 
         if type(url) is StringType:
             if self.findByURL(url):

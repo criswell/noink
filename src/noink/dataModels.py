@@ -131,6 +131,7 @@ class Entry(mainDB.Model):
     author_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("user.id"))
     author = mainDB.relationship("User")
     weight = mainDB.Column(mainDB.Integer)
+    static = mainDB.Column(mainDB.Boolean)
     url = mainDB.Column(mainDB.String(32))
     tagmap = mainDB.relationship('TagMapping', backref=mainDB.backref('entries'))
     html = mainDB.Column(mainDB.Boolean)
@@ -138,7 +139,7 @@ class Entry(mainDB.Model):
     children = mainDB.relationship('Entry', backref=mainDB.backref('parent',
         remote_side=[id]))
 
-    def __init__(self, title, author, date, entry, weight=0, url=None, html=False, parent=None):
+    def __init__(self, title, author, date, entry, weight=0, url=None, html=False, parent=None, static=False):
         self.date = date
         self.title = title
         self.author = author
@@ -146,6 +147,7 @@ class Entry(mainDB.Model):
         self.weight = weight
         self.url = url
         self.html = html
+        self.static = static
         if parent:
             self.parent_id = parent.id
 
