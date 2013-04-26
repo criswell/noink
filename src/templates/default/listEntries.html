@@ -8,13 +8,19 @@
     {% include 'common_header.html' %}
   </head>
   <body>
-    {% for entry in entries %}
-    <a href="{{ nomacro_entryURL(entry) }}"><h2>{{ entry.title }}</h2></a>
-      <h3>{{ entry.author.fullname }}</h3>
-      <i>{{ entry.date }}</i><br /><br />
-      <p>{{ entry.entry|nofilter_breakSplit|first|escape|nofilter_newLines|safe }}</p>
-      <a href="{{ nomacro_entryURL(entry) }}">more...</a>
-    {% endfor %}
+    <div class="container"><div class="row-fluid">
+      {% for entry in entries %}
+        <div class="span8">
+          <a href="{{ nomacro_entryURL(entry) }}"><h1>{{ entry.title }}</h1></a>
+        </div>
+        <div class="span4"><small>
+          <p class="text-left">{{ entry.author.fullname }}</p>
+          <p class="muted test-right">{{ entry.date }}</p>
+        </small></div>
+        <p>{{ entry.entry|nofilter_breakSplit|first|escape|nofilter_newLines|safe }}</p>
+        <a href="{{ nomacro_entryURL(entry) }}">more...</a>
+      {% endfor %}
+    </div></div>
   </body>
 </html>
 
