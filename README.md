@@ -15,6 +15,12 @@ start firming up.
   focus.
 * ....meh?
 
+# Setting up requirements
+
+   pip install flask Flask-SQLAlchemy loremipsum
+
+Note: loremipsum is only required for the tests.
+
 # Legacy Noink
 
 The legacy Noink code can be found in the legacy/ directory. This is all Perl
