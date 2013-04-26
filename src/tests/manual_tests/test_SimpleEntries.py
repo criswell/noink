@@ -48,7 +48,7 @@ class SimpleEntries:
         print "___________________"
         print dir(mainApp.jinja_loader)
         print "\n%s" % mainApp.jinja_loader.searchpath
-        mainApp.run(debug=debug)
+        mainApp.run(host="0.0.0.0", debug=debug)
 
 if __name__ == '__main__':
     se = SimpleEntries()
