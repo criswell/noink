@@ -54,8 +54,10 @@ if not __setup:
     # blueprints
     from noink.blueprints.listEntries import listEntries
     from noink.blueprints.node import node
+    from noink.blueprints.static import staticPage
     mainApp.register_blueprint(listEntries)
     mainApp.register_blueprint(node)
+    mainApp.register_blueprint(staticPage)
 
     __setup = True
 

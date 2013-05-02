@@ -11,6 +11,7 @@ from noink import mainDB
 from noink.dataModels import Entry, Tag, TagMapping
 from noink.pickler import PEntry, pickle, depickle
 from noink.eventLog import EventLog
+from noink.exceptions import DuplicateURL
 
 class EntryDB:
     __borg_state = {}

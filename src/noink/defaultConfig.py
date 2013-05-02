@@ -24,13 +24,11 @@ ADMIN_GROUP = "admin"
 
 # The path(s) to the HTML templates. Can be a relative path, or absolute.
 HTML_TEMPLATES = [
-    "../templates/default"
+    "blueprints/templates/default"
 ]
 
-# The path(s) to the static folders. Can be a relative path, or absolute.
-STATIC_PATH = [
-    "../templates/default/static"
-]
+# The path to the static folders. Can be a relative path, or absolute.
+STATIC_PATH =  "blueprints/templates/default/static"
 
 # The secret key is used by flask for session signing
 SECRET_KEY = 'Klaus Karl Kassbaum is Nick St. Nicholas'
