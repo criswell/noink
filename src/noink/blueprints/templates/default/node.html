@@ -5,6 +5,7 @@
 
   <head>
     <title>{{ entry.title }} | {{ state.siteName }}</title>
+    {% include "common_header.html" %}
   </head>
   <body>
     <a href="{{ nomacro_entryURL(entry) }}"><h2>{{ entry.title }}</h2></a>
