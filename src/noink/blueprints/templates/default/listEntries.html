@@ -10,6 +10,7 @@
   <body>
     <div class="container">
       {% for entry in entries %}
+      <div class='well'>
       <div class="row-fluid">
         <div class="span8">
           <a href="{{ nomacro_entryURL(entry) }}"><h1>{{ entry.title }}</h1></a>
@@ -21,8 +22,9 @@
       </div><div class="row-fluid">
         <p>{{ entry.entry|nofilter_breakSplit|first|escape|nofilter_newLines|safe }}</p>
         <a href="{{ nomacro_entryURL(entry) }}">more...</a>
+      </div></div>
       {% endfor %}
-    </div></div>
+    </div>
   </body>
 </html>
 
