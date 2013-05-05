@@ -8,24 +8,30 @@
     {% include "common_header.html" %}
   </head>
   <body>
-    <a href="{{ nomacro_entryURL(entry) }}"><h2>{{ entry.title }}</h2></a>
-    <h3>{{ entry.author.fullname }}</h3>
-    <i>{{ entry.date }}</i><br /><br />
-    {% if entry.html %}
-      <p>{{ entry.entry|nofilter_breakClean|nofilter_newLines|safe }}</p>
-    {% else %}
-      <p>{{ entry.entry|nofilter_breakClean|escape|nofilter_newLines|safe }}</p>
-    {% endif %}
-    <ul>
-    {% for child in entry.children %}
-    <li><a href="{{ nomacro_entryURL(child) }}"><h4>{{ child.title }}</h4></a></li>
-    {% endfor %}
-    </ul>
-    <ul>
-    {% for tm in entry.tagmap %}
-    <li><a href="{{ nomacro_tagURL(tm.tag) }}">{{ tm.tag.tag }}</a></li>
-    {% endfor %}
-    </ul>     
+    <div class='container'><div class='well'>
+      <a href="{{ nomacro_entryURL(entry) }}"><h2>{{ entry.title }}</h2></a>
+      <h3>{{ entry.author.fullname }}</h3>
+      <i>{{ entry.date }}</i><br /><br />
+      {% if entry.html %}
+        <p>{{ entry.entry|nofilter_breakClean|nofilter_newLines|safe }}</p>
+      {% else %}
+        <p>{{ entry.entry|nofilter_breakClean|escape|nofilter_newLines|safe }}</p>
+      {% endif %}
+    </div>
+      <ul>
+      {% for child in entry.children %}
+        <li><a href="{{ nomacro_entryURL(child) }}"><h4>{{ child.title }}</h4></a></li>
+      {% endfor %}
+      </ul>
+      <p class='text-right'>
+      <h4>Tags:</h4>
+      <ul class='unstyled'>
+      {% for tm in entry.tagmap %}
+      <li><span class='label'><a href="{{ nomacro_tagURL(tm.tag) }}">{{ tm.tag.tag }}</a></span></li>
+      {% endfor %}
+      </ul>
+      </p>
+    </div>
   </body>
 </html>
 
