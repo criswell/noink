@@ -56,11 +56,12 @@ class UserDB:
         '''
         return User.query.filter_by(id=uid)
 
-    def add(self, username, fullname, bio=""):
+    def add(self, username, password, fullname, bio=""):
         '''
         Adds a user to the database.
 
         @param username: The username to add, must be unique.
+        @param password: The password to use.
         @param fullname: The user's full name
         @param bio: The user's bio (optional)
 

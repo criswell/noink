@@ -17,6 +17,10 @@ ADMIN_USER = "admin"
 # The administrative user's fullname
 ADMIN_FULLNAME = "Administrator"
 
+# The administrator's default password
+# BE SURE TO CHANGE THIS AFTER YOU FIRST LOG IN
+ADMIN_PASSWD = "admin"
+
 # The name of the administrative group - Note that this field SHOULD NOT be
 # changed after the database has been created, as it will not update the admin
 # group in the database!
