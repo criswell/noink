@@ -20,13 +20,13 @@ class User(mainDB.Model):
     name = mainDB.Column(mainDB.String(60))
     fullname = mainDB.Column(mainDB.String(80))
     bio = mainDB.Column(mainDB.String(4000))
-    password = mainDB.Column(mainDB.String(60))
+    passhash = mainDB.Column(mainDB.String(60))
 
-    def __init__(self, name, fullname, bio, password):
+    def __init__(self, name, fullname, bio, passhash):
         self.name = name
         self.fullname = fullname
         self.bio = bio
-        self.password = password
+        self.passhash = passhash
 
     def __repr__(self):
         return "<User %s, id %s>" % (self.name, self.id)

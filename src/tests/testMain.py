@@ -30,6 +30,7 @@ class testMain(object):
 
         conf = [
             'ADMIN_USER = "admin"\n',
+            'ADMIN_PASSWD = "password"\n',
             'ADMIN_FULLNAME = "Administrator"\n',
             'ADMIN_GROUP = "admin"\n',
             'SQLALCHEMY_DATABASE_URI = "%s"\n' % self.TEST_DB_FILE,

@@ -5,7 +5,7 @@
 
 from types import IntType
 
-from noink import mainDB
+from noink import mainDB, mainCrypt
 from noink.dataModels import User, Group, GroupMapping
 from noink.eventLog import EventLog
 
@@ -75,6 +75,7 @@ class UserDB:
         if exists:
             raise DuplicateUser("%s already exists in database with id '%s'" % (username, str(exists)))
         else:
+            passHash = mainCrypt.generate_password_hash(password)
             u = User(username, passHash, fullname, bio)
             mainDB.session.add(u)
             mainDB.session.commit()

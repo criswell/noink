@@ -7,6 +7,7 @@
 
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.bcrypt import Bcrypt
 
 import os
 
@@ -46,6 +47,7 @@ if not __setup:
     mainApp.noinkVersion = __version__
     _parseConfig()
     mainDB = SQLAlchemy(mainApp)
+    mainCrypt = Bcrypt(mainApp)
 
     # filters
     from noink.filters import nofilter_breakSplit, nofilter_breakClean, \

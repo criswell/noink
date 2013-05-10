@@ -24,7 +24,7 @@ def setupDB():
     userDB = UserDB()
     mainDB.create_all()
     eventLog.add('db_setup', -1, True)
-    user = userDB.add(mainApp.config['ADMIN_USER'], mainApp.config['ADMIN_FULLNAME'])
+    user = userDB.add(mainApp.config['ADMIN_USER'], mainApp.config["ADMIN_PASSWD"], mainApp.config['ADMIN_FULLNAME'])
     userDB.addGroup(mainApp.config['ADMIN_GROUP'], user.id)
 
     sc.add(mainApp.noinkVersion, mainApp.config['SITE_NAME'], mainApp.config['SITE_ADMIN_EMAIL'])
