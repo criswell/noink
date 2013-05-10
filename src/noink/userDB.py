@@ -76,7 +76,7 @@ class UserDB:
             raise DuplicateUser("%s already exists in database with id '%s'" % (username, str(exists)))
         else:
             passHash = mainCrypt.generate_password_hash(password)
-            u = User(username, passHash, fullname, bio)
+            u = User(username, fullname, bio, passHash)
             mainDB.session.add(u)
             mainDB.session.commit()
             self.eventLog.add('add_user', u.id, True, None, username)
