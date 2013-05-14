@@ -5,7 +5,7 @@
 
 from types import IntType
 
-from noink import mainDB, mainCrypt
+from noink import mainDB, mainCrypt, loginManager
 from noink.dataModels import User, Group, GroupMapping
 from noink.eventLog import EventLog
 
@@ -128,4 +128,8 @@ class UserDB:
         mainDB.session.delete(user)
         mainDB.session.commit()
         self.eventLog.add('del_user', uid, True, None, uname)
+
+    @loginManager.user_loader
+    def _user_load(uid):
+        return this.getUser(int(uid))
 

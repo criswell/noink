@@ -8,7 +8,7 @@
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.bcrypt import Bcrypt
-#from flask.ext.
+from flask.ext.login import LoginManager
 
 import os
 
@@ -49,6 +49,7 @@ if not __setup:
     _parseConfig()
     mainDB = SQLAlchemy(mainApp)
     mainCrypt = Bcrypt(mainApp)
+    loginManager = LoginManager()
 
     # filters
     from noink.filters import nofilter_breakSplit, nofilter_breakClean, \
@@ -61,6 +62,8 @@ if not __setup:
     mainApp.register_blueprint(listEntries)
     mainApp.register_blueprint(node)
     mainApp.register_blueprint(staticPage)
+
+    loginManager.init_app(mainApp)
 
     __setup = True
 
