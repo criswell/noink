@@ -22,6 +22,22 @@ class User(mainDB.Model):
     bio = mainDB.Column(mainDB.String(4000))
     passhash = mainDB.Column(mainDB.String(60))
 
+    authenticated = False
+    active = False
+
+    def is_authenticated():
+        return self.authenticated
+
+    def is_active():
+        return self.active
+
+    def is_anonymous():
+        # we kind of assume they will never be anonymous if they come from DB
+        return False
+
+    def get_id():
+        return unicode(self.id)
+
     def __init__(self, name, fullname, bio, passhash):
         self.name = name
         self.fullname = fullname

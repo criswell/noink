@@ -38,6 +38,8 @@ class SimpleEntries:
                 if randint(0,5) > 2:
                     parents.append(entry)
             except:
+                print "Dropping an entry due to some entryDB problem (likely duplicate URL"
+                print "because of random URL generation- Should be safe to ignore)\n"
                 pass # stupid, but for our tests we don't care we just may get duplicate URLs
 
     def __del__(self):
