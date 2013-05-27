@@ -11,6 +11,8 @@ from noink.eventLog import EventLog
 
 from noink.exceptions import DuplicateUser, DuplicateGroup, UserNotFound
 
+from flask.ext.login import login_user
+
 class UserDB:
     __borg_state = {}
 
@@ -132,4 +134,21 @@ class UserDB:
     @loginManager.user_loader
     def _user_load(uid):
         return this.getUser(int(uid))
+
+    def authenticateUser(username, passwd, remember):
+        '''
+        Authenticates a user.
+        FIXME - docstring
+        '''
+        try:
+            u = findUserByName(username)[0]
+            if mainCrypt.generate_password_hash(passwd) == u.passhash:
+                u.authenticated = True
+                u.active = True
+                return login_user(u, remember=remember)
+           else:
+                u.authenticated = False
+                u.active = False
+        except:
+            return False
 
