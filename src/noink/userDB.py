@@ -146,7 +146,7 @@ class UserDB:
                 u.authenticated = True
                 u.active = True
                 return login_user(u, remember=remember)
-           else:
+            else:
                 u.authenticated = False
                 u.active = False
         except: # FIXME - may want better handling
