@@ -17,7 +17,8 @@ start firming up.
 
 # Setting up requirements
 
-   pip install flask Flask-SQLAlchemy flask-bcrypt flask-login loremipsum
+   pip install flask Flask-SQLAlchemy flask-bcrypt flask-login loremipsum \
+               Flask-Babel
 
 Note: loremipsum is only required for the tests.
 

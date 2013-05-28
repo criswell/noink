@@ -149,6 +149,6 @@ class UserDB:
            else:
                 u.authenticated = False
                 u.active = False
-        except:
+        except: # FIXME - may want better handling
             return False
 
