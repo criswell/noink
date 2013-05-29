@@ -9,6 +9,7 @@ from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.bcrypt import Bcrypt
 from flask.ext.login import LoginManager
+from flask.ext.babel import Babel
 
 import os
 
@@ -50,6 +51,7 @@ if not __setup:
     mainDB = SQLAlchemy(mainApp)
     mainCrypt = Bcrypt(mainApp)
     loginManager = LoginManager()
+    babel = Babel(mainApp)
 
     # filters
     from noink.filters import nofilter_breakSplit, nofilter_breakClean, \
