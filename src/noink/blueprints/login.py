@@ -9,8 +9,7 @@
 from flask import Blueprint, render_template, abort, request
 from jinja2 import TemplateNotFound
 
-from noink import mainApp #,  _
-from flask.ext.babel import gettext as _
+from noink import mainApp,  _
 from noink.userDB import UserDB
 from noink.state import getState
 
