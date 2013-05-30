@@ -9,7 +9,7 @@ from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.bcrypt import Bcrypt
 from flask.ext.login import LoginManager
-from flask.ext.babel import Babel
+from flask.ext.babel import Babel, gettext
 
 import os
 
@@ -52,6 +52,7 @@ if not __setup:
     mainCrypt = Bcrypt(mainApp)
     loginManager = LoginManager()
     babel = Babel(mainApp)
+    _ = gettext
 
     # filters
     from noink.filters import nofilter_breakSplit, nofilter_breakClean, \
@@ -61,9 +62,11 @@ if not __setup:
     from noink.blueprints.listEntries import listEntries
     from noink.blueprints.node import node
     from noink.blueprints.static import staticPage
+    from noink.blueprints.login import login
     mainApp.register_blueprint(listEntries)
     mainApp.register_blueprint(node)
     mainApp.register_blueprint(staticPage)
+    mainApp.register_blueprint(login)
 
     loginManager.init_app(mainApp)
 
