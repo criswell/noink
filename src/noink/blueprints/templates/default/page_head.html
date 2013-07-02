@@ -1,4 +1,11 @@
+{% include "messages.html" %}
 <div class='hero-unit'>
   <a href="/"><h1>{{ state.siteName }}</h1></a>
-  <blockquote class="pull-right"><a href="/login">Login</a></blockquote>
+  <blockquote class="pull-right">
+    {% if state.current_user.is_anonymous() %}
+      <a href="/login">Login</a>
+    {% else %}
+      <!--- something -->
+    {% endif %}
+  </blockquote>
 </div>

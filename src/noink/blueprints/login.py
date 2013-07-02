@@ -6,7 +6,8 @@
 
 """
 
-from flask import Blueprint, render_template, abort, request
+from flask import Blueprint, render_template, abort, request, flash, redirect
+from flask import url_for
 from jinja2 import TemplateNotFound
 
 from noink import mainApp,  _
@@ -23,8 +24,8 @@ def loginPage():
         remember = request.form.get('remember', 'no') == "yes"
         udb = UserDB()
         if udb.authenticate(username, password, remember):
-            flash(_(u'%s logged in.', username))
-            return rediret(request.args.get("next") or url_for("/"))
+            flash(_(u'%s logged in.' % username))
+            return redirect(request.args.get("next") or url_for("listEntries.show"))
         else:
             flash(_(u'Problem logging in.'), 'error')
     return render_template('login.html', state=getState())

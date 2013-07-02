@@ -25,17 +25,17 @@ class User(mainDB.Model):
     authenticated = False
     active = False
 
-    def is_authenticated():
+    def is_authenticated(self):
         return self.authenticated
 
-    def is_active():
+    def is_active(self):
         return self.active
 
-    def is_anonymous():
+    def is_anonymous(self):
         # we kind of assume they will never be anonymous if they come from DB
         return False
 
-    def get_id():
+    def get_id(self):
         return unicode(self.id)
 
     def __init__(self, name, fullname, bio, passhash):

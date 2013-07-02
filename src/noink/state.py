@@ -9,6 +9,8 @@ from noink import mainDB
 from noink.dataModels import SiteConfig
 from noink.siteConfig import _SiteConfig
 
+from flask.ext.login import current_user
+
 class State:
     pass
 
@@ -22,6 +24,7 @@ def getState():
     s.noinkVersion = currentSiteConfig.version
     s.siteName = currentSiteConfig.siteName
     s.adminEmail = currentSiteConfig.adminEmail
+    s.current_user = current_user
 
     # TODO - populate breadcrumbs here
 

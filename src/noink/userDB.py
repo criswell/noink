@@ -131,24 +131,27 @@ class UserDB:
         mainDB.session.commit()
         self.eventLog.add('del_user', uid, True, None, uname)
 
-    @loginManager.user_loader
-    def _user_load(uid):
-        return this.getUser(int(uid))
-
-    def authenticateUser(username, passwd, remember):
+    def authenticate(self, username, passwd, remember):
         '''
         Authenticates a user.
         FIXME - docstring
         '''
         try:
-            u = findUserByName(username)[0]
-            if mainCrypt.generate_password_hash(passwd) == u.passhash:
+            u = self.findUserByName(username)[0]
+            if mainCrypt.check_password_hash(u.passhash, passwd):
                 u.authenticated = True
                 u.active = True
                 return login_user(u, remember=remember)
             else:
                 u.authenticated = False
                 u.active = False
+                return False
         except: # FIXME - may want better handling
+            raise
             return False
 
+@loginManager.user_loader
+def _user_load(uid):
+    # FIXME - need try here?
+    u = UserDB()
+    return u.getUser(int(uid))[0]
