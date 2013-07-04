@@ -10,4 +10,5 @@ Flask-SQLAlchemy
 flask-bcrypt
 flask-login
 Flask-Babel
+Flask-Themes
 
