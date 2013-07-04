@@ -1,0 +1,9 @@
+# Python development requirements for Noink
+# =========================================
+#
+# This file is meant to be consumed by pip
+#
+#   pip install -r requirements-dev.txt
+
+loremipsum
+
