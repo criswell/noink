@@ -22,7 +22,6 @@ def showNode(num, name):
     """
     entry = None
     url = None
-    print "Name %s and node %s" % (name, num)
     if num < 0 and name:
         entryDB = EntryDB()
         try:
