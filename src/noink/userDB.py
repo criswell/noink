@@ -114,6 +114,11 @@ class UserDB:
             self.eventLog.add('add_group', 0, True, None, groupName)
             return g
 
+    def addToGroup(self, u, g):
+        '''
+        Adds
+        '''
+
     def delete(self, u):
         '''
         Deletes a user from the database.

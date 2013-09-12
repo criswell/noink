@@ -172,19 +172,22 @@ class Entry(mainDB.Model):
     def __repr__(self):
         return "<Entry ID: %s, Title %s>" % (self.id, self.title)
 
-# XXX CURRENTLY UNUSED
 class Activity(mainDB.Model):
     __tablename__ = 'activities'
 
     id = mainDB.Column(mainDB.Integer, primary_key=True)
     activityType = mainDB.Column(mainDB.Integer)
     parameter = mainDB.Column(mainDB.String(256))
+    name = mainDB.Column(mainDB.String(64))
+    description = mainDB.Column(mainDB.String(256))
     dateAdded = mainDB.Column(mainDB.DateTime())
 
-    def __init__(self, activityType, parameter, dateAdded):
+    def __init__(self, activityType, parameter, dateAdded, name, description):
         self.activityType = activityType
         self.parameter = parameter
         self.dateAdded = dateAdded
+        self.name = name
+        self.description = description
 
     def __repr__(self):
         return "<Type '%s', Param '%s'>" % (self.activityType, self.parameter)
