@@ -20,7 +20,7 @@ class AddEntry(RootClass):
     def test_AddEntry(self):
         userDB = UserDB()
         entryDB = EntryDB()
-        u = userDB.add("jontest", "Jon Q. Testuser")
+        u = userDB.add("jontest", "pass", "Jon Q. Testuser")
         title = 'Little Buttercup'
         entry = 'There once was a man from Nantucket,' + \
                 'who kept his wife in a Bucket.' + \

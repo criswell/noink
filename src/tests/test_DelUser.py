@@ -17,7 +17,7 @@ class DelUser(RootClass):
 
     def test_DelUser(self):
         userDB = UserDB()
-        uid = userDB.add("jontest", "Jon Q. Testuser").id
+        uid = userDB.add("jontest", "pass", "Jon Q. Testuser").id
 
         userDB.delete(uid)
         testUser = userDB.findUserById(uid)

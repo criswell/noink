@@ -18,7 +18,7 @@ class AddUser(RootClass):
 
     def test_AddUser(self):
         userDB = UserDB()
-        u = userDB.add("jontest", "Jon Q. Testuser")
+        u = userDB.add("jontest", "pass", "Jon Q. Testuser")
         uid = u.id
         self.assertTrue(uid > 0)
 

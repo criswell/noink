@@ -6,7 +6,7 @@
 
 MY_CWD=`pwd`
 
-if [[ "$1" ]]; then
+if [[ -n "$1" ]]; then
     source $1
 fi
 
