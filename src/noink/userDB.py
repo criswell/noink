@@ -3,7 +3,7 @@
 ##BOILERPLATE_COPYRIGHT_END
 '''
 
-from types import IntType
+from types import IntType, StringTypes
 
 from noink import mainDB, mainCrypt, loginManager
 from noink.dataModels import User, Group, GroupMapping
@@ -116,8 +116,32 @@ class UserDB:
 
     def addToGroup(self, u, g):
         '''
-        Adds
+        Adds a user to a group.
+
+        @param u: The user to link. Can be an integer for the uid or a user
+                  object
+        @param g: The group to link. Can be an integer for the gid, a string for
+                  group name, or a group object
         '''
+        user = u
+        if type(u) is IntType:
+            user = User.query.filter_by(id=u).first()
+        elif type(u) is StringType:
+            user = User.query.filter_by(name=u).first()
+
+        group = g
+        if type(g) is IntType:
+            group = Group.query.filter_by(id=g).first()
+        elif type(g) is StringType:
+            group = Group.query.filter_by(name=g).first()
+
+        exist = GroupMapping.query.filter_by(user=user).filter_by(group=group).all()
+
+        if exists == []:
+            gm = GroupMapping(group, user)
+            mainDB.session.add(gm)
+
+        mainDB.session.commit()
 
     def delete(self, u):
         '''
