@@ -63,10 +63,12 @@ if not __setup:
     from noink.blueprints.node import node
     from noink.blueprints.static import static_page
     from noink.blueprints.login import login
+    from noink.blueprints.admin import admin
     mainApp.register_blueprint(list_entries)
     mainApp.register_blueprint(node)
     mainApp.register_blueprint(static_page)
     mainApp.register_blueprint(login)
+    mainApp.register_blueprint(admin)
 
     loginManager.init_app(mainApp)
 

@@ -12,13 +12,13 @@ from noink import mainApp, loginManager, _
 from noink.state import get_state
 from noink.user_db import UserDB
 
-from flask.ext.login import current_user
+from flask.ext.login import current_user, login_required
 
 admin = Blueprint('admin', __name__)
 
-@node.route("/admin")
+@admin.route("/admin")
 @login_required
-def admin():
+def admin_page():
     """
     Renders the admin page
     """
@@ -29,5 +29,8 @@ def admin():
             state=get_state(), 
             admin=user_db.in_group(current_user, mainApp.config['ADMIN_GROUP']))
 
-    return render_template('admin.html', state=get_state())
+    # XXX Is this even necessary? Will we ever get here with login_required?
+    return render_template('noink_message.html', state=get_state(),
+        title=_(u'Not authorized'),
+        message=_(u'You must be logged in as a user to access this page!'))
 
