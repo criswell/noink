@@ -12,7 +12,7 @@ from noink import mainApp, loginManager, _
 from noink.state import get_state
 from noink.user_db import UserDB
 
-from flask.ext.login import current_user, login_required
+from flask.ext.login import current_user
 
 admin = Blueprint('admin', __name__)
 

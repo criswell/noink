@@ -11,7 +11,7 @@ from noink.event_log import EventLog
 
 from noink.exceptions import DuplicateUser, DuplicateGroup, UserNotFound
 
-from flask.ext.login import login_user
+from flask.ext.login import login_user, logout_user
 
 class UserDB:
     __borg_state = {}
@@ -207,6 +207,25 @@ class UserDB:
                 return False
         except: # FIXME - may want better handling
             raise
+            return False
+
+    def logout(self, u):
+        '''
+        Given a user, will log them out. Returns True on success, False on failure.
+
+        @param u: A user to logout. Can be a uid or a user object.
+        '''
+        user = u
+        if type(u) is IntType:
+            user = User.query.filter_by(id=u).first()
+        if u.authenticated or u.active:
+            u.authenticated = False
+            u.active = False
+            mainDB.session.commit()
+            logout_user()
+            return True
+        else:
+            logout_user()
             return False
 
 @loginManager.user_loader
