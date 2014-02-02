@@ -11,8 +11,8 @@ with the log in the database directly but this.
 import datetime
 
 from noink import mainDB
-from noink.dataModels import Event
-from noink.eventsTable import eventTable
+from noink.data_models import Event
+from noink.events_table import event_table
 
 class EventLog:
 
@@ -25,35 +25,35 @@ class EventLog:
         '''
         Adds an event to the log.
 
-        @param name: The event name. Should correspond to entry in eventTable
+        @param name: The event name. Should correspond to entry in event_table
         @param user: The id of the user generating the event
         @param processed: If the event should be marked as processed
         '''
 
-        if eventTable.has_key(name):
+        if event_table.has_key(name):
             now = datetime.datetime.now()
             if len(args) > 0:
-                e = Event(name, eventTable[name] % args, now, user, blob)
+                e = Event(name, event_table[name] % args, now, user, blob)
             else:
-                e = Event(name, eventTable[name], now, user, blob)
+                e = Event(name, event_table[name], now, user, blob)
 
             e.processed = processed
             if processed:
-                e.processedDate = now
+                e.processed_date = now
 
             mainDB.session.add(e)
             mainDB.session.commit()
         else:
-            raise KeyError('%s not in eventTable!' % name)
+            raise KeyError('%s not in event_table!' % name)
 
 
-    def getNextUnprocessed(self):
+    def get_next_unprocessed(self):
         """
         Returns the next unprocessed log entry
         """
         pass
 
-    def markAsProcessed(self, entry):
+    def mark_as_processed(self, entry):
         """
         Marks an unprocessed entry as processed.
         """

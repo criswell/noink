@@ -6,8 +6,8 @@
 from types import IntType, StringTypes
 
 from noink import mainDB, mainCrypt, loginManager
-from noink.dataModels import User, Group, GroupMapping
-from noink.eventLog import EventLog
+from noink.data_models import User, Group, GroupMapping
+from noink.event_log import EventLog
 
 from noink.exceptions import DuplicateUser, DuplicateGroup, UserNotFound
 
@@ -28,7 +28,7 @@ class UserDB:
             self.eventLog = EventLog()
             self._setup = True
 
-    def findUserByName(self, username):
+    def find_user_by_name(self, username):
         '''
         Finds a user by their username
 
@@ -38,7 +38,7 @@ class UserDB:
         '''
         return User.query.filter_by(name=username).all()
 
-    def findUserById(self, uid):
+    def find_user_by_id(self, uid):
         '''
         Finds a user by their user ID.
 
@@ -48,7 +48,7 @@ class UserDB:
         '''
         return User.query.get(uid)
 
-    def getUser(self, uid):
+    def get_user(self, uid):
         '''
         Given a user id, returns the user object
 
@@ -70,7 +70,7 @@ class UserDB:
         @return The user object for the user crated.
         '''
         try:
-            exists = self.findUserByName(username)
+            exists = self.find_user_by_name(username)
         except:
             exists = False
 
@@ -84,37 +84,37 @@ class UserDB:
             self.eventLog.add('add_user', u.id, True, None, username)
             return u
 
-    def addGroup(self, groupName, userId=None):
+    def add_group(self, group_name, user_id=None):
         '''
         Adds a new grou to the database.
 
-        @param groupName: The group name to add, must be unique.
-        @param userId: (Optional) Single or multiple user IDs to associate with this group.
+        @param group_name: The group name to add, must be unique.
+        @param user_id: (Optional) Single or multiple user IDs to associate with this group.
 
         @return The group object created
         '''
 
-        exists = Group.query.filter_by(name=groupName).first()
+        exists = Group.query.filter_by(name=group_name).first()
 
         if exists:
-            raise DuplicateGroup("%s already exists in database with id '%s'" % (groupName, exists.id))
+            raise DuplicateGroup("%s already exists in database with id '%s'" % (group_name, exists.id))
         else:
-            g = Group(groupName)
+            g = Group(group_name)
             mainDB.session.add(g)
             mainDB.session.flush()
-            if userId:
-                exists = User.query.filter_by(id=userId).first()
+            if user_id:
+                exists = User.query.filter_by(id=user_id).first()
                 if exists:
                     gm = GroupMapping(g, exists)
                     mainDB.session.add(gm)
                 else:
-                    raise UserNotFound("%s not found in database to match with new group" % userId)
+                    raise UserNotFound("%s not found in database to match with new group" % user_id)
 
             mainDB.session.commit()
-            self.eventLog.add('add_group', 0, True, None, groupName)
+            self.eventLog.add('add_group', 0, True, None, group_name)
             return g
 
-    def addToGroup(self, u, g):
+    def add_to_group(self, u, g):
         '''
         Adds a user to a group.
 
@@ -166,7 +166,7 @@ class UserDB:
         FIXME - docstring
         '''
         try:
-            u = self.findUserByName(username)[0]
+            u = self.find_user_by_name(username)[0]
             if mainCrypt.check_password_hash(u.passhash, passwd):
                 u.authenticated = True
                 u.active = True
@@ -183,4 +183,4 @@ class UserDB:
 def _user_load(uid):
     # FIXME - need try here?
     u = UserDB()
-    return u.getUser(int(uid))[0]
+    return u.get_user(int(uid))[0]

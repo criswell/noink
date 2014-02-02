@@ -14,9 +14,9 @@
       <h3>{{ entry.author.fullname }}</h3>
       <i>{{ entry.date }}</i><br /><br />
       {% if entry.html %}
-        <p>{{ entry.entry|nofilter_breakClean|nofilter_newLines|safe }}</p>
+        <p>{{ entry.entry|nofilter_breakclean|nofilter_newlines|safe }}</p>
       {% else %}
-        <p>{{ entry.entry|nofilter_breakClean|escape|nofilter_newLines|safe }}</p>
+        <p>{{ entry.entry|nofilter_breakclean|escape|nofilter_newlines|safe }}</p>
       {% endif %}
     </div>
       <ul>

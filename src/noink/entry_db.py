@@ -8,9 +8,9 @@ import datetime
 from types import IntType, StringType, ListType
 
 from noink import mainDB
-from noink.dataModels import Entry, Tag, TagMapping
+from noink.data_models import Entry, Tag, TagMapping
 from noink.pickler import PEntry, pickle, depickle
-from noink.eventLog import EventLog
+from noink.event_log import EventLog
 from noink.exceptions import DuplicateURL
 
 class EntryDB:
@@ -25,7 +25,7 @@ class EntryDB:
             self._setup = False
 
         if not self._setup:
-            self.eventLog = EventLog()
+            self.event_log = EventLog()
             self._setup = True
 
     def add(self, title, entry, author, weight=0, url=None, html=False, parent=None, static=False):
@@ -53,7 +53,7 @@ class EntryDB:
         e = Entry(title, author, now, entry, weight, url, html, parent, static)
 
         if type(url) is StringType:
-            if self.findByURL(url):
+            if self.find_by_URL(url):
                 raise DuplicateURL('The URL "%s" was already found in the UrlDB!' % url)
             else:
                 mainDB.session.add(e)
@@ -63,10 +63,10 @@ class EntryDB:
             mainDB.session.commit()
 
         pe = PEntry(e)
-        self.eventLog.add('add_entry', author.id, False, pickle(pe), entry.title)
+        self.event_log.add('add_entry', author.id, False, pickle(pe), entry.title)
         return e
 
-    def addTag(self, tags, entry):
+    def add_tag(self, tags, entry):
         '''
         Adds one or more tags to be associated with an entry. Or, if tags
         already exist, updates them to also point to the entry.
@@ -79,16 +79,16 @@ class EntryDB:
             if t == None:
                 t = Tag(tag)
                 mainDB.session.add(t)
-                self.eventLog.add('add_tag', entry.author_id, False, tag, tag)
+                self.event_log.add('add_tag', entry.author_id, False, tag, tag)
             exist = TagMapping.query.filter_by(tag_id=t.id).filter_by(entry_id=entry.id).all()
             if exist == []:
                 tm = TagMapping(t, entry)
                 mainDB.session.add(tm)
 
         mainDB.session.commit()
-        tags = self.findTagsByEntry(entry)
+        tags = self.find_tags_by_entry(entry)
 
-    def findByURL(self, url):
+    def find_by_URL(self, url):
         """
         Given a URL, find all entries associated with it.
 
@@ -98,7 +98,7 @@ class EntryDB:
         """
         return Entry.query.filter_by(url=url).all()
 
-    def findTagsByEntry(self, entry):
+    def find_tags_by_entry(self, entry):
         '''
         Given an entry, find all tags associated with it.
 
@@ -108,14 +108,14 @@ class EntryDB:
         '''
         e = entry
         if type(entry) is IntType:
-            e = self.findById(entry)
+            e = self.find_by_id(entry)
         tags = []
         for tm in TagMapping.query.filter_by(entry_id=e.id).all():
             tags.append(tm.tag)
 
         return tags
 
-    def findByTags(self, tags):
+    def find_by_tags(self, tags):
         """
         Given one or more tags, find all entries tagged with them.
 
@@ -146,7 +146,7 @@ class EntryDB:
 
         return e
 
-    def findRecentByNum(self, num, weight=True):
+    def find_recent_by_num(self, num, weight=True):
         '''
         Finds the most recent entries with a maximum of 'num'.
 
@@ -164,7 +164,7 @@ class EntryDB:
         else:
             raise TypeError("Expected integer for num")
 
-    def findByTitle(self, title):
+    def find_by_title(self, title):
         '''
         Finds entries based upon the title. Can search using sub-strings.
 
@@ -174,7 +174,7 @@ class EntryDB:
         '''
         return Entry.query.filter(Entry.Entry.title.like("%%%s%%" % title)).all()
 
-    def findById(self, num):
+    def find_by_id(self, num):
         '''
         Finds entries based upon the ID.
 
@@ -201,5 +201,5 @@ class EntryDB:
             self.urlDB.delete(url)
         mainDB.session.delete(entry)
         mainDB.session.commit()
-        self.eventLog.add('del_entry', 0, False, pickle(pe), entry.title)
+        self.event_log.add('del_entry', 0, False, pickle(pe), entry.title)
 

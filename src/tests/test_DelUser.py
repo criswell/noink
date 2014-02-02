@@ -11,7 +11,7 @@ import unittest
 
 from testRoot import RootClass
 
-from noink.userDB import UserDB
+from noink.user_db import UserDB
 
 class DelUser(RootClass):
 
@@ -20,7 +20,7 @@ class DelUser(RootClass):
         uid = userDB.add("jontest", "pass", "Jon Q. Testuser").id
 
         userDB.delete(uid)
-        testUser = userDB.findUserById(uid)
+        testUser = userDB.find_user_by_id(uid)
         self.assertTrue(testUser == None)
 
 if __name__ == '__main__':

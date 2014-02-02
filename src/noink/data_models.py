@@ -85,7 +85,7 @@ class Event(mainDB.Model):
     user = mainDB.Column(mainDB.Integer)
     blob = mainDB.Column(mainDB.String(500))
     processed = mainDB.Column(mainDB.Boolean())
-    processedDate = mainDB.Column(mainDB.DateTime())
+    processed_date = mainDB.Column(mainDB.DateTime())
 
 
     def __init__(self, event, description, date, user, blob):
@@ -117,7 +117,6 @@ class TagMapping(mainDB.Model):
     tag_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("tags.id"))
     tag = mainDB.relationship("Tag", backref=mainDB.backref('tagmap'))
     entry_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("entries.id"))
-    #ientry = mainDB.relationship("Entry")
 
     def __init__(self, tag, entry):
         self.tag = tag
@@ -176,34 +175,34 @@ class Activity(mainDB.Model):
     __tablename__ = 'activities'
 
     id = mainDB.Column(mainDB.Integer, primary_key=True)
-    activityType = mainDB.Column(mainDB.Integer)
+    activity_type = mainDB.Column(mainDB.Integer)
     parameter = mainDB.Column(mainDB.String(256))
     name = mainDB.Column(mainDB.String(64))
     description = mainDB.Column(mainDB.String(256))
-    dateAdded = mainDB.Column(mainDB.DateTime())
+    date_added = mainDB.Column(mainDB.DateTime())
 
-    def __init__(self, activityType, parameter, dateAdded, name, description):
-        self.activityType = activityType
+    def __init__(self, activity_type, parameter, date_added, name, description):
+        self.activity_type = activity_type
         self.parameter = parameter
-        self.dateAdded = dateAdded
+        self.date_added = date_added
         self.name = name
         self.description = description
 
     def __repr__(self):
-        return "<Type '%s', Param '%s'>" % (self.activityType, self.parameter)
+        return "<Type '%s', Param '%s'>" % (self.activity_type, self.parameter)
 
 class SiteConfig(mainDB.Model):
     __tablename__ = 'siteconfig'
 
     id = mainDB.Column(mainDB.Integer, primary_key=True)
     version = mainDB.Column(mainDB.Integer)
-    siteName = mainDB.Column(mainDB.String(64))
-    adminEmail = mainDB.Column(mainDB.String(64))
+    site_name = mainDB.Column(mainDB.String(64))
+    admin_email = mainDB.Column(mainDB.String(64))
 
     def __init__(self, version):
         self.version = version
-        self.siteName = "Noink website"
-        self.adminEmail = None
+        self.site_name = "Noink website"
+        self.admin_email = None
 
     def __repr__(self):
         return "<Version '%s'>" % (self.version)

@@ -14,5 +14,5 @@ from noink import _setupDB
 
 print ">> Setting up the database"
 
-_setupDB.setupDB()
+_setupDB.setup_DB()
 

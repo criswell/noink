@@ -14,20 +14,20 @@ need it.
 '''
 
 from noink import mainApp, mainDB
-from noink.eventLog import EventLog
-from noink.userDB import UserDB
-from noink.siteConfig import _SiteConfig
+from noink.event_log import EventLog
+from noink.user_db import UserDB
+from noink.site_config import _SiteConfig
 
-def setupDB():
-    eventLog = EventLog()
+def setup_DB():
+    event_log = EventLog()
     sc = _SiteConfig()
     userDB = UserDB()
     mainDB.create_all()
-    eventLog.add('db_setup', -1, True)
+    event_log.add('db_setup', -1, True)
     user = userDB.add(mainApp.config['ADMIN_USER'], mainApp.config["ADMIN_PASSWD"], mainApp.config['ADMIN_FULLNAME'])
-    userDB.addGroup(mainApp.config['ADMIN_GROUP'], user.id)
+    userDB.add_group(mainApp.config['ADMIN_GROUP'], user.id)
 
-    sc.add(mainApp.noinkVersion, mainApp.config['SITE_NAME'], mainApp.config['SITE_ADMIN_EMAIL'])
+    sc.add(mainApp.noink_version, mainApp.config['SITE_NAME'], mainApp.config['SITE_ADMIN_EMAIL'])
 
-    eventLog.add('db_finish', -1, True)
+    event_log.add('db_finish', -1, True)
 

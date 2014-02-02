@@ -12,7 +12,7 @@ import unittest
 
 from testRoot import RootClass
 
-from noink.userDB import UserDB
+from noink.user_db import UserDB
 
 class AddUser(RootClass):
 

@@ -10,14 +10,14 @@ from flask import Blueprint, render_template, abort, request, flash, redirect, \
                   url_for
 from jinja2 import TemplateNotFound
 
-from noink import mainApp,  _
-from noink.userDB import UserDB
-from noink.state import getState
+from noink import mainApp, _
+from noink.user_db import UserDB
+from noink.state import get_state
 
 login = Blueprint('login', __name__)
 
 @login.route('/login', methods=["GET", "POST"])
-def loginPage():
+def login_page():
     if request.method == "POST" and "username" in request.form:
         username = request.form["username"]
         password = request.form["password"]
@@ -25,8 +25,8 @@ def loginPage():
         udb = UserDB()
         if udb.authenticate(username, password, remember):
             flash(_(u'%s logged in.' % username))
-            return redirect(request.args.get("next") or url_for("listEntries.show"))
+            return redirect(request.args.get("next") or url_for("list_entries.show"))
         else:
             flash(_(u'Problem logging in.'), 'error')
-    return render_template('login.html', state=getState())
+    return render_template('login.html', state=get_state())
 

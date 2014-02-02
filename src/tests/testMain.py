@@ -12,13 +12,13 @@ import shutil
 import random
 
 from noink import mainApp
-from noink import reInit
+from noink import re_init
 from noink import _setupDB
 
 class testMain(object):
-    def __init__(self, tempPath=None):
-        if tempPath:
-            self.TEST_ROOT = tempPath
+    def __init__(self, temp_path=None):
+        if temp_path:
+            self.TEST_ROOT = temp_path
         else:
             self.TEST_ROOT = tempfile.mkdtemp()
 
@@ -46,9 +46,9 @@ class testMain(object):
 
         with open(self.TEST_CONF_FILE, 'w') as f:
             f.writelines(conf)
-        reInit()
+        re_init()
 
-        _setupDB.setupDB()
+        _setupDB.setup_DB()
 
     def __del__(self):
             shutil.rmtree(self.TEST_ROOT, True)

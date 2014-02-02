@@ -9,3 +9,5 @@ syntax: glob
 tags
 *.pyc
 .directory
+.idea
+

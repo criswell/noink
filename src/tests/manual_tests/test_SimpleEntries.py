@@ -13,8 +13,8 @@ from random import randint
 from entries import entries
 
 from noink import mainApp
-from noink.userDB import UserDB
-from noink.entryDB import EntryDB
+from noink.user_db import UserDB
+from noink.entry_db import EntryDB
 
 class SimpleEntries:
 
@@ -33,7 +33,7 @@ class SimpleEntries:
             try:
                 entry = self.entryDB.add(e[0], e[1], u, e[2], e[3], e[5], parent)
                 if e[4]:
-                    self.entryDB.addTag(e[4], entry)
+                    self.entryDB.add_tag(e[4], entry)
 
                 if randint(0,5) > 2:
                     parents.append(entry)

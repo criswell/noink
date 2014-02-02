@@ -11,7 +11,7 @@ specific items here in future data parsing, searching, processing, etc.
 
 '''
 
-eventTable = {
+event_table = {
     'db_setup' : 'Initial database creation',
     'db_finish' : 'Database initialization complete',
     'add_user' : "User '%s' added",

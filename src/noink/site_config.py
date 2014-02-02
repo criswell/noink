@@ -4,8 +4,8 @@
 """
 
 from noink import mainDB
-from noink.dataModels import SiteConfig
-from noink.eventLog import EventLog
+from noink.data_models import SiteConfig
+from noink.event_log import EventLog
 
 class _SiteConfig:
     __borg_state = {}
@@ -19,7 +19,7 @@ class _SiteConfig:
             self._setup = False
 
         if not self._setup:
-            self.eventLog = EventLog()
+            self.event_log = EventLog()
             self._setup = True
 
     def add(self, version, name=None, email=None):
@@ -29,14 +29,14 @@ class _SiteConfig:
         sc = SiteConfig(version)
         sc.version = version
         if name:
-            sc.siteName = name
-            self.eventLog.add('update_sitename', -1, False, '', name)
+            sc.site_name = name
+            self.event_log.add('update_sitename', -1, False, '', name)
         if email:
-            sc.adminEmail = email
+            sc.admin_email = email
 
         mainDB.session.add(sc)
         mainDB.session.commit()
-        self.eventLog.add('update_siteconf', -1, False, '', str(version))
+        self.event_log.add('update_siteconf', -1, False, '', str(version))
 
     def getCurrent(self):
         return SiteConfig.query.order_by(SiteConfig.id.desc()).first()

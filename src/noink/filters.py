@@ -7,8 +7,8 @@
 
 from noink import mainApp
 
-@mainApp.template_filter('nofilter_breakSplit')
-def nofilter_breakSplit(s):
+@mainApp.template_filter('nofilter_breaksplit')
+def nofilter_breaksplit(s):
     """
     Given a string, will return an array with that string broken into segments
     on the BREAK identifier defined in config.
@@ -19,8 +19,8 @@ def nofilter_breakSplit(s):
     """
     return s.split(mainApp.config['BREAK_IDENTIFIER'])
 
-@mainApp.template_filter('nofilter_breakClean')
-def nofilter_breakClean(s):
+@mainApp.template_filter('nofilter_breakclean')
+def nofilter_breakclean(s):
     """
     Given a string, will return a string with all BREAK identifiers cleaned.
 
@@ -30,8 +30,8 @@ def nofilter_breakClean(s):
     """
     return ' '.join(s.split(mainApp.config['BREAK_IDENTIFIER']))
 
-@mainApp.template_filter('nofilter_newLines')
-def nofilter_newLines(s):
+@mainApp.template_filter('nofilter_newlines')
+def nofilter_newlines(s):
     """
     Given a string, will replace all new lines with line break tags.
 

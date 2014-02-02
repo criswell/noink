@@ -11,8 +11,8 @@ import unittest, copy
 
 from testRoot import RootClass
 
-from noink.userDB import UserDB
-from noink.entryDB import EntryDB
+from noink.user_db import UserDB
+from noink.entry_db import EntryDB
 
 class AddEntry(RootClass):
 
