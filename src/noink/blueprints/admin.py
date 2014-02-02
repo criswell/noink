@@ -23,10 +23,6 @@ def admin_page():
     """
     user_db = UserDB()
 
-    print current_user
-    print current_user.is_authenticated()
-    print current_user.is_active()
-
     if current_user.is_authenticated() and current_user.is_active():
         return render_template('admin.html', 
             state=get_state(), 
