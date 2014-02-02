@@ -3,7 +3,7 @@
 ##BOILERPLATE_COPYRIGHT_END
 '''
 
-from types import IntType, StringTypes
+from types import IntType, StringType
 
 from noink import mainDB, mainCrypt, loginManager
 from noink.data_models import User, Group, GroupMapping
@@ -166,7 +166,7 @@ class UserDB:
 
         exist = GroupMapping.query.filter_by(user=user).filter_by(group=group).first()
 
-        if exists is None:
+        if exist is None:
             return False
 
         return True
@@ -198,10 +198,12 @@ class UserDB:
             if mainCrypt.check_password_hash(u.passhash, passwd):
                 u.authenticated = True
                 u.active = True
+                mainDB.session.commit()
                 return login_user(u, remember=remember)
             else:
                 u.authenticated = False
                 u.active = False
+                mainDB.session.commit()
                 return False
         except: # FIXME - may want better handling
             raise

@@ -9,17 +9,13 @@
     {% include "page_head.html" %}
     <div class="container">
       <div class="well">
-        <form action="" method=post>
-          <dl>
-            <dt>Username:
-            <dd><input type=text name=username>
-            <dt>Password:
-            <dd><input type=password name=password>
-            <dt>Remember Me:
-            <dd><input type=checkbox name=remember value=yes>
-            <dd><input type=submit value=Login>
-          </dl>
-        </form>
+        <ul>
+          {% if admin %}
+          <li><a href="/admin/user">Administrate Users</a></li>
+          {% endif %}
+          <li><a href="/admun/user/{{ current_user.id }}">My User Settings</a></li>
+          <li><a href="/new">New Post</a></li>
+        </ul>
       </div>
     </div>
   </body>

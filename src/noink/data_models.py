@@ -22,8 +22,8 @@ class User(mainDB.Model):
     bio = mainDB.Column(mainDB.String(4000))
     passhash = mainDB.Column(mainDB.String(60))
 
-    authenticated = False
-    active = False
+    authenticated = mainDB.Column(mainDB.Boolean)
+    active = mainDB.Column(mainDB.Boolean)
 
     def is_authenticated(self):
         return self.authenticated
@@ -43,6 +43,8 @@ class User(mainDB.Model):
         self.fullname = fullname
         self.bio = bio
         self.passhash = passhash
+        self.authenticated = False
+        self.active = False
 
     def __repr__(self):
         return "<User %s, id %s>" % (self.name, self.id)
