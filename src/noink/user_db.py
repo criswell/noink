@@ -143,6 +143,34 @@ class UserDB:
 
         mainDB.session.commit()
 
+    def in_group(self, u, g):
+        '''
+        Checks if a user is in a group
+
+        @param u: The user to link. Can be an integer for the uid or a user
+                  object
+        @param g: The group to link. Can be an integer for the gid, a string for
+                  group name, or a group object
+        '''
+        user = u
+        if type(u) is IntType:
+            user = User.query.filter_by(id=u).first()
+        elif type(u) is StringType:
+            user = User.query.filter_by(name=u).first()
+
+        group = g
+        if type(g) is IntType:
+            group = Group.query.filter_by(id=g).first()
+        elif type(g) is StringType:
+            group = Group.query.filter_by(name=g).first()
+
+        exist = GroupMapping.query.filter_by(user=user).filter_by(group=group).first()
+
+        if exists is None:
+            return False
+
+        return True
+
     def delete(self, u):
         '''
         Deletes a user from the database.
