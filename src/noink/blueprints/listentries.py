@@ -12,6 +12,8 @@ from noink import mainApp
 from noink.entry_db import EntryDB
 from noink.state import get_state
 
+from math import ceil
+
 list_entries = Blueprint('list_entries', __name__)
 
 @list_entries.route("/", defaults={'tag':None})
@@ -34,7 +36,7 @@ def show(tag):
 
     total_pages = 0
     if count > per_page:
-        total_pages = int(count / per_page)
+        total_pages = int(ceil(float(count) / float(per_page)))
 
     return render_template('list_entries.html', entries=entries, 
         state=get_state(), page_num=page_num, total_pages=total_pages)
