@@ -28,9 +28,9 @@
       <ul class="pagination">
         {% for i in range(total_pages) %}
           {% if page_num == i %}
-            <li class="disabled"><a href="#">{{ i+1 }}</a></li>
+            <li class="active"><a href="#">{{ i+1 }}</a></li>
           {% else %}
-            <li class="active"><a href="{{ request.path }}?page={{ i }}">{{ i+1 }}</a></li>
+            <li><a href="{{ request.path }}?page={{ i }}">{{ i+1 }}</a></li>
           {% endif %}
         {% endfor %}
       </ul>

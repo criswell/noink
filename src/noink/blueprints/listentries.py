@@ -29,7 +29,7 @@ def show(tag):
     entryDB = EntryDB()
     if tag:
         entries = entryDB.find_by_tags([tag])
-        count = len(entries)
+        count = per_page
     else:
         entries = entryDB.find_recent_by_num(per_page, page_num * per_page)
         count = entryDB.count()
