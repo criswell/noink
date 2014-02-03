@@ -13,7 +13,7 @@ entries = []
 
 all_tags = ['Foo', 'Bar', 'Snaz', 'Loop', 'Core', 'Nugget', 'Piddle', 'Snappy']
 
-for i in range(randint(20, 50)):
+for i in range(randint(50, 90)):
     title = get_sentences(1)[0]
     p = get_paragraphs(randint(4, 20))
     index = randint(1,3)

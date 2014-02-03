@@ -11,15 +11,15 @@
     <div class="container">
       {% for entry in entries %}
       <div class='well'>
-      <div class="row-fluid">
-        <div class="span8">
+      <div class="row">
+        <div class="col-md-8">
           <a href="{{ nomacro_entryURL(entry) }}"><h1>{{ entry.title }}</h1></a>
         </div>
-        <div class="span4"><small>
+        <div class="col-md-4"><small>
           <p class="text-left">{{ entry.author.fullname }}</p>
           <p class="muted test-right">{{ entry.date }}</p>
         </small></div>
-      </div><div class="row-fluid">
+      </div><div class="row">
         <p>{{ entry.entry|nofilter_breaksplit|first|escape|nofilter_newlines|safe }}</p>
         <a href="{{ nomacro_entryURL(entry) }}">more...</a>
       </div></div>
@@ -30,7 +30,7 @@
           {% if page_num == i %}
             <li class="disabled"><a href="#">{{ i+1 }}</a></li>
           {% else %}
-            <li class="active"><a href="?page={{ i }}">{{ i+1 }}</a></li>
+            <li class="active"><a href="{{ request.path }}?page={{ i }}">{{ i+1 }}</a></li>
           {% endif %}
         {% endfor %}
       </ul>

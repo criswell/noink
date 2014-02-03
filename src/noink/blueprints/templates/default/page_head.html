@@ -1,11 +1,11 @@
 {% include "messages.html" %}
-<div class='hero-unit'>
+<div class='jumbotron'>
   <a href="/"><h1>{{ state.site_name }}</h1></a>
-  <blockquote class="pull-right">
+  <p class="pull-right">
     {% if state.current_user.is_anonymous() %}
       <a href="/login">Login</a>
     {% else %}
       <a href="/admin">Admin</a> | <a href="/logout">Logout</a>
     {% endif %}
-  </blockquote>
+  </p>
 </div>

@@ -22,6 +22,7 @@ def logout_user():
     udb = UserDB()
     if current_user.is_authenticated() and current_user.is_active():
         if udb.logout(current_user):
+            flash(_(u'Logged out.'))
             return redirect(request.args.get("next") or url_for("list_entries.show"))
 
     return render_template('noink_message.html', state=get_state(),

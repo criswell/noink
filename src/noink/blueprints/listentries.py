@@ -21,7 +21,7 @@ def show(tag):
     Renders a page containing those entries defined by tag. If tag is None,
     will yield all entries.
     '''
-    page_num = request.args.get('page', 0)
+    page_num = int(request.args.get('page', 0))
     per_page = mainApp.config['NUM_ENTRIES_PER_PAGE'][0]
 
     entryDB = EntryDB()
