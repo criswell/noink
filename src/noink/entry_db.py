@@ -146,11 +146,12 @@ class EntryDB:
 
         return e
 
-    def find_recent_by_num(self, num, weight=True):
+    def find_recent_by_num(self, num, offset=0, weight=True):
         '''
         Finds the most recent entries with a maximum of 'num'.
 
         @param num: The number of entries to find
+        @param offset: The offset for the entries to find.
         @param weight: If the weight should be taken into account (defaults to
                        true.
 
@@ -158,11 +159,17 @@ class EntryDB:
         '''
         if type(num) is IntType:
             if weight:
-                return Entry.query.order_by(Entry.date, Entry.weight).limit(num).all()
+                return Entry.query.order_by(Entry.date.desc(), Entry.weight).offset(offset).limit(num).all()
             else:
-                return Entry.query.order_by(Entry.date).limit(num).all()
+                return Entry.query.order_by(Entry.date.desc()).offset(offset).limit(num).all()
         else:
             raise TypeError("Expected integer for num")
+
+    def count(self):
+        '''
+        Returns the number of possible entries.
+        '''
+        return Entry.query.order_by(Entry.date.desc(), Entry.weight).count()
 
     def find_by_title(self, title):
         '''

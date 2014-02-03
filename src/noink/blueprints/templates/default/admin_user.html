@@ -1,10 +1,21 @@
-<div class="container">
-    <div class="well">
-        <form action="" method=post>
-            <h4>User Settings</h4>
-            <dl>
-                <dt>{{ state.current_user.name }}
-                <dt>
-        </form>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+  <head>
+    <title>{{ state.siteName }} | Admin</title>
+    {% include 'common_header.html' %}
+  </head>
+  <body>
+    {% include "page_head.html" %}
+    <div class="container">
+        <div class="well">
+            <form action="" method=post>
+                <h4>User Settings</h4>
+                <dl>
+                    <dt>{{ state.current_user.name }}
+                    <dt>
+            </form>
+        </div>
     </div>
-</div>
+  </body>
+</html>

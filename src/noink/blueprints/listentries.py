@@ -21,11 +21,20 @@ def show(tag):
     Renders a page containing those entries defined by tag. If tag is None,
     will yield all entries.
     '''
+    page_num = request.args.get('page', 0)
+    per_page = mainApp.config['NUM_ENTRIES_PER_PAGE'][0]
+
     entryDB = EntryDB()
     if tag:
         entries = entryDB.find_by_tags([tag])
+        count = len(entries)
     else:
-        entries = entryDB.find_recent_by_num(mainApp.config['NUM_ENTRIES_PER_PAGE'][0])
+        entries = entryDB.find_recent_by_num(per_page, page_num * per_page)
+        count = entryDB.count()
 
-    return render_template('list_entries.html', entries=entries, state=get_state())
+    total_pages = 0
+    if count > per_page:
+        total_pages = int(count / per_page)
 
+    return render_template('list_entries.html', entries=entries, 
+        state=get_state(), page_num=page_num, total_pages=total_pages)

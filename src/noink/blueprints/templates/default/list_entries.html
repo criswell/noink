@@ -24,6 +24,17 @@
         <a href="{{ nomacro_entryURL(entry) }}">more...</a>
       </div></div>
       {% endfor %}
+      {% if total_pages > 0 %}
+      <ul class="pagination">
+        {% for i in range(total_pages) %}
+          {% if page_num == i %}
+            <li class="disabled"><a href="#">{{ i+1 }}</a></li>
+          {% else %}
+            <li class="active"><a href="?page={{ i }}">{{ i+1 }}</a></li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+      {% endif %}
     </div>
   </body>
 </html>

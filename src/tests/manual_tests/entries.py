@@ -27,7 +27,7 @@ for i in range(randint(20, 50)):
     tags = None
     if randint(0,5) > 1:
         tags = sample(all_tags, randint(1, len(all_tags)-1))
-    e = ( title, entry, weight, url, tags, False)
+    e = ( "%s (%d)" % (title, i), entry, weight, url, tags, False)
     entries.append(e)
 
 
