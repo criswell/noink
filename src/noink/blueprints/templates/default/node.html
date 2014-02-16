@@ -12,6 +12,9 @@
     <div class='container'><div class='well'>
       <a href="{{ nomacro_entryURL(entry) }}"><h2>{{ entry.title }}</h2></a>
       <h3>{{ entry.author.fullname }}</h3>
+      <!-- Debugging information:
+           {{ entry.group }}
+        -->
       <i>{{ entry.date }}</i><br /><br />
       {% if entry.html %}
         <p>{{ entry.entry|nofilter_breakclean|nofilter_newlines|safe }}</p>

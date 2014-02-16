@@ -5,7 +5,7 @@
 
 from types import IntType, StringType
 
-from noink import mainDB, mainCrypt, loginManager
+from noink import mainDB, mainCrypt, loginManager, mainApp
 from noink.data_models import User, Group, GroupMapping
 from noink.event_log import EventLog
 
@@ -58,7 +58,7 @@ class UserDB:
         '''
         return User.query.filter_by(id=uid)
 
-    def add(self, username, password, fullname, bio=""):
+    def add(self, username, password, fullname, bio="", group=None):
         '''
         Adds a user to the database.
 
@@ -66,6 +66,7 @@ class UserDB:
         @param password: The password to use.
         @param fullname: The user's full name
         @param bio: The user's bio (optional)
+        @param group: The user's primary group (optional)
 
         @return The user object for the user crated.
         '''
@@ -79,6 +80,9 @@ class UserDB:
         else:
             passHash = mainCrypt.generate_password_hash(password)
             u = User(username, fullname, bio, passHash)
+            if group is None:
+                group = self.get_group(mainApp.config['DEFAULT_GROUP'])
+            u.primary_group = group
             mainDB.session.add(u)
             mainDB.session.commit()
             self.eventLog.add('add_user', u.id, True, None, username)
@@ -142,6 +146,23 @@ class UserDB:
             mainDB.session.add(gm)
 
         mainDB.session.commit()
+
+    def get_group(self, g):
+        '''
+        Given a group identifier, return the group object.
+
+        @param g: The group to return. Can be an integer for the gid or a string
+                  of the group's name.
+
+        @return The group object found, or None.
+        '''
+        group = None
+        if type(g) is IntType:
+            group = Group.query.filter_by(id=g).first()
+        elif type(g) is StringType:
+            group = Group.query.filter_by(name=g).first()
+
+        return group
 
     def in_group(self, u, g):
         '''
