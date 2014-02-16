@@ -173,41 +173,43 @@ class Entry(mainDB.Model):
     def __repr__(self):
         return "<Entry ID: %s, Title %s>" % (self.id, self.title)
 
-class Activity(mainDB.Model):
-    __tablename__ = 'activities'
+class Role(mainDB.Model):
+    __tablename__ = 'roles'
 
     id = mainDB.Column(mainDB.Integer, primary_key=True)
-    activity_type = mainDB.Column(mainDB.String(16))
-    parameter = mainDB.Column(mainDB.String(256))
+    activities = mainDB.Column(mainDB.String(16))
     name = mainDB.Column(mainDB.String(64))
     description = mainDB.Column(mainDB.String(256))
     date_added = mainDB.Column(mainDB.DateTime())
 
-    def __init__(self, activity_type, parameter, date_added, name, description):
-        self.activity_type = activity_type
-        self.parameter = parameter
-        self.date_added = date_added
+    def __init__(self, name, description, activities, date_added):
         self.name = name
         self.description = description
+        self.activities = activities
+        self.date_added = date_added
 
     def __repr__(self):
-        return "<Type '%s', Param '%s'>" % (self.activity_type, self.parameter)
+        return "<Role ID: '%s, Name '%s'" % (self.id, self.name)
 
-class ActivityMapping(mainDB.Model):
-    __tablename__ = 'activitymap'
+class RoleMapping(mainDB.Model):
+    __tablename__ = 'rolemap'
 
     id = mainDB.Column(mainDB.Integer, primary_key=True)
-    activity_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("activities.id"))
-    activity = mainDB.relationship('Activity')
+    role_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey=('roles.id'))
+    role = mainDB.relationship('Role')
     group_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("group.id"))
     group = mainDB.relationship('Group')
+    user_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("user.id"))
+    user = mainDB.relationship("User")
 
-    def __init__(self, activity, group):
-        self.activity = activity
+    def __init__(self, role, user, group):
+        self.role = role
+        self.user = user
         self.group = group
 
     def __repr__(self):
-        return "<Activity %s : Group %s>" % (self.activity, self.group)
+        return "<Role %s : User %s : Group %s>" % (self.role, 
+            self.user, self.group)
 
 class SiteConfig(mainDB.Model):
     __tablename__ = 'siteconfig'
