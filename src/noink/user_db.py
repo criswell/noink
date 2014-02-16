@@ -164,6 +164,39 @@ class UserDB:
 
         return group
 
+    def update_primary(self, u, g):
+        '''
+        Updates the primary group a user belongs to. If the user is not already
+        in that group, they are added to it.
+
+        @param u: The user to update. Can be an integer for the uid, a username,
+                  or a user object
+        @param g: The group to use. Can be an integer for the gid, a group name,
+                  or a group object.
+
+        @return True on success, False on failure
+        '''
+        user = u
+        if type(u) is IntType:
+            user = User.query.filter_by(id=u).first()
+        elif type(u) is StringType:
+            user = User.query.filter_by(name=u).first()
+
+        group = g
+        if type(g) is IntType:
+            group = Group.query.filter_by(id=g).first()
+        elif type(g) is StringType:
+            group = Group.query.filter_by(name=g).first()
+
+        if user is not None and group is not None:
+            if not GroupMapping.query.filter_by(user=user).filter_by(group=group).first():
+                self.add_to_group(u, g)
+            user.primary_group = group
+            mainDB.session.commit()
+            return True
+        else:
+            return False
+
     def in_group(self, u, g):
         '''
         Checks if a user is in a group
