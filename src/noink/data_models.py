@@ -89,7 +89,6 @@ class Event(mainDB.Model):
     processed = mainDB.Column(mainDB.Boolean())
     processed_date = mainDB.Column(mainDB.DateTime())
 
-
     def __init__(self, event, description, date, user, blob):
         self.event = event
         self.description = description
@@ -213,4 +212,3 @@ class SiteConfig(mainDB.Model):
 
     def __repr__(self):
         return "<Version '%s'>" % (self.version)
-

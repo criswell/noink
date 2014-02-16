@@ -12,7 +12,6 @@ Defines all the possible activity types.
 __activities = [
     'new_post',
     'edit_post',
-    'top_level_post',
     'new_user',
     'edit_user',
     'edit_self'
