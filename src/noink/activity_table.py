@@ -15,7 +15,7 @@ __activities = [
     'edit_self'
 ]
 
-# FIXME - Should this be enumerated to ensure that the
-# numbers match across upgrades?
-activity_table = dict(zip(
-    __activities, range(1, len(__activities) + 1)))
+# FXIME- Fugly, probably too ineffecient even for something not designed
+# for efficiency...
+__tact = dict(enumerate(__activities, start=1))
+activity_table = dict(zip(__tact.values(), __tact.keys()))
