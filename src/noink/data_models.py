@@ -25,6 +25,9 @@ class User(mainDB.Model):
     authenticated = mainDB.Column(mainDB.Boolean)
     active = mainDB.Column(mainDB.Boolean)
 
+    primary_group_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("group.id"))
+    primary_group = mainDB.relationship('Group')
+
     def is_authenticated(self):
         return self.authenticated
 
@@ -135,6 +138,8 @@ class Entry(mainDB.Model):
     entry = mainDB.Column(mainDB.String(40000))
     author_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("user.id"))
     author = mainDB.relationship("User")
+    group_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("group.id"))
+    group = mainDB.relationship('Group')
     weight = mainDB.Column(mainDB.Integer)
     static = mainDB.Column(mainDB.Boolean)
     url = mainDB.Column(mainDB.String(32))
@@ -144,7 +149,7 @@ class Entry(mainDB.Model):
     children = mainDB.relationship('Entry', backref=mainDB.backref('parent',
         remote_side=[id]))
 
-    def __init__(self, title, author, date, entry, weight=0, url=None, html=False, parent=None, static=False):
+    def __init__(self, title, author, group, date, entry, weight=0, url=None, html=False, parent=None, static=False):
         self.date = date
         self.title = title
         self.author = author
@@ -153,6 +158,7 @@ class Entry(mainDB.Model):
         self.url = url
         self.html = html
         self.static = static
+        self.group = group
         if parent:
             self.parent_id = parent.id
 

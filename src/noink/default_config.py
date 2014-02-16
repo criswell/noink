@@ -26,6 +26,12 @@ ADMIN_PASSWD = "admin"
 # group in the database!
 ADMIN_GROUP = "admin"
 
+# The name of the default group. This is the group that all users start out in
+# as their primary, unless changed. Note that this field SHOULD NOT be
+# changed after the database has been created, as it will not update the
+# group in the database!
+DEFAULT_GROUP = 'default'
+
 # The path(s) to the HTML templates. Can be a relative path, or absolute.
 HTML_TEMPLATES = [
     "blueprints/templates/default"

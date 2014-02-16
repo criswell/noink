@@ -12,9 +12,11 @@ Defines all the possible activity types.
 __activities = [
     'new_post',
     'edit_post',
+    'delete_post',
     'new_user',
     'edit_user',
-    'edit_self'
+    'edit_self',
+    'group_admin'
 ]
 
 activity_table = dict((v,k) for k,v in \

@@ -28,7 +28,7 @@ class EntryDB:
             self.event_log = EventLog()
             self._setup = True
 
-    def add(self, title, entry, author, weight=0, url=None, html=False, parent=None, static=False):
+    def add(self, title, entry, author, group=None, weight=0, url=None, html=False, parent=None, static=False):
         """
         Adds an entry to the system.
 
@@ -40,6 +40,8 @@ class EntryDB:
         @param title: The title of the post.
         @param entry: The entry of the post.
         @param author: The user object for the post's author
+        @param group: The (optional) group this post will belong to. If None,
+                      use the author's primary group
         @param url: The (optional) URL for this post.
         @param html: Flag detailing whether this post is in HTML or not
         @param parent: The (optional) parent for this post.
@@ -50,7 +52,10 @@ class EntryDB:
 
         now = datetime.datetime.now()
 
-        e = Entry(title, author, now, entry, weight, url, html, parent, static)
+        if group is None:
+            group = author.primary_group
+
+        e = Entry(title, author, group, now, entry, weight, url, html, parent, static)
 
         if type(url) is StringType:
             if self.find_by_URL(url):

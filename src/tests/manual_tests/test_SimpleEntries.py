@@ -31,7 +31,7 @@ class SimpleEntries:
             if randint(0,5) > 3 and len(parents) > 1:
                 parent = parents[randint(0,len(parents)-1)]
             try:
-                entry = self.entryDB.add(e[0], e[1], u, e[2], e[3], e[5], parent)
+                entry = self.entryDB.add(e[0], e[1], u, None, e[2], e[3], e[5], parent)
                 if e[4]:
                     self.entryDB.add_tag(e[4], entry)
 

@@ -33,6 +33,7 @@ class testMain(object):
             'ADMIN_PASSWD = "password"\n',
             'ADMIN_FULLNAME = "Administrator"\n',
             'ADMIN_GROUP = "admin"\n',
+            'DEFAULT_GROUP = "default"\n',
             'SQLALCHEMY_DATABASE_URI = "%s"\n' % self.TEST_DB_FILE,
             'SECRET_KEY = "%032x"\n' % random.getrandbits(128),
             'HTML_TEMPLATES = [ "../../noink/blueprints/templates/default" ]\n',
