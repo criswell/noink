@@ -127,19 +127,6 @@ class TagMapping(mainDB.Model):
     def __repr__(self):
         return "<Tag %s : Entry %s>" % (self.tag, self.entry_id)
 
-# XXX CURRENTLY UNUSED
-class DataType(mainDB.Model):
-    __tablename__ = 'datatype'
-
-    id = mainDB.Column(mainDB.Integer, primary_key=True)
-    name = mainDB.Column(mainDB.String(20))
-
-    def __init__(self, name):
-        self.name = name
-
-    def __repr__(self):
-        return "<Type %s, id %s>" % (self.name, self.id)
-
 class Entry(mainDB.Model):
     __tablename__ = 'entries'
 
