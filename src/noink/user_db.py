@@ -188,8 +188,9 @@ class UserDB:
         elif type(g) is StringType:
             group = Group.query.filter_by(name=g).first()
 
-        if user is not None and group is not None:
-            if not GroupMapping.query.filter_by(user=user).filter_by(group=group).first():
+        if isinstance(user, User) and isinstance(group, Group):
+            exists = GroupMapping.query.filter_by(user=user).filter_by(group=group).first()
+            if exists == []:
                 self.add_to_group(u, g)
             user.primary_group = group
             mainDB.session.commit()
