@@ -13,7 +13,9 @@
       <a href="{{ nomacro_entryURL(entry) }}"><h2>{{ entry.title }}</h2></a>
       <h3>{{ entry.author.fullname }}</h3>
       <!-- Debugging information:
-           {{ entry.group }}
+           User "{{ entry.author.name }}"
+           Group "{{ entry.group.name }}"
+           User Primary Group "{{ entry.author.primary_group.name }}"
         -->
       <i>{{ entry.date }}</i><br /><br />
       {% if entry.html %}
