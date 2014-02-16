@@ -181,7 +181,7 @@ class RoleMapping(mainDB.Model):
     __tablename__ = 'rolemap'
 
     id = mainDB.Column(mainDB.Integer, primary_key=True)
-    role_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey=('roles.id'))
+    role_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey('roles.id'))
     role = mainDB.relationship('Role')
     group_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("group.id"))
     group = mainDB.relationship('Group')
