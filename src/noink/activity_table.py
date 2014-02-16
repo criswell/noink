@@ -15,4 +15,5 @@ __activities = [
     'edit_self'
 ]
 
-activity_table = dict((v,k) for k,v in enumerate(__activities, start=1))
+activity_table = dict((v,k) for k,v in \
+    enumerate(__activities, start=ord('a')))
