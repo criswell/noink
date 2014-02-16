@@ -177,7 +177,7 @@ class Activity(mainDB.Model):
     __tablename__ = 'activities'
 
     id = mainDB.Column(mainDB.Integer, primary_key=True)
-    activity_type = mainDB.Column(mainDB.Integer)
+    activity_type = mainDB.Column(mainDB.String(16))
     parameter = mainDB.Column(mainDB.String(256))
     name = mainDB.Column(mainDB.String(64))
     description = mainDB.Column(mainDB.String(256))
@@ -192,6 +192,22 @@ class Activity(mainDB.Model):
 
     def __repr__(self):
         return "<Type '%s', Param '%s'>" % (self.activity_type, self.parameter)
+
+class ActivityMapping(mainDB.Model):
+    __tablename__ = 'activitymap'
+
+    id = mainDB.Column(mainDB.Integer, primary_key=True)
+    activity_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("activities.id"))
+    activity = mainDB.relationship('Activity')
+    group_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("group.id"))
+    group = mainDB.relationship('Group')
+
+    def __init__(self, activity, group):
+        self.activity = activity
+        self.group = group
+
+    def __repr__(self):
+        return "<Activity %s : Group %s>" % (self.activity, self.group)
 
 class SiteConfig(mainDB.Model):
     __tablename__ = 'siteconfig'
