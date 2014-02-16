@@ -6,6 +6,9 @@ Defines all the possible activity types.
 ##BOILERPLATE_COPYRIGHT_END
 '''
 
+# NOTE: The following list should not change order!
+# New items should always be added at end, and existing
+# items should not be re-ordered!
 __activities = [
     'new_post',
     'edit_post',
