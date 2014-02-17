@@ -1,11 +1,11 @@
-{% macro nomacro_entryURL(entry) %}
-  {% if entry.url == none %}
-    /node/{{ entry.id }}
-  {% else %}
-    /{{ entry.url }}
-  {% endif %}
+{% macro nomacro_entryURL(entry)
+  %}{% if entry.url == none
+    %}/node/{{ entry.id }}{%
+  else
+    %}/{{ entry.url }}{%
+  endif %}
 {%- endmacro %}
 
-{% macro nomacro_tagURL(tag) %}
-/tag/{{tag.id}}
-{%- endmacro %}
+{% macro nomacro_tagURL(tag)
+%}/tag/{{tag.id}}{%-
+endmacro %}

@@ -17,9 +17,9 @@ from flask.ext.login import current_user
 
 posts = Blueprint('posts', __name__)
 
-@posts.route("/new")
+@posts.route("/new", methods=['POST'])
 def new_post():
     """
     New posts page
     """
-    
+    return render_template('new_post.html', state=get_state())
