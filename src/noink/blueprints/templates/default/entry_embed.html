@@ -1,0 +1,14 @@
+<a href="{{ nomacro_entryURL(entry) }}"><h2>{{ entry.title }}</h2></a>
+<h3>{{ entry.author.fullname }}</h3>
+<!-- Debugging information:
+     User "{{ entry.author.name }}"
+     Entry Owner Group "{{ entry.group.name }}"
+     User Primary Group "{{ entry.author.primary_group.name }}"
+     Entry ID "{{ entry.id }}"
+  -->
+<i>{{ entry.date }}</i><br /><br />
+{% if entry.html %}
+  <p>{{ entry.entry|nofilter_breakclean|nofilter_newlines|safe }}</p>
+{% else %}
+  <p>{{ entry.entry|nofilter_breakclean|escape|nofilter_newlines|safe }}</p>
+{% endif %}
