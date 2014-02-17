@@ -186,7 +186,7 @@ class Role(mainDB.Model):
     __tablename__ = 'roles'
 
     id = mainDB.Column(mainDB.Integer, primary_key=True)
-    activities = mainDB.Column(mainDB.String(16))
+    activities = mainDB.Column(mainDB.String(500))
     name = mainDB.Column(mainDB.String(64))
     description = mainDB.Column(mainDB.String(256))
     date_added = mainDB.Column(mainDB.DateTime())
