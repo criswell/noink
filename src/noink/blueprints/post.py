@@ -15,9 +15,9 @@ from noink.entry_db import EntryDB
 
 from flask.ext.login import current_user
 
-posts = Blueprint('posts', __name__)
+post = Blueprint('post', __name__)
 
-@posts.route("/new", methods=['POST'])
+@post.route("/new", methods=['GET', 'POST'])
 def new_post():
     """
     New posts page

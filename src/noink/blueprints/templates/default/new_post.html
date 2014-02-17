@@ -2,14 +2,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
   <head>
-    <title>{{ state.siteName }} | Login</title>
+    <title>{{ state.siteName }} | New Post</title>
     {% include 'common_header.html' %}
   </head>
   <body>
     {% include "page_head.html" %}
     <div class='container'><div class='well'>
-      <h2>New Post</h2>
-      {% include "post_form.html" %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h1 class="panel-title">New Post</h1>
+        </div>
+        <div class="panel-body">
+          {% include "post_form.html" %}
+        </div>
+        {% if entry is defined %}
+          <div class="panel panel-info">
+            <div class="panel-heading"><i>Preview</i></div>
+            <div class="panel-body">
+              {% include "entry_embed.html" %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
     </div></div>
   </body>
 </html>

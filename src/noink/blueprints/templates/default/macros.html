@@ -1,11 +1,19 @@
 {% macro nomacro_entryURL(entry)
-  %}{% if entry.url == none
-    %}/node/{{ entry.id }}{%
-  else
+  %}{% if entry.url is defined
     %}/{{ entry.url }}{%
+  else
+    %}/node/{{ entry.id }}{%
   endif %}
 {%- endmacro %}
 
 {% macro nomacro_tagURL(tag)
 %}/tag/{{tag.id}}{%-
 endmacro %}
+
+{% macro nomacro_placeholder(entry, attr, default)
+  %}{% if entry is defined
+    %}{{ entry[attr] }}{%
+  else
+    %}{{ default }}{%
+  endif %}
+{%- endmacro %}
