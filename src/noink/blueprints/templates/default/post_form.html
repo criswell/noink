@@ -1,0 +1,7 @@
+{% from "macros.html" import nomacro_placeholder %}
+<form action="" method=post>
+  <div class="form-group">
+    <label for="title">Page Title</label>
+    <input type="text" class="form-control" id="title" placeholder="{{ nomacro_placeholder(entry, 'title', 'Enter title')}}">
+  </div>
+</form>
