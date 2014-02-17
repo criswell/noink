@@ -6,10 +6,7 @@ Defines all the possible activity types.
 ##BOILERPLATE_COPYRIGHT_END
 '''
 
-# NOTE: The following list should not change order!
-# New items should always be added at end, and existing
-# items should not be re-ordered!
-__activities = [
+activities = [
     'new_post',
     'edit_post',
     'delete_post',
@@ -19,5 +16,12 @@ __activities = [
     'group_admin'
 ]
 
-activity_table = dict((v,k) for k,v in \
-    enumerate(__activities, start=ord('a')))
+def get_activity_dict(default=False):
+    '''
+    Returns a fresh dictionary for defining activities.
+
+    All values will be set to false by default.
+
+    @param default: The default value to set all activities to.
+    '''
+    return dict((i, default) for i in activities)
