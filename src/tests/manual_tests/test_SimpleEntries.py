@@ -8,7 +8,7 @@
 '''
 
 from tests.testMain import testMain
-from random import randint
+from random import randint, sample
 
 from entries import entries
 
@@ -25,6 +25,11 @@ class SimpleEntries:
         self.entryDB = EntryDB()
 
         u = self.userDB.add("criswell", "password", "Sam Hart")
+        u1 = self.userDB.add("charles", "password", "Charles Xavier")
+        u2 = self.userDB.add("leif", "password", "Lief Ericsson")
+        u3 = self.userDB.add("barf", "password", "Barfy Barferson")
+        u4 = self.userDB.add("squiddy", "password", "Squidward Tentacles")
+        editors = ['charles', 'leif', 'barf', 'squiddy']
         parents = []
         for e in entries:
             parent = None
@@ -37,6 +42,10 @@ class SimpleEntries:
 
                 if randint(0,5) > 2:
                     parents.append(entry)
+
+                if randint(0,5) > 2:
+                    for ed in sample(editors, randint(1,len(editors)-1)):
+                        self.entryDB.update_editor(ed, entry)
             except:
                 print "Dropping an entry due to some entryDB problem (likely duplicate URL"
                 print "because of random URL generation- Should be safe to ignore)\n"

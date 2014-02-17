@@ -7,7 +7,16 @@
      User Primary Group "{{ entry.author.primary_group.name }}"
      Entry ID "{{ entry.id }}"
   -->
-<i>{{ entry.date }}</i><br /><br />
+<i>{{ entry.date }}</i><br />
+{% if editors is not none %}
+<ul class="list-inline">
+  <li class='small'><b><i>Editors</i></b></li>
+  {% for i in editors %}
+    <li class='small'><i>{{ i.user.fullname }}</i></li>
+  {% endfor %}
+</ul>
+{% endif %}
+<br />
 {% if entry.html %}
   <p>{{ entry.entry|nofilter_breakclean|nofilter_newlines|safe }}</p>
 {% else %}

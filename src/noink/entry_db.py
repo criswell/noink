@@ -107,15 +107,17 @@ class EntryDB:
         if type(e) is IntType:
             entry = Entry.query.filter_by(id=e).first()
 
-        user = userDB().get_user(u)
-        editor = Editor.query.filter_by(entry_id=e.id).filter_by(user_id=user.id).first()
-        if editor is None:
-            editor = Editor(user, entry, now)
-            mainDB.session.add(editor)
-        else:
-            editor.date = now
+        users = UserDB().get_user(u)
+        if len(users) > 0:
+            user = users[0]
+            editor = Editor.query.filter_by(entry_id=e.id).filter_by(user_id=user.id).first()
+            if editor is None:
+                editor = Editor(user, entry, now)
+                mainDB.session.add(editor)
+            else:
+                editor.date = now
 
-        mainDB.session.commit()
+            mainDB.session.commit()
 
     def find_editors_by_entry(self, entry):
         '''
