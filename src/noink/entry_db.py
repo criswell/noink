@@ -8,7 +8,7 @@ import datetime
 from types import IntType, StringType, ListType
 
 from noink import mainDB
-from noink.data_models import Entry, Tag, TagMapping
+from noink.data_models import Entry, Tag, TagMapping, Editor
 from noink.pickler import PEntry, pickle, depickle
 from noink.event_log import EventLog
 from noink.exceptions import DuplicateURL
@@ -102,10 +102,20 @@ class EntryDB:
                   or a string representing the username.
         @param e: The entry. Can be an entry id or an entry object.
         '''
+        now = datetime.datetime.now()
         entry = e
         if type(e) is IntType:
             entry = Entry.query.filter_by(id=e).first()
 
+        user = userDB().get_user(u)
+        editor = Editor.query.filter_by(entry_id=e.id).filter_by(user_id=user.id).first()
+        if editor is None:
+            editor = Editor(user, entry, now)
+            mainDB.session.add(editor)
+        else:
+            editor.date = now
+
+        mainDB.session.commit()
 
     def find_by_URL(self, url):
         """
@@ -228,4 +238,3 @@ class EntryDB:
         mainDB.session.delete(entry)
         mainDB.session.commit()
         self.event_log.add('del_entry', 0, False, pickle(pe), entry.title)
-
