@@ -117,6 +117,20 @@ class EntryDB:
 
         mainDB.session.commit()
 
+    def find_editors_by_entry(self, entry):
+        '''
+        Given an entry, find all editors associated with it.
+
+        @param entry: The entry. Either an Entry object or entry id.
+
+        @return Array containing zero or more editors.
+        '''
+        eid = entry
+        if type(entry) is not IntType:
+            eid = entry.id
+
+        return Editor.query.filter_by(entry_id=eid).all()
+
     def find_by_URL(self, url):
         """
         Given a URL, find all entries associated with it.

@@ -1,5 +1,5 @@
 {% macro nomacro_entryURL(entry)
-  %}{% if entry.url is defined
+  %}{% if entry.url is defined and entry.url is not none
     %}/{{ entry.url }}{%
   else
     %}/node/{{ entry.id }}{%

@@ -22,6 +22,7 @@ def show_node(num, name):
     """
     entry = None
     url = None
+    editors = None
     if num < 0 and name:
         entry_db = EntryDB()
         try:
@@ -34,4 +35,12 @@ def show_node(num, name):
     if entry == None and url == None:
         abort(404)
 
-    return render_template('node.html', entry=entry, state=get_state())
+    try:
+        if entry is not None:
+            es = entry_db.find_editors_by_entry(entry.id)
+            if len(es) > 0:
+                editors = es
+    except:
+        editors = None
+
+    return render_template('node.html', entry=entry, editors=editors, state=get_state())
