@@ -48,15 +48,22 @@ class UserDB:
         '''
         return User.query.get(uid)
 
-    def get_user(self, uid):
+    def get_user(self, u):
         '''
-        Given a user id, returns the user object
+        Given user information, returns the user object
 
-        @param uid: Integer user id.
+        @param u: The user to find. Can be an integer uid, username string, or
+                  even a user object.
 
         @return the user objects found
         '''
-        return User.query.filter_by(id=uid)
+        users = [u]
+        if isinstance(u,IntType):
+            users = [self.find_user_by_id(u)]
+        elif isinstance(u, StringType):
+            users = self.find_user_by_name(u)
+
+        return users
 
     def add(self, username, password, fullname, bio="", group=None):
         '''

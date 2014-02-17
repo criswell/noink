@@ -12,6 +12,7 @@ from noink.data_models import Entry, Tag, TagMapping
 from noink.pickler import PEntry, pickle, depickle
 from noink.event_log import EventLog
 from noink.exceptions import DuplicateURL
+from noink.user_db import UserDB
 
 class EntryDB:
     __borg_state = {}
@@ -92,6 +93,19 @@ class EntryDB:
 
         mainDB.session.commit()
         tags = self.find_tags_by_entry(entry)
+
+    def update_editor(self, u, e):
+        '''
+        Given a user and an entry, update that entry's editors with that user.
+
+        @param u: The user who edited the entry. Can be a user object, a uid,
+                  or a string representing the username.
+        @param e: The entry. Can be an entry id or an entry object.
+        '''
+        entry = e
+        if type(e) is IntType:
+            entry = Entry.query.filter_by(id=e).first()
+
 
     def find_by_URL(self, url):
         """

@@ -165,6 +165,23 @@ class Entry(mainDB.Model):
     def __repr__(self):
         return "<Entry ID: %s, Title %s>" % (self.id, self.title)
 
+class Editor(mainDB.Model):
+    __tablename__ = 'editors'
+
+    id = mainDB.Column(mainDB.Integer, primary_key=True)
+    date = mainDB.Column(mainDB.DateTime())
+    user_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("user.id"))
+    user = mainDB.relationship("User")
+    entry_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey('entries.id'))
+
+    def __init__(self, author, entry, date):
+        self.date = date
+        self.entry_id = entry.id
+        self.user = author
+
+    def __repr__(self):
+        return "<Editor '%s' : Entry %s>" % (self.user_id, self.entry_id)
+
 class Role(mainDB.Model):
     __tablename__ = 'roles'
 
