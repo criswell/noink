@@ -2,6 +2,12 @@
 <form action="" method=post>
   <div class="form-group">
     <label for="title">Page Title</label>
-    <input type="text" class="form-control" id="title" placeholder="{{ nomacro_placeholder(entry, 'title', 'Enter title')}}">
+    <input type="text" class="form-control" id="title" 
+      placeholder="{{ nomacro_placeholder(entry, 'title', 'Enter title')}}">
+    <label for="url">Custom URL</label>
+    <input type="text" class="form-control" id="url"
+      placeholder="{{ nomacro_placeholder(entry, 'url', '')}}">
+    <label for="tags">Tags</label>
+    <input type="text" class="form-control" id="tags">
   </div>
 </form>
