@@ -17,5 +17,9 @@
       value="{% if entry is defined %}{% if entry.static
       %}yes{% endif %}{% else %}no{% endif %}">Static
     </label>
+    <textarea class="form-control" rows="15"
+      name="entry" placeholder="{%
+        if entry is defined %}{{ entry.entry|safe
+        }}{% endif %}"></textarea>
   </div>
 </form>
