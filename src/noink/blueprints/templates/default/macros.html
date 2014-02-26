@@ -34,3 +34,10 @@ endmacro %}
     </div>
 </div>
 {%- endmacro %}
+
+{% macro nomacro_tagdisplay(entry)
+-%}{% if entry is defined
+%}{% for tm in entry.tagmap
+  %}{{ tm.tag.tag }},{%
+endfor %}{% endif
+%}{%- endmacro %}

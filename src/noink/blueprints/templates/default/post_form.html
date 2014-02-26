@@ -1,4 +1,4 @@
-{% from "macros.html" import nomacro_placeholder, nomacro_flipper %}
+{% from "macros.html" import nomacro_placeholder, nomacro_flipper, nomacro_tagdisplay %}
 <form action="" method=post>
   <div class="form-group">
     <label for="title">Page Title</label>
@@ -10,7 +10,12 @@
     {% endcall %}
     {% call nomacro_flipper('tags', '<label for="tags">Tags</label>') %}
     <input type="text" class="form-control" id="tags"
-      placeholder="{{ nomacro_placeholder(tags, 'tags', '')}}">
+      placeholder="{{ nomacro_tagdisplay(entry) }}">
     {% endcall %}
+    <label>
+      <input type="checkbox" name="static"
+      value="{% if entry is defined %}{% if entry.static
+      %}yes{% endif %}{% else %}no{% endif %}">Static
+    </label>
   </div>
 </form>
