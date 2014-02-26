@@ -41,3 +41,16 @@ endmacro %}
   %}{{ tm.tag.tag }},{%
 endfor %}{% endif
 %}{%- endmacro %}
+
+{% macro nomacro_checkbox(entry, attr, default)
+  %}{% if entry is defined
+      %}{% if entry[attr]
+          %}yes{%
+        else
+          %}no{%
+        endif
+    %}{%
+    else
+        %}{{ default }}{%
+    endif
+%}{%- endmacro %}

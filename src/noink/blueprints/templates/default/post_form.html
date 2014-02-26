@@ -1,4 +1,5 @@
-{% from "macros.html" import nomacro_placeholder, nomacro_flipper, nomacro_tagdisplay %}
+{% from "macros.html" import nomacro_placeholder, nomacro_flipper, 
+nomacro_tagdisplay, nomacro_checkbox %}
 <form action="" method=post>
   <div class="form-group">
     <label for="title">Page Title</label>
@@ -14,12 +15,12 @@
     {% endcall %}
     <label>
       <input type="checkbox" name="static"
-      value="{% if entry is defined %}{% if entry.static
-      %}yes{% endif %}{% else %}no{% endif %}">Static
+      value="{{ nomacro_checkbox(entry, 'static', 'no')}}">Static
     </label>
     <textarea class="form-control" rows="15"
       name="entry" placeholder="{%
         if entry is defined %}{{ entry.entry|safe
         }}{% endif %}"></textarea>
+    <input type=submit value='Submit'>
   </div>
 </form>
