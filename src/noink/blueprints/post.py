@@ -26,6 +26,6 @@ def new_post():
 
     if current_user.is_authenticated() and current_user.is_active():
         is_admin = user_db.in_group(current_user, mainApp.config['ADMIN_GROUP'])
-        #
+        all_groups = user_db.get_users_groups(current_user)
 
     return render_template('new_post.html', state=get_state())

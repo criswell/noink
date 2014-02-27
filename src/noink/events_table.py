@@ -21,5 +21,6 @@ event_table = {
     'del_user' : "User '%s' deleted",
     'add_tag' : "Tag '%s' added",
     'update_siteconf' : "Site config updated to version '%s'",
-    'update_sitename' : "Site name updated to '%s'"
+    'update_sitename' : "Site name updated to '%s'",
+    'add_role' : "Role '%s' added"
 }
