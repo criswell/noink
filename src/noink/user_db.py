@@ -9,7 +9,7 @@ from noink import mainDB, mainCrypt, loginManager, mainApp
 from noink.data_models import User, Group, GroupMapping
 from noink.event_log import EventLog
 
-from noink.exceptions import DuplicateUser, DuplicateGroup, UserNotFound
+from noink.exceptions import DuplicateUser, DuplicateGroup, UserNotFound, UserHasNoGroups
 
 from flask.ext.login import login_user, logout_user
 
@@ -170,6 +170,32 @@ class UserDB:
             group = Group.query.filter_by(name=g).first()
 
         return group
+
+    def get_users_groups(self, u):
+        '''
+        Given a user identifier, return the groups it is a member of.
+
+        @param u: The user. Can be an integer for the uid, a string for the
+                  username, or a user object
+
+        @return A list of groups the user is a member of.
+        '''
+        user = u
+        if type(u) is IntType:
+            user = User.query.filter_by(id=u).first()
+        elif type(u) is StringType:
+            user = User.query.filter_by(name=u).first()
+
+        gms = GroupMapping.filter_by(user=user)
+
+        if gms is None:
+            raise UserHasNoGroups("%s does not have any group mappings! Every user should be a member of at least one group!" % user)
+
+        groups = []
+        for m in gms:
+            groups.append(m.group)
+
+        return groups
 
     def update_primary(self, u, g):
         '''
