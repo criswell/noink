@@ -217,7 +217,7 @@ class RoleMapping(mainDB.Model):
         self.group = group
 
     def __repr__(self):
-        return "<Role %s : User %s : Group %s>" % (self.role, 
+        return "<Role %s : User %s : Group %s>" % (self.role,
             self.user, self.group)
 
 class SiteConfig(mainDB.Model):
