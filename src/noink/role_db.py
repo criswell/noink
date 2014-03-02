@@ -65,5 +65,6 @@ class RoleDB:
         role = Role(name, description, pact, now)
         mainDB.session.add(role)
         mainDB.session.commit()
-        self.eventLog.add('add_role', )
+        blob = pickle({'id' : role.id})
+        self.eventLog.add('add_role', None, True, blob)
         return role
