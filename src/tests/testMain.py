@@ -42,7 +42,9 @@ class testMain(object):
             'BREAK_IDENTIFIER = "<!--break-->"\n',
             'LINEBREAK_TAG = "<br />"\n',
             'SITE_NAME = "Johnny\'s speedboat factory"\n',
-            'SITE_ADMIN_EMAIL = "foo@bar.com"\n'
+            'SITE_ADMIN_EMAIL = "foo@bar.com"\n',
+            'ADMIN_ROLE_NAME = "admin"\n',
+            'ADMIN_ROLE_DESC = "Test admin role"\n'
         ]
 
         with open(self.TEST_CONF_FILE, 'w') as f:

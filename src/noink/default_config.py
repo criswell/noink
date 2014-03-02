@@ -26,6 +26,17 @@ ADMIN_PASSWD = "admin"
 # group in the database!
 ADMIN_GROUP = "admin"
 
+# The name of the administration role - Note that this field SHOULD NOT be
+# changed after the database has been created, as it will not update the admin
+# role in the database!
+ADMIN_ROLE_NAME = "admin"
+
+# The descriptiont for the administrative role - While it doesn't matter,
+# necessarily, whether you change this post install or not, changing it isn't
+# advised as it will have zero effect on the description in the database. If
+# you wish to change it after, do so through the admin interface.
+ADMIN_ROLE_DESC = "The full, site administration, role."
+
 # The name of the default group. This is the group that all users start out in
 # as their primary, unless changed. Note that this field SHOULD NOT be
 # changed after the database has been created, as it will not update the

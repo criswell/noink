@@ -13,6 +13,7 @@ from noink.activity_table import activities as all_activities
 from noink.activity_table import get_activity_dict
 from noink.exceptions import DuplicateRole
 from noink.event_log import EventLog
+from noink.pickler import pickle, depickle
 
 class RoleDB:
     __borg_state = {}
@@ -60,7 +61,8 @@ class RoleDB:
             activities = get_activity_dict(False)
 
         now = datetime.datetime.now()
-        role = Role(name, description, activities, now)
+        pact = pickle(activities)
+        role = Role(name, description, pact, now)
         mainDB.session.add(role)
         mainDB.session.commit()
         self.eventLog.add('add_role', )
