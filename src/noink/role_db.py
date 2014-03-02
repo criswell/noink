@@ -6,6 +6,7 @@
 """
 
 import datetime
+from types import IntType, StringType
 
 from noink import mainDB
 from noink.data_models import Role, RoleMapping
@@ -40,6 +41,16 @@ class RoleDB:
         '''
         return Role.query.filter_by(name=rolename).first()
 
+    def find_role_by_id(self, rid):
+        '''
+        Find a role by its role ID.
+
+        @param rid: The role ID to find.
+
+        @return The role object found.
+        '''
+        return Role.query.get(rid)
+
     def add_role(self, name, description, activities=None):
         '''
         Add a new role to the DB.
@@ -69,3 +80,22 @@ class RoleDB:
         # XXX - Do we want to use the user ID of the person adding this role?
         self.eventLog.add('add_role', None, True, blob)
         return role
+
+    def get_activities(self, role):
+        '''
+        Given a role, return the activities that role can do.
+
+        @param role: The role to use. Can be a role object, a role.id, or a
+                     role name.
+
+        @return Decoded/decoupled activity dictionary
+        '''
+
+        r = role
+        if type(role) is IntType:
+            r = self.find_role_by_id(role)
+        elif type(role) is StringType:
+            r = self.find_role_by_name(role)
+
+        return depickle(role.activities)
+
