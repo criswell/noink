@@ -10,6 +10,7 @@ from types import IntType, StringType
 
 from noink import mainDB
 from noink.data_models import Role, RoleMapping
+from noink.user_db import UserDB
 from noink.activity_table import activities as all_activities
 from noink.activity_table import get_activity_dict
 from noink.exceptions import DuplicateRole
@@ -98,4 +99,24 @@ class RoleDB:
             r = self.find_role_by_name(role)
 
         return depickle(role.activities)
+
+    def assign_role(self, user, group, role):
+        '''
+        Given a user, group and role, assign the user as the role when part of
+        the group.
+
+        @param user: The user. Can be user object, uid, or string name of the
+                     user.
+        @param group: The group. Can be group object, gid, or string name.
+        @param role: The role. Can be role object, rid, or stringe name.
+        '''
+        userDB = UserDB()
+        u = userDB.get_user(user)[0]
+        g = userDB.get_group(group)
+        r = role
+        if type(role) is IntType:
+            r = self.find_role_by_id(role)
+        elif type(role) is StringType:
+            r = self.find_role_by_name(role)
+
 
