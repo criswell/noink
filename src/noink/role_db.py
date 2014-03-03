@@ -146,4 +146,3 @@ class RoleDB:
             rm = rm.filter_by(group=g)
 
         return rm
-

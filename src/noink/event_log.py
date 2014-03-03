@@ -46,7 +46,6 @@ class EventLog:
         else:
             raise KeyError('%s not in event_table!' % name)
 
-
     def get_next_unprocessed(self):
         """
         Returns the next unprocessed log entry
