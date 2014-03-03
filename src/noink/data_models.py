@@ -142,7 +142,7 @@ class Entry(mainDB.Model):
     group = mainDB.relationship('Group')
     weight = mainDB.Column(mainDB.Integer)
     static = mainDB.Column(mainDB.Boolean)
-    url = mainDB.Column(mainDB.String(32))
+    url = mainDB.Column(mainDB.String(64))
     tagmap = mainDB.relationship('TagMapping', backref=mainDB.backref('entries'))
     html = mainDB.Column(mainDB.Boolean)
     parent_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("entries.id"))
