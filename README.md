@@ -17,10 +17,18 @@ start firming up.
 
 # Setting up requirements
 
-   pip install flask Flask-SQLAlchemy flask-bcrypt flask-login loremipsum \
-               Flask-Babel
+For general installation, use the Python requirements found in
 
-Note: loremipsum is only required for the tests.
+   requirements.txt
+
+For development and testing, additionally use those found in
+
+   requirements-dev.txt
+
+These can be installed via pip using the following commands:
+
+   $ pip install -r requirements.txt
+   $ pip install -r requirements-dev.txt
 
 # Obtaining and Developing Noink
 
