@@ -28,7 +28,7 @@ def setup_DB():
     roleDB = RoleDB()
     mainDB.create_all()
     event_log.add('db_setup', -1, True)
-    userDB.add_group(mainApp.config['DEFAULT_GROUP'])
+    default_group = userDB.add_group(mainApp.config['DEFAULT_GROUP'])
     user = userDB.add(mainApp.config['ADMIN_USER'], mainApp.config["ADMIN_PASSWD"],
         mainApp.config['ADMIN_FULLNAME'])
     admin_group = userDB.add_group(mainApp.config['ADMIN_GROUP'], user.id)
@@ -36,8 +36,9 @@ def setup_DB():
         raise SetupError('Could not assign the admin user "%s" primary group to the admin group "%s"!' %
             (user, admin_group))
 
-    # By default, the admin is part of the top level group
+    # By default, the admin is part of the top level group as well as default
     top_level_group = userDB.add_group(mainApp.config['TOP_LEVEL_GROUP'], user.id)
+    userDB.add_to_group(user, default_group)
 
     admin_role = get_activity_dict(True)
     role = roleDB.add_role(
@@ -47,6 +48,7 @@ def setup_DB():
 
     roleDB.assign_role(user, mainApp.config['ADMIN_GROUP'], role)
     roleDB.assign_role(user, mainApp.config['TOP_LEVEL_GROUP'], role)
+    roleDB.assign_role(user, mainApp.config['DEFAULT_GROUP'], role)
 
     sc.add(mainApp.noink_version, mainApp.config['SITE_NAME'], mainApp.config['SITE_ADMIN_EMAIL'])
 

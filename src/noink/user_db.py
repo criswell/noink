@@ -148,7 +148,7 @@ class UserDB:
 
         exist = GroupMapping.query.filter_by(user=user).filter_by(group=group).all()
 
-        if exists == []:
+        if exist == []:
             gm = GroupMapping(group, user)
             mainDB.session.add(gm)
 
