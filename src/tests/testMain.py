@@ -44,7 +44,8 @@ class testMain(object):
             'SITE_NAME = "Johnny\'s speedboat factory"\n',
             'SITE_ADMIN_EMAIL = "foo@bar.com"\n',
             'ADMIN_ROLE_NAME = "admin"\n',
-            'ADMIN_ROLE_DESC = "Test admin role"\n'
+            'ADMIN_ROLE_DESC = "Test admin role"\n',
+            'TOP_LEVEL_GROUP = "top"\n'
         ]
 
         with open(self.TEST_CONF_FILE, 'w') as f:

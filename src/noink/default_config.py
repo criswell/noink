@@ -43,6 +43,12 @@ ADMIN_ROLE_DESC = "The full, site administration, role."
 # group in the database!
 DEFAULT_GROUP = 'default'
 
+# The top level group is the group that someone must have 'new_post' access
+# to in order to make posts at the top level of the site - Note that this is
+# yet another field which SHOULD NOT be changed after the database has been
+# created.
+TOP_LEVEL_GROUP = 'top'
+
 # The path(s) to the HTML templates. Can be a relative path, or absolute.
 HTML_TEMPLATES = [
     "blueprints/templates/default"

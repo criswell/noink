@@ -29,4 +29,3 @@ def login_page():
         else:
             flash(_(u'Problem logging in.'), 'error')
     return render_template('login.html', state=get_state())
-

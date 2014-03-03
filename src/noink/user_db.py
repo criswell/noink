@@ -186,7 +186,7 @@ class UserDB:
         elif type(u) is StringType:
             user = User.query.filter_by(name=u).first()
 
-        gms = GroupMapping.filter_by(user=user)
+        gms = GroupMapping.query.filter_by(user=user)
 
         if gms is None:
             raise UserHasNoGroups("%s does not have any group mappings! Every user should be a member of at least one group!" % user)
