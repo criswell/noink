@@ -145,4 +145,4 @@ class RoleDB:
             g = userDB.get_group(group)
             rm = rm.filter_by(group=g)
 
-        return rm
+        return rm.all()

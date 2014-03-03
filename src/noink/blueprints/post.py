@@ -27,13 +27,13 @@ def new_post():
     role_db = RoleDB()
 
     if current_user.is_authenticated() and current_user.is_active():
-        is_admin = user_db.in_group(current_user, mainApp.config['ADMIN_GROUP'])
-        all_groups = user_db.get_users_groups(current_user)
+        #is_admin = user_db.in_group(current_user, mainApp.config['ADMIN_GROUP'])
+        all_groups = set(user_db.get_users_groups(current_user))
         all_roles = role_db.get_roles(current_user)
-        import pdb; pdb.set_trace()
-        # Find the user's available groups for posting
-        #avail_groups = []
-        #for role_map in all_roles:
+        role_groups = set(m.group for m in all_roles)
 
+        # The available groups are ones which they are both a part of AND which
+        # they have a role in!
+        avail_groups = list(all_groups & role_groups)
 
-    return render_template('new_post.html', state=get_state())
+    return render_template('new_post.html', state=get_state(), groups=avail_groups)
