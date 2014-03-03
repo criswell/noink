@@ -2,25 +2,45 @@
 nomacro_tagdisplay, nomacro_checkbox %}
 <form action="" method=post>
   <div class="form-group">
-    <label for="title">Page Title</label>
+
+    <!-- TITLE -->
+    <label for="title">Page Title <small>(by {{ current_user.fullname }})</small></label>
     <input type="text" class="form-control" id="title"
       placeholder="{{ nomacro_placeholder(entry, 'title', 'Enter title')}}">
+
+    <!-- GROUP -->
+    <label for='group'>Group Ownership</label>
+    <select class="form-control" id="group">
+      {% for g in groups %}
+        <option>{{ g.name }}</option>
+      {% endfor %}
+    </select>
+
+    <!-- URL -->
     {% call nomacro_flipper('url', '<label for="url">Custom URL</label>') %}
     <input type="text" class="form-control" id="url"
       placeholder="{{ nomacro_placeholder(entry, 'url', '') }}">
     {% endcall %}
+
+    <!-- TAGS -->
     {% call nomacro_flipper('tags', '<label for="tags">Tags</label>') %}
     <input type="text" class="form-control" id="tags"
       placeholder="{{ nomacro_tagdisplay(entry) }}">
     {% endcall %}
+
+    <!-- STATIC -->
     <label>
       <input type="checkbox" name="static"
       value="{{ nomacro_checkbox(entry, 'static', 'no')}}">Static
     </label>
+
+    <!-- TEXTAREA -->
     <textarea class="form-control" rows="15"
       name="entry" placeholder="{%
         if entry is defined %}{{ entry.entry|safe
         }}{% endif %}"></textarea>
+
+    <!-- SUBMIT -->
     <input type=submit value='Submit'>
   </div>
 </form>

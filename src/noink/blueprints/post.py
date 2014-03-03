@@ -5,7 +5,7 @@
 
 """
 
-from flask import Blueprint, render_template, abort
+from flask import Blueprint, render_template, abort, request
 from jinja2 import TemplateNotFound
 
 from noink import mainApp, loginManager, _
@@ -34,6 +34,20 @@ def new_post():
 
         # The available groups are ones which they are both a part of AND which
         # they have a role in!
-        avail_groups = list(all_groups & role_groups)
+        avail_groups = all_groups & role_groups
 
-    return render_template('new_post.html', state=get_state(), groups=avail_groups)
+        groups = []
+        if current_user.primary_group in avail_groups:
+            # Make sure primary group is first in the list, if it's there
+            avail_groups.remove(current_user.primary_group)
+            groups.append(current_user.primary_group)
+
+        groups.extend(avail_groups)
+        import pdb; pdb.set_trace()
+        parent_group = user_db.get_group(mainApp.config['TOP_LEVEL_GROUP'])
+
+        return render_template('new_post.html', state=get_state(), groups=groups)
+
+    return render_template('noink_message.html', state=get_state(),
+        title=_(u'Not authorized'),
+        message=_(u'You must be logged in as a user to access this page!'))
