@@ -19,10 +19,12 @@
       {% endfor %}
       </ul>
       <p class='text-right'>
-      <strong>Tags:</strong>
-      {% for tm in entry.tagmap %}
-      <a href="{{ nomacro_tagURL(tm.tag) }}" class="btn btn-info">{{ tm.tag.tag }}</a>
-      {% endfor %}
+      {% if entry.tagmap|length > 0 %}
+        <strong>Tags:</strong>
+        {% for tm in entry.tagmap %}
+        <a href="{{ nomacro_tagURL(tm.tag) }}" class="btn btn-info">{{ tm.tag.tag }}</a>
+        {% endfor %}
+      {% endif %}
       </p>
     </div>
   </body>
