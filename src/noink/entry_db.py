@@ -69,7 +69,52 @@ class EntryDB:
             mainDB.session.commit()
 
         pe = PEntry(e)
+        self.event_log.add('add_entry', author.id, False, pickle(pe), e.title)
+        return e
+
+    def add_entry_object(self, entry):
+        """
+        Given an entry object, add it to the system.
+
+        @param entry: The entry object to add.
+        """
+        mainDB.session.add(entry)
+        mainDB.session.commit()
+        pe = PEntry(entry)
         self.event_log.add('add_entry', author.id, False, pickle(pe), entry.title)
+
+    def create_temp_entry(self, title, entry, author, group=None, weight=0, url=None, html=False, parent=None, static=False):
+        '''
+        Create a temporary entry object. Will not add it to the database.
+
+        Will not perform any checks, it will just add this entry. It's not
+        this method's responsibility to check whether or not your entry is a
+        duplicate. The one check it does do is to verify whether a URL is
+        unique or not.
+
+        @param title: The title of the post.
+        @param entry: The entry of the post.
+        @param author: The user object for the post's author
+        @param group: The (optional) group this post will belong to. If None,
+                      use the author's primary group
+        @param url: The (optional) URL for this post.
+        @param html: Flag detailing whether this post is in HTML or not
+        @param parent: The (optional) parent for this post.
+        @param static: (Optional) Whether or not the post is static.
+
+        @return New entry object
+        '''
+        now = datetime.datetime.now()
+
+        if group is None:
+            group = author.primary_group
+
+        e = Entry(title, author, group, now, entry, weight, url, html, parent, static)
+
+        if type(url) is StringType:
+            if self.find_by_URL(url):
+                raise DuplicateURL('The URL "%s" was already found in the UrlDB!' % url)
+
         return e
 
     def add_tag(self, tags, entry):
