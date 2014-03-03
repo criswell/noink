@@ -26,7 +26,7 @@ Note: loremipsum is only required for the tests.
 
 Noink's primary repo is currently:
 
-* https://bitbucket.org/criswell/noink[https://bitbucket.org/criswell/noink]
+* [bitbucket.org/criswell/noink](https://bitbucket.org/criswell/noink)
 
 While mirrors of it may exist on Github, my personal repos and in a CVS repo on
 SourceForge, these may or may not be current. When in doubt, use the Bitbucket
