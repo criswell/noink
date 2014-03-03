@@ -19,16 +19,16 @@ start firming up.
 
 For general installation, use the Python requirements found in
 
-   requirements.txt
+    requirements.txt
 
 For development and testing, additionally use those found in
 
-   requirements-dev.txt
+    requirements-dev.txt
 
 These can be installed via pip using the following commands:
 
-   $ pip install -r requirements.txt
-   $ pip install -r requirements-dev.txt
+    $ pip install -r requirements.txt
+    $ pip install -r requirements-dev.txt
 
 # Obtaining and Developing Noink
 
