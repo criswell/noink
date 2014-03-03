@@ -127,3 +127,17 @@ class RoleDB:
 
         mainDB.session.commit()
 
+    def get_roles(self, user, group=None):
+        '''
+        Get the roles a given user has. Optionally, limit by group.
+
+        @param user: The user. Can be user object, uid, or string name.
+        @param group: Group to limit by. Can be group object, gid, or string
+                      name.
+
+        @return A list of roles.
+        '''
+        userDB = UserDB()
+        u = userDB.get_user(user)[0]
+        g = userDB.get_group(group)
+
