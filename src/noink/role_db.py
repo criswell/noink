@@ -16,6 +16,7 @@ from noink.activity_table import get_activity_dict
 from noink.exceptions import DuplicateRole
 from noink.event_log import EventLog
 from noink.pickler import pickle, depickle
+from noink.exceptions import NoRolesFound
 
 class RoleDB:
     __borg_state = {}
@@ -135,9 +136,14 @@ class RoleDB:
         @param group: Group to limit by. Can be group object, gid, or string
                       name.
 
-        @return A list of roles.
+        @return A list of role mappings.
         '''
         userDB = UserDB()
         u = userDB.get_user(user)[0]
-        g = userDB.get_group(group)
+        rm = RoleMapping.filter_by(user=u)
+        if group is not None:
+            g = userDB.get_group(group)
+            rm = rm.filter_by(group=g)
+
+        return rm
 
