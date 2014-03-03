@@ -79,7 +79,7 @@ class RoleDB:
         mainDB.session.commit()
         blob = pickle({'id' : role.id})
         # XXX - Do we want to use the user ID of the person adding this role?
-        self.eventLog.add('add_role', None, True, blob)
+        self.eventLog.add('add_role', -1, True, blob)
         return role
 
     def get_activities(self, role):
