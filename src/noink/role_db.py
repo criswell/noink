@@ -140,7 +140,7 @@ class RoleDB:
         '''
         userDB = UserDB()
         u = userDB.get_user(user)[0]
-        rm = RoleMapping.filter_by(user=u)
+        rm = RoleMapping.query.filter_by(user=u)
         if group is not None:
             g = userDB.get_group(group)
             rm = rm.filter_by(group=g)
