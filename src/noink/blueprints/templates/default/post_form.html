@@ -5,12 +5,12 @@ nomacro_tagdisplay, nomacro_checkbox %}
 
     <!-- TITLE -->
     <label for="title">Page Title <small>(by {{ current_user.fullname }})</small></label>
-    <input type="text" class="form-control" id="title"
+    <input type="text" class="form-control" name="title"
       placeholder="{{ nomacro_placeholder(entry, 'title', 'Enter title')}}">
 
     <!-- GROUP -->
     <label for='group'>Group Ownership</label>
-    <select class="form-control" id="group">
+    <select class="form-control" name="group">
       {% for g in groups %}
         <option>{{ g.name }}</option>
       {% endfor %}
@@ -18,13 +18,13 @@ nomacro_tagdisplay, nomacro_checkbox %}
 
     <!-- URL -->
     {% call nomacro_flipper('url', '<label for="url">Custom URL</label>') %}
-    <input type="text" class="form-control" id="url"
+    <input type="text" class="form-control" name="url"
       placeholder="{{ nomacro_placeholder(entry, 'url', '') }}">
     {% endcall %}
 
     <!-- TAGS -->
     {% call nomacro_flipper('tags', '<label for="tags">Tags</label>') %}
-    <input type="text" class="form-control" id="tags"
+    <input type="text" class="form-control" name="tags"
       placeholder="{{ nomacro_tagdisplay(entry) }}">
     {% endcall %}
 
@@ -41,6 +41,7 @@ nomacro_tagdisplay, nomacro_checkbox %}
         }}{% endif %}"></textarea>
 
     <!-- SUBMIT -->
-    <input type=submit value='Submit'>
+    <input type='submit' name='submit' value='Submit'>
+    <input type='submit' name='preview' value='Preview'>
   </div>
 </form>

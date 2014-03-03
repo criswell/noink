@@ -12,7 +12,11 @@ endmacro %}
 
 {% macro nomacro_placeholder(entry, attr, default)
   %}{% if entry is defined
-    %}{{ entry[attr] }}{%
+    %}{% if entry is none
+      %}{{ default }}{%
+    else
+      %}{{ entry[attr] }}{%
+    endif %}{%
   else
     %}{{ default }}{%
   endif %}

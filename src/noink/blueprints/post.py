@@ -54,8 +54,10 @@ def new_post():
             parent_group = user_db.get_group(mainApp.config['TOP_LEVEL_GROUP'])
 
         if parent_group in avail_groups:
-
-            return render_template('new_post.html', state=get_state(), groups=groups)
+            entry = None
+            if request.method == "POST":
+                import pdb; pdb.set_trace()
+            return render_template('new_post.html', state=get_state(), groups=groups, entry=entry)
         else:
             return render_template('noink_message.html', state=get_state(),
                 title=_(u'Not authorized'),

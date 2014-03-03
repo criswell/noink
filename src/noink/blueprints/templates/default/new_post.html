@@ -15,7 +15,7 @@
         <div class="panel-body">
           {% include "post_form.html" %}
         </div>
-        {% if entry is defined %}
+        {% if entry is defined and entry is not none %}
           <div class="panel panel-info">
             <div class="panel-heading"><i>Preview</i></div>
             <div class="panel-body">
