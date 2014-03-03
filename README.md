@@ -27,8 +27,8 @@ For development and testing, additionally use those found in
 
 These can be installed via pip using the following commands:
 
-    $ pip install -r requirements.txt
-    $ pip install -r requirements-dev.txt
+    pip install -r requirements.txt
+    pip install -r requirements-dev.txt
 
 # Obtaining and Developing Noink
 
