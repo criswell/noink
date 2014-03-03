@@ -51,7 +51,12 @@ def new_post():
         if parent_group is None:
             parent_group = user_db.get_group(mainApp.config['TOP_LEVEL_GROUP'])
 
-        return render_template('new_post.html', state=get_state(), groups=groups)
+        if parent_group in avail_groups:
+            return render_template('new_post.html', state=get_state(), groups=groups)
+        else:
+            return render_template('noink_message.html', state=get_state(),
+                title=_(u'Not authorized'),
+                message=_(u'You are not authorized to post here!'))
 
     return render_template('noink_message.html', state=get_state(),
         title=_(u'Not authorized'),
