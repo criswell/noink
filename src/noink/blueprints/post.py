@@ -41,10 +41,15 @@ def new_post():
             # Make sure primary group is first in the list, if it's there
             avail_groups.remove(current_user.primary_group)
             groups.append(current_user.primary_group)
-
         groups.extend(avail_groups)
-        import pdb; pdb.set_trace()
-        parent_group = user_db.get_group(mainApp.config['TOP_LEVEL_GROUP'])
+
+        parent_group = None
+        if request.values.has_key('parent'):
+            parent_group = user_db.get_group(request.values['parent'])
+
+        # If everything else fails, we default to the top level
+        if parent_group is None:
+            parent_group = user_db.get_group(mainApp.config['TOP_LEVEL_GROUP'])
 
         return render_template('new_post.html', state=get_state(), groups=groups)
 
