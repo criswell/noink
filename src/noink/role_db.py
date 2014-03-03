@@ -119,4 +119,11 @@ class RoleDB:
         elif type(role) is StringType:
             r = self.find_role_by_name(role)
 
+        exist = RoleMapping.query.filter_by(user=u).filter_by(group=g).filter_by(role=r).all()
+
+        if exist == []:
+            rm = RoleMapping(r, u, g)
+            mainDB.session.add(rm)
+
+        mainDB.session.commit()
 

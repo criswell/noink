@@ -198,7 +198,7 @@ class Role(mainDB.Model):
         self.date_added = date_added
 
     def __repr__(self):
-        return "<Role ID: '%s, Name '%s'" % (self.id, self.name)
+        return "<Role ID: '%s, Name '%s'>" % (self.id, self.name)
 
 class RoleMapping(mainDB.Model):
     __tablename__ = 'rolemap'

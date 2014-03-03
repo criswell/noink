@@ -32,10 +32,12 @@ def setup_DB():
     userDB.add_group(mainApp.config['ADMIN_GROUP'], user.id)
 
     admin_role = get_activity_dict(True)
-    roleDB.add_role(
+    role = roleDB.add_role(
             mainApp.config['ADMIN_ROLE_NAME'],
             mainApp.config['ADMIN_ROLE_DESC'],
             admin_role)
+
+    roleDB.assign_role(user, mainApp.config['ADMIN_GROUP'], role)
 
     sc.add(mainApp.noink_version, mainApp.config['SITE_NAME'], mainApp.config['SITE_ADMIN_EMAIL'])
 
