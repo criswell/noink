@@ -18,6 +18,24 @@ from flask.ext.login import current_user
 
 post = Blueprint('post', __name__)
 
+def process_entry_object(parent):
+    '''
+    Return an entry object. Does not add to db
+    '''
+    user_db = UserDB()
+    entry_db = EntryDB()
+    group_used = user_db.get_group(request.form.get('group', None))
+    return entry_db.create_temp_entry(
+        request.form.get('title', ''),
+        request.form.get('entry', ''),
+        current_user,
+        group_used,
+        0, # FIXME - Currently unsupported
+        request.form.get('url', None),
+        request.form.get('html', False),
+        parent,
+        request.form.get('static', False))
+
 @post.route("/new", methods=['GET', 'POST'])
 def new_post():
     """
@@ -57,18 +75,8 @@ def new_post():
         if parent_group in avail_groups:
             entry = None
             if request.method == "POST":
-                group_used = user_db.get_group(request.form.get('group', None))
-                if "preview" in request.form:
-                    entry = entry_db.create_temp_entry(
-                            request.form.get('title', ''),
-                            request.form.get('entry', ''),
-                            current_user,
-                            group_used,
-                            0, # FIXME - Currently unsupported
-                            request.form.get('url', None),
-                            request.form.get('html', False),
-                            parent,
-                            request.form.get('static', False))
+                entry = process_entry_object(parent)
+                #if "preview" in request.form:
             return render_template('new_post.html', state=get_state(), groups=groups, entry=entry)
         else:
             return render_template('noink_message.html', state=get_state(),
