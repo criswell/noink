@@ -5,7 +5,8 @@
 
 """
 
-from flask import Blueprint, render_template, abort, request
+from flask import Blueprint, render_template, abort, request, redirect, \
+        url_for
 from jinja2 import TemplateNotFound
 
 from noink import mainApp, loginManager, _
@@ -76,7 +77,9 @@ def new_post():
             entry = None
             if request.method == "POST":
                 entry = process_entry_object(parent)
-                #if "preview" in request.form:
+                if "submit" in request.form:
+                    entry_db.add_entry_object(entry)
+                    return redirect(url_for('node.show_node', num=entry.id))
             return render_template('new_post.html', state=get_state(), groups=groups, entry=entry)
         else:
             return render_template('noink_message.html', state=get_state(),

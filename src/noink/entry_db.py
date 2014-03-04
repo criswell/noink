@@ -81,7 +81,7 @@ class EntryDB:
         mainDB.session.add(entry)
         mainDB.session.commit()
         pe = PEntry(entry)
-        self.event_log.add('add_entry', author.id, False, pickle(pe), entry.title)
+        self.event_log.add('add_entry', entry.author.id, False, pickle(pe), entry.title)
 
     def create_temp_entry(self, title, entry, author, group=None, weight=0, url=None, html=False, parent=None, static=False):
         '''
