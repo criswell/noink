@@ -6,7 +6,7 @@ nomacro_tagdisplay, nomacro_checkbox %}
     <!-- TITLE -->
     <label for="title">Page Title <small>(by {{ current_user.fullname }})</small></label>
     <input type="text" class="form-control" name="title"
-      placeholder="{{ nomacro_placeholder(entry, 'title', 'Enter title')}}">
+      {{ nomacro_placeholder(entry, 'title', 'Enter title')}}>
 
     <!-- GROUP -->
     <label for='group'>Group Ownership</label>
@@ -19,13 +19,13 @@ nomacro_tagdisplay, nomacro_checkbox %}
     <!-- URL -->
     {% call nomacro_flipper('url', '<label for="url">Custom URL</label>') %}
     <input type="text" class="form-control" name="url"
-      placeholder="{{ nomacro_placeholder(entry, 'url', '') }}">
+      {{ nomacro_placeholder(entry, 'url', '') }}>
     {% endcall %}
 
     <!-- TAGS -->
     {% call nomacro_flipper('tags', '<label for="tags">Tags</label>') %}
     <input type="text" class="form-control" name="tags"
-      placeholder="{{ nomacro_tagdisplay(entry) }}">
+      {{ nomacro_tagdisplay(entry) }}>
     {% endcall %}
 
     <!-- STATIC -->
@@ -35,10 +35,9 @@ nomacro_tagdisplay, nomacro_checkbox %}
     </label>
 
     <!-- TEXTAREA -->
-    <textarea class="form-control" rows="15"
-      name="entry" placeholder="{%
-        if entry is defined %}{{ entry.entry|safe
-        }}{% endif %}"></textarea>
+    <textarea class="form-control" rows="15" name="entry"
+        >{% if entry is defined
+        %}{{ entry.entry|safe }}{% endif %}</textarea>
 
     <!-- SUBMIT -->
     <label>
