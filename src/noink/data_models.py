@@ -156,8 +156,19 @@ class Entry(mainDB.Model):
         self.entry = entry
         self.weight = weight
         self.url = url
-        self.html = html
-        self.static = static
+        if html == 'yes':
+            self.html = True
+        elif html == 'no':
+            self.html = False
+        else:
+            self.html = html
+
+        if static == 'yes':
+            self.static = True
+        elif static == 'no':
+            self.static = False
+        else:
+            self.static = static
         self.group = group
         if parent:
             self.parent_id = parent.id

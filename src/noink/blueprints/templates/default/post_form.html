@@ -41,6 +41,10 @@ nomacro_tagdisplay, nomacro_checkbox %}
         }}{% endif %}"></textarea>
 
     <!-- SUBMIT -->
+    <label>
+      <input type="checkbox" name="html"
+      value="{{ nomacro_checkbox(entry, 'html', 'no')}}">Post is HTML
+    </label>
     <input type='submit' name='submit' value='Submit'>
     <input type='submit' name='preview' value='Preview'>
   </div>

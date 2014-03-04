@@ -45,6 +45,7 @@ def new_post():
         groups.extend(avail_groups)
 
         parent_group = None
+        parent = None
         if request.values.has_key('parent'):
             parent = entry_db.find_by_id(request.values['parent'])
             parent_group = parent.group
@@ -56,7 +57,18 @@ def new_post():
         if parent_group in avail_groups:
             entry = None
             if request.method == "POST":
-                import pdb; pdb.set_trace()
+                group_used = user_db.get_group(request.form.get('group', None))
+                if "preview" in request.form:
+                    entry = entry_db.create_temp_entry(
+                            request.form.get('title', ''),
+                            request.form.get('entry', ''),
+                            current_user,
+                            group_used,
+                            0, # FIXME - Currently unsupported
+                            request.form.get('url', None),
+                            request.form.get('html', False),
+                            parent,
+                            request.form.get('static', False))
             return render_template('new_post.html', state=get_state(), groups=groups, entry=entry)
         else:
             return render_template('noink_message.html', state=get_state(),
