@@ -37,6 +37,11 @@ def process_entry_object(parent):
         parent,
         request.form.get('static', False))
 
+def not_authorized():
+    return render_template('noink_message.html', state=get_state(),
+                title=_(u'Not authorized'),
+                message=_(u'You are not authorized to post here!'))
+
 @post.route("/new", methods=['GET', 'POST'])
 def new_post():
     """
@@ -47,10 +52,11 @@ def new_post():
     entry_db = EntryDB()
 
     if current_user.is_authenticated() and current_user.is_active():
-        #is_admin = user_db.in_group(current_user, mainApp.config['ADMIN_GROUP'])
         all_groups = set(user_db.get_users_groups(current_user))
         all_roles = role_db.get_roles(current_user)
         role_groups = set(m.group for m in all_roles)
+        role_by_groups = dict(((m.group, role_db.get_activities(m.role))
+            for m in all_roles))
 
         # The available groups are ones which they are both a part of AND which
         # they have a role in!
@@ -73,18 +79,20 @@ def new_post():
         if parent_group is None:
             parent_group = user_db.get_group(mainApp.config['TOP_LEVEL_GROUP'])
 
-        if parent_group in avail_groups:
-            entry = None
-            if request.method == "POST":
-                entry = process_entry_object(parent)
-                if "submit" in request.form:
-                    entry_db.add_entry_object(entry)
-                    return redirect(url_for('node.show_node', num=entry.id))
-            return render_template('new_post.html', state=get_state(), groups=groups, entry=entry)
+        if parent_group in avail_groups and role_by_groups.has_key(parent_group):
+            if role_by_groups[parent_group].get('new_post', False):
+                entry = None
+                if request.method == "POST":
+                    entry = process_entry_object(parent)
+                    if "submit" in request.form:
+                        entry_db.add_entry_object(entry)
+                        return redirect(url_for('node.show_node', num=entry.id))
+                return render_template('new_post.html', state=get_state(),
+                    groups=groups, entry=entry)
+            else:
+                return not_authorized()
         else:
-            return render_template('noink_message.html', state=get_state(),
-                title=_(u'Not authorized'),
-                message=_(u'You are not authorized to post here!'))
+            return not_authorized()
 
     return render_template('noink_message.html', state=get_state(),
         title=_(u'Not authorized'),
