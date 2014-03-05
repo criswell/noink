@@ -82,13 +82,17 @@ def new_post():
         if parent_group in avail_groups and role_by_groups.has_key(parent_group):
             if role_by_groups[parent_group].get('new_post', False):
                 entry = None
+                tags = []
                 if request.method == "POST":
                     entry = process_entry_object(parent)
                     if "submit" in request.form:
                         entry_db.add_entry_object(entry)
                         return redirect(url_for('node.show_node', num=entry.id))
+                    if "tags" in request.form:
+                        tags = [x.strip() for x in
+                                request.form['tags'].split(',')]
                 return render_template('new_post.html', state=get_state(),
-                    groups=groups, entry=entry)
+                    groups=groups, entry=entry, tags=tags)
             else:
                 return not_authorized()
         else:
