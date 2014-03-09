@@ -6,7 +6,7 @@
 """
 
 from flask import Blueprint, render_template, abort, request, redirect, \
-        url_for
+        url_for, flash
 from jinja2 import TemplateNotFound
 
 from noink import mainApp, loginManager, _
@@ -14,6 +14,7 @@ from noink.state import get_state
 from noink.user_db import UserDB
 from noink.entry_db import EntryDB
 from noink.role_db import RoleDB
+from noink.exceptions import DuplicateURL
 
 from flask.ext.login import current_user
 
@@ -26,13 +27,19 @@ def process_entry_object(parent):
     user_db = UserDB()
     entry_db = EntryDB()
     group_used = user_db.get_group(request.form.get('group', None))
+    purl = request.form.get('url', None)
+    if purl is not None:
+        t = entry_db.find_by_URL(purl)
+        if len(t) > 0:
+            flash(_("'%s' URL is already in use!".format(purl)))
+            purl = None
     return entry_db.create_temp_entry(
         request.form.get('title', ''),
         request.form.get('entry', ''),
         current_user,
         group_used,
         0, # FIXME - Currently unsupported
-        request.form.get('url', None),
+        purl,
         request.form.get('html', False),
         parent,
         request.form.get('static', False))
@@ -91,7 +98,6 @@ def new_post():
                     if "submit" in request.form:
                         entry_db.add_entry_object(entry)
                         if len(tags) > 0:
-                            print(tags)
                             entry_db.add_tag(tags, entry)
                         return redirect(url_for('node.show_node', num=entry.id))
                 return render_template('new_post.html', state=get_state(),
