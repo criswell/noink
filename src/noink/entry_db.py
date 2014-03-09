@@ -126,15 +126,16 @@ class EntryDB:
         @param entry: An entry to associate with the tags.
         '''
         for tag in tags:
-            t = Tag.query.filter_by(tag=tag).first()
-            if t == None:
-                t = Tag(tag)
-                mainDB.session.add(t)
-                self.event_log.add('add_tag', entry.author_id, False, tag, tag)
-            exist = TagMapping.query.filter_by(tag_id=t.id).filter_by(entry_id=entry.id).all()
-            if exist == []:
-                tm = TagMapping(t, entry)
-                mainDB.session.add(tm)
+            if tag != '':
+                t = Tag.query.filter_by(tag=tag).first()
+                if t == None:
+                    t = Tag(tag)
+                    mainDB.session.add(t)
+                    self.event_log.add('add_tag', entry.author_id, False, tag, tag)
+                exist = TagMapping.query.filter_by(tag_id=t.id).filter_by(entry_id=entry.id).all()
+                if exist == []:
+                    tm = TagMapping(t, entry)
+                    mainDB.session.add(tm)
 
         mainDB.session.commit()
         tags = self.find_tags_by_entry(entry)

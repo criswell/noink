@@ -25,7 +25,7 @@ nomacro_tagdisplay, nomacro_checkbox %}
     <!-- TAGS -->
     {% call nomacro_flipper('tags', '<label for="tags">Tags</label>') %}
     <input type="text" class="form-control" name="tags"
-      placeholder="{{ nomacro_tagdisplay(tags) }}">
+      value="{{ nomacro_tagdisplay(tags) }}">
     {% endcall %}
 
     <!-- STATIC -->

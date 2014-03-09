@@ -90,6 +90,9 @@ def new_post():
                                 request.form['tags'].split(',')]
                     if "submit" in request.form:
                         entry_db.add_entry_object(entry)
+                        if len(tags) > 0:
+                            print tags
+                            entry_db.add_tag(tags, entry)
                         return redirect(url_for('node.show_node', num=entry.id))
                 return render_template('new_post.html', state=get_state(),
                     groups=groups, entry=entry, tags=tags)
