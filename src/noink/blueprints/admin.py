@@ -29,8 +29,8 @@ def admin_page():
             admin=user_db.in_group(current_user, mainApp.config['ADMIN_GROUP']))
 
     return render_template('noink_message.html', state=get_state(),
-        title=_(u'Not authorized'),
-        message=_(u'You must be logged in as a user to access this page!'))
+        title=_('Not authorized'),
+        message=_('You must be logged in as a user to access this page!'))
 
 @admin.route("/admin/user", defaults={'uid':None}, methods=["GET", "POST"])
 @admin.route("/admin/user/<int:uid>", methods=["GET", "POST"])
@@ -57,5 +57,5 @@ def admin_user(uid):
             pass
 
     return render_template('noink_message.html', state=get_state(),
-        title=_(u'Not authorized'),
-        message=_(u'You are not authorized to vew this page!'))
+        title=_('Not authorized'),
+        message=_('You are not authorized to vew this page!'))

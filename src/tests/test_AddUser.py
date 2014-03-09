@@ -10,7 +10,7 @@ add user test
 
 import unittest
 
-from testRoot import RootClass
+from .testRoot import RootClass
 
 from noink.user_db import UserDB
 

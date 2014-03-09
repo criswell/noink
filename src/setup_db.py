@@ -12,7 +12,7 @@ Initializes the database, setting any default values
 
 from noink import _setupDB
 
-print ">> Setting up the database"
+print(">> Setting up the database")
 
 _setupDB.setup_DB()
 

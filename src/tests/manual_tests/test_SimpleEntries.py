@@ -47,21 +47,21 @@ class SimpleEntries:
                     for ed in sample(editors, randint(1,len(editors)-1)):
                         self.entryDB.update_editor(ed, entry)
             except:
-                print "Dropping an entry due to some entryDB problem (likely duplicate URL"
-                print "because of random URL generation- Should be safe to ignore)\n"
+                print("Dropping an entry due to some entryDB problem (likely duplicate URL")
+                print("because of random URL generation- Should be safe to ignore)\n")
                 pass # stupid, but for our tests we don't care we just may get duplicate URLs
 
     def __del__(self):
         del(self.testMain)
 
     def run(self, debug):
-        print "mainApp.jinja_env"
-        print "-----------------"
-        print dir(mainApp.jinja_env)
-        print "\nmainApp.jinja_loader"
-        print "___________________"
-        print dir(mainApp.jinja_loader)
-        print "\n%s" % mainApp.jinja_loader.searchpath
+        print("mainApp.jinja_env")
+        print("-----------------")
+        print(dir(mainApp.jinja_env))
+        print("\nmainApp.jinja_loader")
+        print("___________________")
+        print(dir(mainApp.jinja_loader))
+        print("\n%s" % mainApp.jinja_loader.searchpath)
         mainApp.run(host="0.0.0.0", debug=debug)
 
 if __name__ == '__main__':

@@ -22,9 +22,9 @@ def logout_user():
     udb = UserDB()
     if current_user.is_authenticated() and current_user.is_active():
         if udb.logout(current_user):
-            flash(_(u'Logged out.'))
+            flash(_('Logged out.'))
             return redirect(request.args.get("next") or url_for("list_entries.show"))
 
     return render_template('noink_message.html', state=get_state(),
-        title=_(u'Problem logging out'),
-        message=_(u'There was a problem logging you out (were you logged in?)'))
+        title=_('Problem logging out'),
+        message=_('There was a problem logging you out (were you logged in?)'))

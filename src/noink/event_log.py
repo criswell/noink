@@ -30,7 +30,7 @@ class EventLog:
         @param processed: If the event should be marked as processed
         '''
 
-        if event_table.has_key(name):
+        if name in event_table:
             now = datetime.datetime.now()
             if len(args) > 0:
                 e = Event(name, event_table[name] % args, now, user, blob)

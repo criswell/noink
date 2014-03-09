@@ -39,7 +39,7 @@ class User(mainDB.Model):
         return False
 
     def get_id(self):
-        return unicode(self.id)
+        return str(self.id)
 
     def __init__(self, name, fullname, bio, passhash):
         self.name = name

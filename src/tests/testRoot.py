@@ -9,7 +9,7 @@ The root class for all other classes.
 '''
 
 import unittest
-from testMain import testMain
+from .testMain import testMain
 
 class RootClass(unittest.TestCase):
     def setUp(self):

@@ -39,8 +39,8 @@ def process_entry_object(parent):
 
 def not_authorized():
     return render_template('noink_message.html', state=get_state(),
-                title=_(u'Not authorized'),
-                message=_(u'You are not authorized to post here!'))
+                title=_('Not authorized'),
+                message=_('You are not authorized to post here!'))
 
 @post.route("/new", methods=['GET', 'POST'])
 def new_post():
@@ -71,7 +71,7 @@ def new_post():
 
         parent_group = None
         parent = None
-        if request.values.has_key('parent'):
+        if 'parent' in request.values:
             parent = entry_db.find_by_id(request.values['parent'])
             parent_group = parent.group
 
@@ -79,7 +79,7 @@ def new_post():
         if parent_group is None:
             parent_group = user_db.get_group(mainApp.config['TOP_LEVEL_GROUP'])
 
-        if parent_group in avail_groups and role_by_groups.has_key(parent_group):
+        if parent_group in avail_groups and parent_group in role_by_groups:
             if role_by_groups[parent_group].get('new_post', False):
                 entry = None
                 tags = []
@@ -91,7 +91,7 @@ def new_post():
                     if "submit" in request.form:
                         entry_db.add_entry_object(entry)
                         if len(tags) > 0:
-                            print tags
+                            print(tags)
                             entry_db.add_tag(tags, entry)
                         return redirect(url_for('node.show_node', num=entry.id))
                 return render_template('new_post.html', state=get_state(),
@@ -102,5 +102,5 @@ def new_post():
             return not_authorized()
 
     return render_template('noink_message.html', state=get_state(),
-        title=_(u'Not authorized'),
-        message=_(u'You must be logged in as a user to access this page!'))
+        title=_('Not authorized'),
+        message=_('You must be logged in as a user to access this page!'))
