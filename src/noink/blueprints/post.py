@@ -85,12 +85,12 @@ def new_post():
                 tags = []
                 if request.method == "POST":
                     entry = process_entry_object(parent)
-                    if "submit" in request.form:
-                        entry_db.add_entry_object(entry)
-                        return redirect(url_for('node.show_node', num=entry.id))
                     if "tags" in request.form:
                         tags = [x.strip() for x in
                                 request.form['tags'].split(',')]
+                    if "submit" in request.form:
+                        entry_db.add_entry_object(entry)
+                        return redirect(url_for('node.show_node', num=entry.id))
                 return render_template('new_post.html', state=get_state(),
                     groups=groups, entry=entry, tags=tags)
             else:
