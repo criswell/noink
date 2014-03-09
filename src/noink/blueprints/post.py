@@ -31,7 +31,7 @@ def process_entry_object(parent):
     if purl is not None:
         t = entry_db.find_by_URL(purl)
         if len(t) > 0:
-            flash(_("'%s' URL is already in use!".format(purl)))
+            flash(_("'{0}' URL is already in use!".format(purl)))
             purl = None
     return entry_db.create_temp_entry(
         request.form.get('title', ''),
