@@ -1,4 +1,4 @@
-{% from "macros.html" import nomacro_placeholder, nomacro_flipper, 
+{% from "macros.html" import nomacro_placeholder, nomacro_flipper,
 nomacro_tagdisplay, nomacro_checkbox %}
 <form action="" method=post>
   <div class="form-group">
@@ -17,13 +17,13 @@ nomacro_tagdisplay, nomacro_checkbox %}
     </select>
 
     <!-- URL -->
-    {% call nomacro_flipper('url', '<label for="url">Custom URL</label>') %}
+    {% call nomacro_flipper('url', '<label for="url">Custom URL</label>', entry.url) %}
     <input type="text" class="form-control" name="url"
       {{ nomacro_placeholder(entry, 'url', '') }}>
     {% endcall %}
 
     <!-- TAGS -->
-    {% call nomacro_flipper('tags', '<label for="tags">Tags</label>') %}
+    {% call nomacro_flipper('tags', '<label for="tags">Tags</label>', tags[0]) %}
     <input type="text" class="form-control" name="tags"
       value="{{ nomacro_tagdisplay(tags) }}">
     {% endcall %}
