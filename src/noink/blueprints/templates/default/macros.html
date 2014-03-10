@@ -1,25 +1,25 @@
-{% macro nomacro_entryURL(entry)
-  %}{% if entry.url is not none
-    %}/{{ entry.url }}{%
-  else
-    %}/node/{{ entry.id }}{%
-  endif %}
+{% macro nomacro_entryURL(entry) -%}
+  {% if entry.url is not none -%}
+    /{{ entry.url }}
+  {%- else -%}
+    /node/{{ entry.id }}
+ {%- endif %}
 {%- endmacro %}
 
-{% macro nomacro_tagURL(tag)
-%}/tag/{{tag.id}}{%-
-endmacro %}
+{% macro nomacro_tagURL(tag) -%}
+  /tag/{{tag.id}}
+{%- endmacro %}
 
-{% macro nomacro_placeholder(entry, attr, default)
-  %}{% if entry is defined
-    %}{% if entry is none
-      %}placeholder="{{ default }}"{%
-    else
-      %}value="{{ entry[attr] }}"{%
-    endif %}{%
-  else
-    %}placeholder="{{ default }}"{%
-  endif %}
+{% macro nomacro_placeholder(entry, attr, default) -%}
+  {% if entry is defined -%}
+    {% if entry is none -%}
+      placeholder="{{ default }}"
+    {%- else -%}
+      value="{{ entry[attr] }}"
+    {%- endif %}
+  {%- else -%}
+    placeholder="{{ default }}"
+  {%- endif %}
 {%- endmacro %}
 
 {% macro nomacro_flipper(flipper_id, text) -%}
@@ -39,22 +39,22 @@ endmacro %}
 </div>
 {%- endmacro %}
 
-{% macro nomacro_tagdisplay(tags)
--%}{% if tags is defined
-%}{% for tm in tags
-  %}{{ tm }},{%
-endfor %}{% endif
-%}{%- endmacro %}
+{% macro nomacro_tagdisplay(tags) -%}
+  {% if tags is defined -%}
+    {% for tm in tags -%}
+      {{ tm }},
+    {%- endfor %}
+  {%- endif %}
+{%- endmacro %}
 
-{% macro nomacro_checkbox(entry, attr, default)
-  %}{% if entry is defined
-      %}{% if entry[attr]
-          %}yes{%
-        else
-          %}no{%
-        endif
-    %}{%
-    else
-        %}{{ default }}{%
-    endif
-%}{%- endmacro %}
+{% macro nomacro_checkbox(entry, attr, default) -%}
+  {% if entry is defined -%}
+    {% if entry[attr] -%}
+      yes
+    {%- else -%}
+      no
+    {%- endif %}
+  {%- else -%}
+    {{ default }}
+  {%- endif %}
+{%- endmacro %}
