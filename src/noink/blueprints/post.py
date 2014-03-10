@@ -101,7 +101,7 @@ def new_post():
                             entry_db.add_tag(tags, entry)
                         return redirect(url_for('node.show_node', num=entry.id))
                 return render_template('new_post.html', state=get_state(),
-                    groups=groups, entry=entry, tags=tags)
+                    groups=groups, entry=entry, tags=tags, is_edit=True)
             else:
                 return not_authorized()
         else:

@@ -8,6 +8,15 @@
      Entry ID "{{ entry.id }}"
   -->
 <i>{{ entry.date }}</i><br />
+{% if is_edit is not defined or not is_edit -%}
+  <ul class="list-inline">
+      {% if entry is editable -%}
+      <li><a href="/edit/{{ entry.id }}">Edit</a></li>
+      {%- elif entry is deletable -%}
+      <li><a href="/delete/{{ entry.id }}">Delete</a></li>
+      {%- endif %}
+  </ul>
+{%- endif %}
 {% if editors is not none %}
 <ul class="list-inline">
   <li class='small'><b><i>Editors</i></b></li>

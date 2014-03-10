@@ -27,11 +27,11 @@ def _role_test(entry, activity):
         rm = role_db.get_roles(current_user)
         for m in rm:
             if m.group_id == entry.group_id:
-                activities = role_db.get_activities(m.activities)
+                activities = role_db.get_activities(m.role)
                 return activities.get(activity, False)
     return False
 
-@mainApp.template_test()
+@mainApp.template_test('editable')
 def is_editable(entry):
     '''
     Test to determine if an entry is editable by the current user.
@@ -40,7 +40,7 @@ def is_editable(entry):
     '''
     return _role_test(entry, 'edit_post')
 
-@mainApp.template_test()
+@mainApp.template_test('deletable')
 def is_deletable(entry):
     '''
     Test if entry is deletable by the current user.
