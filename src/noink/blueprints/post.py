@@ -94,7 +94,7 @@ def new_post():
                     entry = process_entry_object(parent)
                     if "tags" in request.form:
                         tags = [x.strip() for x in
-                                request.form['tags'].split(',')]
+                                request.form['tags'].split(',') if x != '']
                     if "submit" in request.form:
                         entry_db.add_entry_object(entry)
                         if len(tags) > 0:
