@@ -58,6 +58,9 @@ if not __setup:
     from noink.filters import nofilter_breaksplit, nofilter_breakclean, \
             nofilter_newlines
 
+    # custom tests
+    from custom_tests import is_editable, is_deletable
+
     # blueprints
     from noink.blueprints.listentries import list_entries
     from noink.blueprints.node import node

@@ -7,7 +7,7 @@ Custom tests for the templating engine
 
 """
 
-#from noink.user_db import UserDB
+from noink import mainApp
 from noink.role_db import RoleDB
 
 from flask.ext.login import current_user
@@ -28,9 +28,10 @@ def _role_test(entry, activity):
         for m in rm:
             if m.group_id == entry.group_id:
                 activities = role_db.get_activities(m.activities)
-                return activities.get(activity, False):
+                return activities.get(activity, False)
     return False
 
+@mainApp.template_test()
 def is_editable(entry):
     '''
     Test to determine if an entry is editable by the current user.
@@ -39,6 +40,7 @@ def is_editable(entry):
     '''
     return _role_test(entry, 'edit_post')
 
+@mainApp.template_test()
 def is_deletable(entry):
     '''
     Test if entry is deletable by the current user.
