@@ -49,10 +49,9 @@ def not_authorized():
                 title=_('Not authorized'),
                 message=_('You are not authorized to post here!'))
 
-@post.route("/new", methods=['GET', 'POST'])
-def new_post():
+def _edit_post(eid=None):
     """
-    New posts page
+    Edit a post
     """
     user_db = UserDB()
     role_db = RoleDB()
@@ -90,16 +89,34 @@ def new_post():
             if role_by_groups[parent_group].get('new_post', False):
                 entry = None
                 tags = []
-                if request.method == "POST":
-                    entry = process_entry_object(parent)
-                    if "tags" in request.form:
-                        tags = [x.strip() for x in
-                                request.form['tags'].split(',') if x != '']
-                    if "submit" in request.form:
-                        entry_db.add_entry_object(entry)
-                        if len(tags) > 0:
-                            entry_db.add_tag(tags, entry)
-                        return redirect(url_for('node.show_node', num=entry.id))
+                if eid is None:
+                    if request.method == "POST":
+                        entry = process_entry_object(parent)
+                        if "tags" in request.form:
+                            tags = [x.strip() for x in
+                                    request.form['tags'].split(',') if x != '']
+                        if "submit" in request.form:
+                            entry_db.add_entry_object(entry)
+                            if len(tags) > 0:
+                                entry_db.add_tag(tags, entry)
+                            return redirect(url_for('node.show_node',
+                                num=entry.id))
+                else:
+                    entry = entry_db.find_by_id(eid)
+                    if entry is None:
+                        return render_template('noink_message.html',
+                            state=get_state(),
+                            title=_('Entry not found!'),
+                            message=_('The entry "{0}" was not found!'.format(eid)))
+                    if request.method == "POST":
+                        entry = update_entry_object(entry)
+                        if "submit" in request.form:
+                            entry_db.update_entry(entry)
+                            if len(tags) > 0:
+                                entry_db.add_tag(tags, entry)
+                            return redirect(url_for('node.show_node',
+                                num=entry.id))
+
                 return render_template('new_post.html', state=get_state(),
                     groups=groups, entry=entry, tags=tags, is_edit=True)
             else:
@@ -110,3 +127,23 @@ def new_post():
     return render_template('noink_message.html', state=get_state(),
         title=_('Not authorized'),
         message=_('You must be logged in as a user to access this page!'))
+
+@post.route("/new", methods=['GET', 'POST'])
+def new_post():
+    """
+    New posts page
+    """
+    return _edit_post()
+
+@post.route("/edit/<num>", methods=['GET', 'POST'])
+def edit(num):
+    """
+    Edit post page
+    """
+    if num is None:
+        return render_template('noink_message.html', state=get_state(),
+            title=_('No entry specified!'),
+            message=_('You have not supplied an entry to edit.'))
+
+    return _edit_post(num)
+

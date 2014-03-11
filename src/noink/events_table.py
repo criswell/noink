@@ -18,6 +18,7 @@ event_table = {
     'add_group' : "Group '%s' added",
     'add_entry' : "Entry '%s' added",
     'del_entry' : "Entry '%s' deleted",
+    'update_entry' : "Entry '%s' updated",
     'del_user' : "User '%s' deleted",
     'add_tag' : "Tag '%s' added",
     'update_siteconf' : "Site config updated to version '%s'",
