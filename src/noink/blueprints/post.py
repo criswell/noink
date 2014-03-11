@@ -53,6 +53,7 @@ def _edit_post(eid=None):
     """
     Edit a post
     """
+    # FIXME - This method has kind of gotten monsterous. Refactor.
     user_db = UserDB()
     role_db = RoleDB()
     entry_db = EntryDB()
@@ -111,6 +112,7 @@ def _edit_post(eid=None):
                     if request.method == "POST":
                         entry = update_entry_object(entry)
                         if "submit" in request.form:
+                            # TODO - Need to deal with editors
                             entry_db.update_entry(entry)
                             if len(tags) > 0:
                                 entry_db.add_tag(tags, entry)
