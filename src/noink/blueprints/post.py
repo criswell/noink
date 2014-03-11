@@ -44,6 +44,18 @@ def process_entry_object(parent):
         parent,
         request.form.get('static', False))
 
+def update_entry_object(entry):
+    """
+    Update, in-place, an entry object based upon form submissions.
+    """
+    entry.entry = request.form.get('entry', '')
+    entry.title = request.form.get('title', '')
+    entry.html = request.form.get('html', False)
+    entry.static = request.form.get('static', False)
+    entry.url = request.form.get('url', None)
+    # FIXME - Missing weight
+    return entry
+
 def not_authorized():
     return render_template('noink_message.html', state=get_state(),
                 title=_('Not authorized'),
