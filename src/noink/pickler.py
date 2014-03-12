@@ -5,8 +5,15 @@ Common pickle objects for Noink event logs
 ##BOILERPLATE_COPYRIGHT_END
 '''
 
+import sys
+
 from copy import copy, deepcopy
 from pickle import dumps, loads
+
+if sys.version_info[0] == 3:
+    _string_types = str,
+else:
+    _string_types = basestring,
 
 # Entries
 class PEntry:
@@ -32,4 +39,8 @@ def depickle(string):
 
     @return De-pickled object.
     '''
-    return loads(string)
+    if isinstance(string, _string_types):
+        return loads(string)
+    else:
+        return loads(str(string))
+

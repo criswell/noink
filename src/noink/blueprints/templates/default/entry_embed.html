@@ -12,7 +12,8 @@
   <ul class="list-inline">
       {% if entry is editable -%}
       <li><a href="/edit/{{ entry.id }}">Edit</a></li>
-      {%- elif entry is deletable -%}
+      {%- endif -%}
+      {%- if entry is deletable -%}
       <li><a href="/delete/{{ entry.id }}">Delete</a></li>
       {%- endif %}
   </ul>
