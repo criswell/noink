@@ -123,13 +123,19 @@ def _edit_post(eid=None):
                             message=_('The entry "{0}" was not found!'.format(eid)))
                     if request.method == "POST":
                         entry = update_entry_object(entry)
+                        if "tags" in request.form:
+                            tags = [x.strip() for x in
+                                    request.form['tags'].split(',') if x != '']
                         if "submit" in request.form:
-                            # TODO - Need to deal with editors
                             entry_db.update_entry(entry)
+                            entry_db.update_editor(current_user, entry)
                             if len(tags) > 0:
                                 entry_db.add_tag(tags, entry)
                             return redirect(url_for('node.show_node',
                                 num=entry.id))
+                    else:
+                        for tm in entry.tagmap:
+                            tags.append(tm.tag.tag)
 
                 return render_template('new_post.html', state=get_state(),
                     groups=groups, entry=entry, tags=tags, is_edit=True)
