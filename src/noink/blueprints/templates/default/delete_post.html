@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+  <head>
+    <title>{{ state.site_name }} | Delete Post</title>
+    {% include 'common_header.html' %}
+  </head>
+  <body>
+    {% include "page_head.html" %}
+    <div class='container'><div class='well'>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h1 class="panel-title">Delete Post</h1>
+        </div>
+        <div class="panel-body">
+          <form action="" method="post">
+            <div class="form-group">
+              <label>Delete this entry?</label>
+              <input type='submit' name='cancel' value='No' class="btn btn-default">
+              <input type='submit' name='delete' value='Yes' class="btn btn-danger">
+            </div>
+          </form>
+        </div>
+        {% if entry is defined and entry is not none %}
+          <div class="panel panel-info">
+            <div class="panel-body">
+              {% include "entry_embed.html" %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div></div>
+  </body>
+</html>
