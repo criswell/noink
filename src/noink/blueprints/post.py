@@ -167,3 +167,27 @@ def edit(num):
 
     return _edit_post(num)
 
+@post.route("/delete/<num>", methods=['GET', 'POST'])
+def delete_post(num):
+    """
+    Delete a post
+    """
+    if num is None:
+        return render_template('noink_message.html', state=get_state(),
+            title=_('No entry specified!'),
+            message=_('You have not supplied an entry to delete.'))
+
+    entry_db = EntryDB()
+    user_db = UserDB()
+    role_db = RoleDB()
+
+    entry = entry_db.find_by_id(num)
+
+    if entry is None:
+        return render_template('noink_message.html', state=get_state(),
+            title=_('Entry not found!'),
+             message=_('The entry "{0}" was not found!'.format(num)))
+
+    return render_template('delete_post.html', state=get_state(),
+            entry=entry, is_edit=True)
+
