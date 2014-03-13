@@ -305,10 +305,10 @@ class EntryDB:
         if type(e) is IntType:
             entry = Entry.query.filter_by(id=e).first()
 
-        url = self.urlDB.findByEntry(e)
-        pe = PEntry(e, url)
-        if url:
-            self.urlDB.delete(url)
+        #url = self.urlDB.findByEntry(e)
+        pe = PEntry(e)
+        #if url:
+        #    self.urlDB.delete(url)
         mainDB.session.delete(entry)
         mainDB.session.commit()
         self.event_log.add('del_entry', 0, False, pickle(pe), entry.title)

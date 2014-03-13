@@ -15,6 +15,7 @@ from noink.user_db import UserDB
 from noink.entry_db import EntryDB
 from noink.role_db import RoleDB
 from noink.exceptions import DuplicateURL
+from noink.custom_tests import is_deletable
 
 from flask.ext.login import current_user
 
@@ -186,11 +187,20 @@ def delete_post(num):
     if entry is None:
         return render_template('noink_message.html', state=get_state(),
             title=_('Entry not found!'),
-             message=_('The entry "{0}" was not found!'.format(num)))
+            message=_('The entry "{0}" was not found!'.format(num)))
 
-    if request.methods == 'POST':
-        print(request.form)
-        import ipdb; ipdb.set_trace()
+    if not is_deletable(entry):
+        return render_template('noink_message.html', state=get_state(),
+            title=_('Unable to delete entry!'),
+            message=_('You do not have permission to delete this entry!'))
+
+    if request.method == 'POST':
+        if "delete" in request.form:
+            entry_db.delete(entry)
+            flash(_('Entry "{0}" deleted!'.format(num)))
+            return redirect(url_for('list_entries.show'))
+        elif "cancel" in request.form:
+            return  redirect(url_for("node.show_node", num=num))
 
     return render_template('delete_post.html', state=get_state(),
             entry=entry, is_edit=True)
