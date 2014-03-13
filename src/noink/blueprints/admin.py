@@ -24,8 +24,8 @@ def admin_page():
     user_db = UserDB()
 
     if current_user.is_authenticated() and current_user.is_active():
-        return render_template('admin.html', 
-            state=get_state(), 
+        return render_template('admin.html',
+            state=get_state(),
             admin=user_db.in_group(current_user, mainApp.config['ADMIN_GROUP']))
 
     return render_template('noink_message.html', state=get_state(),
@@ -46,7 +46,7 @@ def admin_user(uid):
         is_admin = user_db.in_group(current_user, mainApp.config['ADMIN_GROUP'])
 
         if uid is None and is_admin:
-            # render the administrate users interface
+            # render the administrative users interface
             pass
 
         if uid is None:
