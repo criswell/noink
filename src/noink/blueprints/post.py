@@ -188,6 +188,10 @@ def delete_post(num):
             title=_('Entry not found!'),
              message=_('The entry "{0}" was not found!'.format(num)))
 
+    if request.methods == 'POST':
+        print(request.form)
+        import ipdb; ipdb.set_trace()
+
     return render_template('delete_post.html', state=get_state(),
             entry=entry, is_edit=True)
 

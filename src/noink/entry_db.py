@@ -312,3 +312,4 @@ class EntryDB:
         mainDB.session.delete(entry)
         mainDB.session.commit()
         self.event_log.add('del_entry', 0, False, pickle(pe), entry.title)
+

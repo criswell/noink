@@ -283,7 +283,10 @@ class UserDB:
         FIXME - docstring
         '''
         try:
-            u = self.find_user_by_name(username)[0]
+            users = self.find_user_by_name(username)
+            if len(users) < 1:
+                return False
+            u = users[0]
             if mainCrypt.check_password_hash(u.passhash, passwd):
                 u.authenticated = True
                 u.active = True

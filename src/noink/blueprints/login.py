@@ -1,4 +1,3 @@
-
 """
 
 ##BOILERPLATE_COPYRIGHT
@@ -6,7 +5,7 @@
 
 """
 
-from flask import Blueprint, render_template, abort, request, flash, redirect, \
+from flask import Blueprint, render_template, request, flash, redirect, \
                   url_for
 from jinja2 import TemplateNotFound
 
@@ -20,7 +19,7 @@ login = Blueprint('login', __name__)
 def login_page():
     if request.method == "POST" and "username" in request.form:
         username = request.form["username"]
-        password = request.form["password"]
+        password = request.form.get("password", None)
         remember = request.form.get('remember', 'no') == "yes"
         udb = UserDB()
         if udb.authenticate(username, password, remember):
