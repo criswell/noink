@@ -11,6 +11,7 @@ from jinja2 import TemplateNotFound
 from noink import mainApp, loginManager, _
 from noink.state import get_state
 from noink.user_db import UserDB
+from noink.role_db import RoleDB
 
 from flask.ext.login import current_user
 
@@ -41,13 +42,16 @@ def admin_user(uid):
     FIXME: Finish
     """
     user_db = UserDB()
+    role_db = RoleDB()
 
     if current_user.is_authenticated() and current_user.is_active():
-        is_admin = user_db.in_group(current_user, mainApp.config['ADMIN_GROUP'])
+        all_groups = set(user_db.get_users_groups(current_user))
+        all_roles = role_db.get_roles(current_user)
+        is_admin = mainApp.config['ADMIN_GROUP'] in all_groups
 
         if uid is None and is_admin:
             # render the administrative users interface
-            pass
+            return render_template('admin_user.html', state=get_state())
 
         if uid is None:
             uid = current_user.id
