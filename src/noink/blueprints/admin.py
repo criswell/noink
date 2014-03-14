@@ -50,11 +50,14 @@ def admin_user(uid):
         is_admin = user_db.in_group(current_user, mainApp.config['ADMIN_GROUP'])
         #import ipdb; ipdb.set_trace()
 
+        user = None
         if uid is None:
             uid = current_user.id
+            user = current_user
+        else:
+            user = user_db.get_user(uid)
 
-        user = user_db.get_user(uid)
-        if user is None or len(user) < 1:
+        if user is None:
             return render_template('noink_message.html', state=get_state(),
                 title=_('User not found!'),
                 message=_('User with ID "{0}" was not found!'.format(uid)))

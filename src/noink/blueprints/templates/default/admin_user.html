@@ -8,14 +8,23 @@
   <body>
     {% include "page_head.html" %}
     <div class="container">
-        <div class="well">
-            <form action="" method=post>
-                <h4>User Settings</h4>
-                <dl>
-                    <dt>{{ state.current_user.name }}
-                    <dt>
+      <div class="well">
+        <div class='panel panel-default'>
+          <div class='panel-heading'>
+            <h1>User Settings</h1>
+          </div>
+          <div class='panel-body'>
+            <form action="" class='form-horizontal' role='form' method=post>
+                <div class='form-group'>
+                  <label class="col-sm-2 control-label">User ID</label>
+                  <div class="col-sm-10">
+                    <p class="form-control-static">{{ user.id }}</p>
+                  </div>
+                </div>
             </form>
+          </div>
         </div>
+      </div>
     </div>
   </body>
 </html>
