@@ -14,22 +14,41 @@
             <h1 class='panel-title'>User Settings</h1>
           </div>
           <div class='panel-body'>
-            <form action="" class='form-horizontal' role='form' method=post>
+            <form action="" class='form-horizontal' role='form' method=post autocomplete='off'>
+
+              <!-- USER ID -->
                 <div class='form-group'>
                   <label class="col-sm-2 control-label">User ID</label>
                   <div class="col-sm-10">
                     <p class="form-control-static">{{ user.id }}</p>
                   </div>
                 </div>
+
+              <!-- USERNAME -->
                 <div class='form-group'>
-                  <label for='password' class='col-sm-2 control-label'>Password</label>
+                  <label class='col-sm-2 control-label'>Username</label>
                   <div class='col-sm-10'>
-                    <input type='password' class='form-control' placeholder='Password' name='password'>
+                    <input type="text" class='form-control' value='{{ user.name }}' name='name'>
                   </div>
+                </div>
+
+              <!-- Password -->
+                <div class='form-group'>
+                  <label for='passwordone' class='col-sm-2 control-label'>Password</label>
+                  <div class='col-sm-10'>
+                    <input type='password' class='form-control' placeholder='Password' name='passwordone'>
+                  </div>
+                </div>
+
+              <!-- Password Check -->
+                <div class='form-group'>
                   <label for='pcheck' class='col-sm-2 control-label'>Verify Password</label>
                   <div class='col-sm-10'>
                     <input type='password' class='form-control' placeholder='Password' name='pcheck'>
                   </div>
+                </div>
+                <div class='form-group'>
+                  <label>
                 </div>
             </form>
           </div>
