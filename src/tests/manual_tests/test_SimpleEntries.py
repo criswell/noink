@@ -30,6 +30,9 @@ class SimpleEntries:
         u3 = self.userDB.add("barf", "password", "Barfy Barferson")
         u4 = self.userDB.add("squiddy", "password", "Squidward Tentacles")
         editors = ['charles', 'leif', 'barf', 'squiddy']
+        all_groups = ['junkbar', 'dollarbillyall', 'coldnwet']
+        for g in all_groups:
+            self.userDB.add_group(g)
         parents = []
         for e in entries:
             parent = None
