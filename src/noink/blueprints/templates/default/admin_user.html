@@ -47,8 +47,22 @@
               <input type='password' class='form-control' placeholder='Password' name='pcheck'>
             </div>
           </div>
+
+          <!-- Fullname -->
           <div class='form-group'>
-            <label>
+            <label for='fullname' class='col-sm-2 control-label'>Fullname</label>
+            <div class='col-sm-10'>
+              <input type=text' class='form-control' value='{{ user.fullname }}' name='fullname'>
+            </div>
+          </div>
+
+          <!-- Bio -->
+          <div class='form-group'>
+            <label for='bio' class='col-sm-2 control-label'>User Bio</label>
+            <div class='col-sm-10'>
+              <textarea class='form-control' rows='3' name='bio'
+                >{{ user.bio }}</textarea>
+            </div>
           </div>
         </form>
       </div>

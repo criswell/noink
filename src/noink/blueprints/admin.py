@@ -67,7 +67,7 @@ def admin_user(uid):
         if is_admin or uid == current_user.id:
             # render the admin user page for uid user
             return render_template('admin_user.html', state=get_state(),
-                user=user)
+                user=user, is_admin=is_admin)
 
     return render_template('noink_message.html', state=get_state(),
         title=_('Not authorized'),
