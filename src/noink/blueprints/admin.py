@@ -50,6 +50,7 @@ def admin_user(uid):
         is_admin = user_db.in_group(current_user, mainApp.config['ADMIN_GROUP'])
 
         user = None
+        group = []
         if uid is None:
             uid = current_user.id
             user = current_user
@@ -62,12 +63,13 @@ def admin_user(uid):
                 message=_('User with ID "{0}" was not found!'.format(uid)))
         elif isinstance(user, list):
             user = user[0]
+            group = user_db.get_users_groups(user)
 
         #import ipdb; ipdb.set_trace()
         if is_admin or uid == current_user.id:
             # render the admin user page for uid user
             return render_template('admin_user.html', state=get_state(),
-                user=user, is_admin=is_admin)
+                user=user, groups=group, is_admin=is_admin)
 
     return render_template('noink_message.html', state=get_state(),
         title=_('Not authorized'),
