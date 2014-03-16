@@ -172,6 +172,12 @@ class UserDB:
 
         return group
 
+    def get_all_groups(self):
+        '''
+        Return all possible groups.
+        '''
+        return Group.query.all()
+
     def get_users_groups(self, u):
         '''
         Given a user identifier, return the groups it is a member of.

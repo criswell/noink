@@ -65,11 +65,15 @@ def admin_user(uid):
             user = user[0]
             group = user_db.get_users_groups(user)
 
+        gs = set(user_db.get_all_groups())
+        avail_groups = list(gs - all_groups)
+
         #import ipdb; ipdb.set_trace()
         if is_admin or uid == current_user.id:
             # render the admin user page for uid user
             return render_template('admin_user.html', state=get_state(),
-                user=user, groups=group, is_admin=is_admin)
+                user=user, groups=group, avail_groups=avail_groups,
+                is_admin=is_admin)
 
     return render_template('noink_message.html', state=get_state(),
         title=_('Not authorized'),

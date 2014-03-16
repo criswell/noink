@@ -124,6 +124,20 @@
                     {% endif %}
                   </div>
                 {% endfor %}
+                <div class='row'>
+                  <div class='col-lg-6'>
+                    <div class='input-group'>
+                      <select class='form-control' name='add_groups'>
+                        {% for g in avail_groups %}
+                          <option>{{ g.name }}</option>
+                        {% endfor %}
+                      </select>
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" name="add_grroup" type='submit'><span class="glyphicon glyphicon-plus-sign"></span></button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
             </div>
           </div>
           {% endif %}
