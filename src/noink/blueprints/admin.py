@@ -46,7 +46,7 @@ def admin_user(uid):
 
     if current_user.is_authenticated() and current_user.is_active():
         all_groups = set(user_db.get_users_groups(current_user))
-        all_roles = role_db.get_roles(current_user)
+        rolemap = role_db.get_roles(current_user)
         is_admin = user_db.in_group(current_user, mainApp.config['ADMIN_GROUP'])
 
         user = None
@@ -68,12 +68,19 @@ def admin_user(uid):
         gs = set(user_db.get_all_groups())
         avail_groups = list(gs - all_groups)
 
+        user_roles = set()
+        for m in rolemap:
+            user_roles.add(m.role)
+
+        all_roles = set(role_db.get_all_roles())
+        avail_roles = list(all_roles - user_roles)
+
         #import ipdb; ipdb.set_trace()
         if is_admin or uid == current_user.id:
             # render the admin user page for uid user
             return render_template('admin_user.html', state=get_state(),
                 user=user, groups=group, avail_groups=avail_groups,
-                is_admin=is_admin)
+                is_admin=is_admin, role_map=rolemap, avail_roles=avail_roles)
 
     return render_template('noink_message.html', state=get_state(),
         title=_('Not authorized'),

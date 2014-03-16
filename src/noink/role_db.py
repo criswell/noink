@@ -146,3 +146,9 @@ class RoleDB:
             rm = rm.filter_by(group=g)
 
         return rm.all()
+
+    def get_all_roles(self):
+        '''
+        Get all the available roles
+        '''
+        return Role.query.all()
