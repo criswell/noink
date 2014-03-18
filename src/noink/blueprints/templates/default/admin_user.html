@@ -142,14 +142,7 @@
           </div>
 
           <!-- ROLE SECTION -->
-          <div class='form-group'>
-            <label for='roles' class='col-sm-2 control-label'>Roles</label>
-            <div class='col-sm-10'>
-              {% for r in role_map -%}
-                {{ nomacro_roledisplay(r) }}
-              {%- endfor %}
-            </div>
-          </div>
+          {{ nomacro_roledisplay(role_map, avail_roles, avail_groups) }}
           {% endif %}
         </form>
       </div>

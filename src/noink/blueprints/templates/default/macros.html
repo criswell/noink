@@ -65,10 +65,18 @@
   {%- endif %}
 {%- endmacro %}
 
-{% macro nomacro_roledisplay(role) -%}
-  <div class='row'>
-    <div class='col-lg-6'>
-      ERE IAM JH
+{% macro nomacro_roledisplay(role_map, avail_roles, avail_groups) -%}
+  <div class='form-group'>
+    <div class='col-sm-2 control-label'><h3>Roles</h3></div>
+    <div class='col-lg-10'>
+      {% for g in avail_groups -%}
+        <div class="panel panel-default">
+          <div class="panel-heading">Group: "{{ g.name }}"</div>
+          <div class="panel-body">
+            Stuff
+          </div>
+        </div>
+      {%- endfor %}
     </div>
   </div>
 {%- endmacro %}
