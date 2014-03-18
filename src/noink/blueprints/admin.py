@@ -81,7 +81,7 @@ def admin_user(uid):
 
             roles_by_group[rm.group_id].append(rm)
 
-       # import ipdb; ipdb.set_trace()
+        # import ipdb; ipdb.set_trace()
         if is_admin or uid == current_user.id:
             # render the admin user page for uid user
             return render_template('admin_user.html', state=get_state(),
