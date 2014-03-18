@@ -7,7 +7,7 @@
 </head>
 <body>
 {% include "page_head.html" %}
-{% from "macros.html" import nomacro_checkbox %}
+{% from "macros.html" import nomacro_roledisplay %}
 <div class="container">
   <div class="well">
     <div class='panel panel-default'>
@@ -138,6 +138,16 @@
                     </div>
                   </div>
                 </div>
+            </div>
+          </div>
+
+          <!-- ROLE SECTION -->
+          <div class='form-group'>
+            <label for='roles' class='col-sm-2 control-label'>Roles</label>
+            <div class='col-sm-10'>
+              {% for r in role_map -%}
+                {{ nomacro_roledisplay(r) }}
+              {%- endfor %}
             </div>
           </div>
           {% endif %}

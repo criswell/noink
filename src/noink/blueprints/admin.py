@@ -72,10 +72,9 @@ def admin_user(uid):
         for m in rolemap:
             user_roles.add(m.role)
 
-        all_roles = set(role_db.get_all_roles())
-        avail_roles = list(all_roles - user_roles)
+        avail_roles = role_db.get_all_roles()
 
-        #import ipdb; ipdb.set_trace()
+       # import ipdb; ipdb.set_trace()
         if is_admin or uid == current_user.id:
             # render the admin user page for uid user
             return render_template('admin_user.html', state=get_state(),
