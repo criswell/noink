@@ -73,7 +73,15 @@
         <div class="panel panel-default">
           <div class="panel-heading">Group: "{{ g.name }}"</div>
           <div class="panel-body">
-            <!---<label for='' ERE I AM JH -->
+            <div class='col-sm-5'>
+              <div class='input-group'>
+                <select class='form-control' name='role_{{ g.name }}'>
+                  {% for r in avail_roles -%}
+                  <!-- ERE I AM JH -->
+                  {%- endfor %}
+                </select>
+              </div>
+            </div>
           </div>
         </div>
       {%- endfor %}
