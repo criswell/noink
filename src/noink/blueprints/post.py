@@ -41,9 +41,9 @@ def process_entry_object(parent):
         group_used,
         0, # FIXME - Currently unsupported
         purl,
-        request.form.get('html', False),
+        bool(request.form.get('html', False)),
         parent,
-        request.form.get('static', False))
+        bool(request.form.get('static', False)))
 
 def update_entry_object(entry):
     """

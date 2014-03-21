@@ -31,7 +31,7 @@ nomacro_tagdisplay, nomacro_checkbox %}
     <!-- STATIC -->
     <label>
       <input type="checkbox" name="static"
-      value="{{ nomacro_checkbox(entry, 'static', 'no')}}">Static
+      value='True' {{ nomacro_checkbox(entry, 'static', 'no')}}>Static
     </label>
 
     <!-- TEXTAREA -->
@@ -42,7 +42,7 @@ nomacro_tagdisplay, nomacro_checkbox %}
     <!-- SUBMIT -->
     <label>
       <input type="checkbox" name="html"
-      value="{{ nomacro_checkbox(entry, 'html', 'no')}}">Post is HTML
+      value="True" {{ nomacro_checkbox(entry, 'html', 'no')}}>Post is HTML
     </label>
     <input type='submit' name='submit' value='Submit'>
     <input type='submit' name='preview' value='Preview'>

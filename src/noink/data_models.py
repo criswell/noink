@@ -155,7 +155,7 @@ class Entry(mainDB.Model):
         self.author = author
         self.entry = entry
         self.weight = weight
-        self.url = url
+        self.url = (None if url == '' else url)
         if html == 'yes':
             self.html = True
         elif html == 'no':

@@ -14,6 +14,8 @@
   {% if entry is defined -%}
     {% if entry is none -%}
       placeholder="{{ default }}"
+    {%- elif entry[attr] is none -%}
+      placeholder="{{ default }}"
     {%- else -%}
       value="{{ entry[attr] }}"
     {%- endif %}
@@ -56,12 +58,8 @@
 {% macro nomacro_checkbox(entry, attr, default) -%}
   {% if entry is defined -%}
     {% if entry[attr] -%}
-      yes
-    {%- else -%}
-      no
+      checked
     {%- endif %}
-  {%- else -%}
-    {{ default }}
   {%- endif %}
 {%- endmacro %}
 
