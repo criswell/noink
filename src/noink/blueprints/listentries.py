@@ -38,5 +38,5 @@ def show(tag):
     if count > per_page:
         total_pages = int(ceil(float(count) / float(per_page)))
 
-    return render_template('list_entries.html', entries=entries, 
+    return render_template('list_entries.html', entries=entries,
         state=get_state(), page_num=page_num, total_pages=total_pages)
