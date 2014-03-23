@@ -63,25 +63,40 @@
   {%- endif %}
 {%- endmacro %}
 
-{% macro nomacro_roledisplay(role_map, avail_roles, avail_groups) -%}
+{% macro nomacro_roledisplay_group(g, roles_by_group) -%}
+  <div class="panel panel-default">
+    <div class="panel-heading">Group: "{{ g.name }}"</div>
+      <div class="panel-body">
+        <div class='col-sm-5'>
+        <div class='input-group'>
+          <!-- {{ roles_by_group|safe }} -->
+          <!-- {{ g.id }} -->
+          <!-- {{ role_map|safe }} -->
+          {% for r in roles_by_group[g.id] -%}
+            <div class='col-lg-6'>
+              <div class='input-group'>
+                <input type="text" class="form-control" id="disabledInput" placeholder="{{ r.role.name }}" disabled>
+                <span class="input-group-btn">
+                  <button class="btn btn-default" name='delete' type='submit'><span class='glyphicon glyphicon-minus-sign'></span></button>
+                </span>
+              </div>
+            </div>
+          {%- endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endmacro %}
+
+{% macro nomacro_roledisplay(role_map, avail_roles, avail_groups, roles_by_group, groups) -%}
   <div class='form-group'>
     <div class='col-sm-2 control-label'><h3>Roles</h3></div>
     <div class='col-lg-10'>
+      {% for g in groups -%}
+        {{ nomacro_roledisplay_group(g, roles_by_group) }}
+      {%- endfor %}
       {% for g in avail_groups -%}
-        <div class="panel panel-default">
-          <div class="panel-heading">Group: "{{ g.name }}"</div>
-          <div class="panel-body">
-            <div class='col-sm-5'>
-              <div class='input-group'>
-                <select class='form-control' name='role_{{ g.name }}'>
-                  {% for r in avail_roles -%}
-                  <!-- ERE I AM JH -->
-                  {%- endfor %}
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
+        {{ nomacro_roledisplay_group(g, roles_by_group) }}
       {%- endfor %}
     </div>
   </div>
