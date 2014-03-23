@@ -71,7 +71,6 @@
         <div class='input-group'>
           <!-- {{ roles_by_group|safe }} -->
           <!-- {{ g.id }} -->
-          <!-- {{ role_map|safe }} -->
           {% for r in roles_by_group[g.id] -%}
             <div class='col-lg-6'>
               <div class='input-group'>
@@ -88,7 +87,7 @@
   </div>
 {%- endmacro %}
 
-{% macro nomacro_roledisplay(role_map, avail_roles, avail_groups, roles_by_group, groups) -%}
+{% macro nomacro_roledisplay(roles_by_group, avail_roles, avail_groups, groups) -%}
   <div class='form-group'>
     <div class='col-sm-2 control-label'><h3>Roles</h3></div>
     <div class='col-lg-10'>
