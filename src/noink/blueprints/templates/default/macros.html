@@ -63,16 +63,14 @@
   {%- endif %}
 {%- endmacro %}
 
-{% macro nomacro_roledisplay_group(g, roles_by_group) -%}
+{% macro nomacro_roledisplay_group(g, roles_by_group, avail_roles_by_group) -%}
   <div class="panel panel-default">
     <div class="panel-heading">Group: "{{ g.name }}"</div>
       <div class="panel-body">
         <div class='col-sm-5'>
         <div class='input-group'>
-          <!-- {{ roles_by_group|safe }} -->
-          <!-- {{ g.id }} -->
           {% for r in roles_by_group[g.id] -%}
-            <div class='col-lg-6'>
+            <div class='col-lg-10'>
               <div class='input-group'>
                 <input type="text" class="form-control" id="disabledInput" placeholder="{{ r.role.name }}" disabled>
                 <span class="input-group-btn">
@@ -82,20 +80,34 @@
             </div>
           {%- endfor %}
         </div>
+        {% if avail_roles_by_group[g.id]|length > 0 %}
+          <div class='col-lg-10'>
+            <div class="input-group">
+              <select class='form-control' name='add_role'>
+                {% for r in avail_roles_by_group[g.id] -%}
+                  <option>{{ r.name }}</option>
+                {%- endfor %}
+              </select>
+              <span class='input-group-btn'>
+                <button class='btn btn-default' name='add_role' type='submit'><span class='glyphicon glyphicon-plus-sign'></span></button>
+              </span>
+            </div>
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>
 {%- endmacro %}
 
-{% macro nomacro_roledisplay(roles_by_group, avail_roles, avail_groups, groups) -%}
+{% macro nomacro_roledisplay(roles_by_group, avail_roles_by_group, avail_groups, groups) -%}
   <div class='form-group'>
     <div class='col-sm-2 control-label'><h3>Roles</h3></div>
     <div class='col-lg-10'>
       {% for g in groups -%}
-        {{ nomacro_roledisplay_group(g, roles_by_group) }}
+        {{ nomacro_roledisplay_group(g, roles_by_group, avail_roles_by_group) }}
       {%- endfor %}
       {% for g in avail_groups -%}
-        {{ nomacro_roledisplay_group(g, roles_by_group) }}
+        {{ nomacro_roledisplay_group(g, roles_by_group, avail_roles_by_group) }}
       {%- endfor %}
     </div>
   </div>

@@ -73,11 +73,18 @@ def admin_user(uid):
             user_roles.add(m.role)
 
         avail_roles = role_db.get_all_roles()
+        avail_roles_by_group = dict()
+        for g in gs:
+            avail_roles_by_group[g.id] = list(avail_roles)
 
         roles_by_group = dict()
         for rm in rolemap:
             if rm.group_id not in roles_by_group:
                 roles_by_group[rm.group_id] = []
+
+            if rm.group_id in avail_roles_by_group:
+                if rm.role in avail_roles_by_group[rm.group_id]:
+                    avail_roles_by_group[rm.group_id].remove(rm.role)
 
             roles_by_group[rm.group_id].append(rm)
 
@@ -87,7 +94,8 @@ def admin_user(uid):
             return render_template('admin_user.html', state=get_state(),
                 user=user, groups=group, avail_groups=avail_groups,
                 is_admin=is_admin, role_map=rolemap, avail_roles=avail_roles,
-                roles_by_group=roles_by_group)
+                roles_by_group=roles_by_group,
+                avail_roles_by_group=avail_roles_by_group)
 
     return render_template('noink_message.html', state=get_state(),
         title=_('Not authorized'),
