@@ -1,0 +1,144 @@
+{% from "macros.html" import nomacro_roledisplay %}
+<div class="container">
+  <div class="well">
+    <div class='panel panel-default'>
+      <div class='panel-heading'>
+        <h1 class='panel-title'>User Settings</h1>
+      </div>
+      <div class='panel-body'>
+        <form action="" class='form-horizontal' role='form' method=post autocomplete='off'>
+
+          <!-- USER ID -->
+          <div class='form-group'>
+            <label class="col-sm-2 control-label">User ID</label>
+            <div class="col-sm-10">
+              <p class="form-control-static">{{ user.id }}</p>
+            </div>
+          </div>
+
+          <!-- USERNAME -->
+          <div class='form-group'>
+            <label class='col-sm-2 control-label'>Username</label>
+            <div class='col-sm-10'>
+              <input type="text" class='form-control' value='{{ user.name }}' name='name'>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class='form-group'>
+            <label for='passwordone' class='col-sm-2 control-label'>Password</label>
+            <div class='col-sm-10'>
+              <input type='password' class='form-control' placeholder='Password' name='passwordone'>
+            </div>
+          </div>
+
+          <!-- Password Check -->
+          <div class='form-group'>
+            <label for='pcheck' class='col-sm-2 control-label'>Verify Password</label>
+            <div class='col-sm-10'>
+              <input type='password' class='form-control' placeholder='Password' name='pcheck'>
+            </div>
+          </div>
+
+          <!-- Fullname -->
+          <div class='form-group'>
+            <label for='fullname' class='col-sm-2 control-label'>Fullname</label>
+            <div class='col-sm-10'>
+              <input type='text' class='form-control' value='{{ user.fullname }}' name='fullname'>
+            </div>
+          </div>
+
+          <!-- Bio -->
+          <div class='form-group'>
+            <label for='bio' class='col-sm-2 control-label'>User Bio</label>
+            <div class='col-sm-10'>
+              <textarea class='form-control' rows='3' name='bio'
+                >{{ user.bio }}</textarea>
+            </div>
+          </div>
+
+          {% if is_admin %}
+          <!-- Admin Section -->
+          <div class='form-group'>
+            <!-- Active -->
+            <label for='active' class='col-sm-2 control-label'>User is active</label>
+            <div class='col-sm-10'>
+              <input type='checkbox' name='active'
+              {% if user.active %}
+                checked='checked'
+              {% endif %}>
+            </div>
+          </div>
+
+          <div class='form-group'>
+            <!-- Primary Group -->
+            <label for='primary_group' class='col-sm-2 control-label'>Primary Group</label>
+            <div class='col-sm-10'>
+              <select class='form-control' name='primary_group'>
+                {% for g in groups %}
+                  {% if g.id == user.primary_group_id %}
+                    <option selected='selected'>{{ g.name }}</option>
+                  {% else %}
+                    <option>{{ g.name }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class='form-group'>
+            <!-- Group membership -->
+            <label for='group_mem' class='col-sm-2 control-label'>Groups</label>
+            <div class='col-sm-10'>
+                {% for g in groups %}
+                  <div class='row'>
+                    {% if g.id == user.primary_group.id %}
+                    <fieldset disabled>
+                      <div class="col-lg-6">
+                        <div class="input-group">
+                          <input type="text" class="form-control" id="disabledInput" placeholder='{{ g.name }}'>
+                          <span class="input-group-btn">
+                            <button class="btn btn-default" name='delete' type="button"><span class="glyphicon glyphicon-ban-circle"></span></button>
+                          </span>
+                        </div><!-- /input-group -->
+                      </div><!-- /.col-lg-6 -->
+                    </fieldset>
+                    {% else %}
+                      <div class="col-lg-6">
+                        <div class="input-group">
+                          <input type="text" class="form-control" id="disabledInput" placeholder='{{ g.name }}' disabled>
+                          <span class="input-group-btn">
+                            <button class="btn btn-default" name='delete' type="submit"><span class="glyphicon glyphicon-minus-sign"></span></button>
+                          </span>
+                        </div><!-- /input-group -->
+                      </div><!-- /.col-lg-6 -->
+                    {% endif %}
+                  </div>
+                {% endfor %}
+                <div class='row'>
+                  <div class='col-lg-6'>
+                    <div class='input-group'>
+                      <select class='form-control' name='add_groups'>
+                        {% for g in avail_groups %}
+                          <option>{{ g.name }}</option>
+                        {% endfor %}
+                      </select>
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" name="add_grroup" type='submit'><span class="glyphicon glyphicon-plus-sign"></span></button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+
+          <!-- ROLE SECTION -->
+          {{ nomacro_roledisplay(roles_by_group, avail_roles_by_group, avail_groups, groups) }}
+          {% endif %}
+          <input type="submit" name="update" value="Update">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
