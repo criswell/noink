@@ -15,7 +15,6 @@ from noink.activity_table import get_activity_dict
 from noink.exceptions import DuplicateRole
 from noink.event_log import EventLog
 from noink.pickler import pickle, depickle
-from noink.exceptions import NoRolesFound
 
 class RoleDB:
     __borg_state = {}
