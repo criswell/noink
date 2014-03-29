@@ -11,7 +11,6 @@ from types import IntType, StringType
 from noink import mainDB
 from noink.data_models import Role, RoleMapping
 from noink.user_db import UserDB
-from noink.activity_table import activities as all_activities
 from noink.activity_table import get_activity_dict
 from noink.exceptions import DuplicateRole
 from noink.event_log import EventLog
