@@ -5,7 +5,7 @@
 
 """
 
-from flask import Blueprint, render_template, abort
+from flask import Blueprint, render_template, abort, request
 from jinja2 import TemplateNotFound
 
 from noink import mainApp, loginManager, _
@@ -90,6 +90,8 @@ def admin_user(uid):
 
         # import ipdb; ipdb.set_trace()
         if is_admin or uid == current_user.id:
+            if request.method == "POST":
+                import ipdb; ipdb.set_trace()
             # render the admin user page for uid user
             return render_template('admin_user.html', state=get_state(),
                 user=user, groups=group, avail_groups=avail_groups,

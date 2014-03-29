@@ -13,7 +13,7 @@
             <div class="input-group">
               <input type="text" class="form-control" id="disabledInput" placeholder='{{ g.name }}'>
               <span class="input-group-btn">
-                <button class="btn btn-default" name='delete' type="button"><span class="glyphicon glyphicon-ban-circle"></span></button>
+                <button class="btn btn-default" name='delete' value='{{ g.id }}' type="button"><span class="glyphicon glyphicon-ban-circle"></span></button>
               </span>
             </div>
           </div>
@@ -29,7 +29,7 @@
           <div class="input-group">
             <input type="text" class="form-control" id="disabledInput" placeholder='{{ g.name }}' disabled>
             <span class="input-group-btn">
-              <button class="btn btn-default" name='delete' type="submit"><span class="glyphicon glyphicon-minus-sign"></span></button>
+              <button class="btn btn-default" name='delete' value='{{ g.id }}' type="submit"><span class="glyphicon glyphicon-minus-sign"></span></button>
             </span>
           </div>
         </div>
@@ -45,13 +45,13 @@
         <input type="hidden" value="groups" name="form">
         <div class="col-lg-6">
           <div class='input-group'>
-            <select class='form-control' name='add_groups'>
+            <select class='form-control' name='add_group'>
               {% for g in avail_groups %}
               <option>{{ g.name }}</option>
               {% endfor %}
             </select>
             <span class="input-group-btn">
-              <button class="btn btn-default" name="add_grroup" type='submit'><span class="glyphicon glyphicon-plus-sign"></span></button>
+              <button class="btn btn-default" name="add" type='submit'><span class="glyphicon glyphicon-plus-sign"></span></button>
             </span>
           </div>
         </div>
