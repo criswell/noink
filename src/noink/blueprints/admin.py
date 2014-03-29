@@ -88,9 +88,19 @@ def admin_user(uid):
 
             roles_by_group[rm.group_id].append(rm)
 
-        # import ipdb; ipdb.set_trace()
         if is_admin or uid == current_user.id:
             if request.method == "POST":
+                if "form_id" in request.form:
+                    if request.form['form_id'] == 'general':
+                        print("General")
+                    elif request.form['form_id'] == 'groups':
+                        print("Groups")
+                    elif request.form['form_id'] == 'roles':
+                        print("Roles")
+                    else:
+                        return render_template('noink_message.html',
+                            state=get_state(), title=_('Form error'),
+                            message=_('There was a problem identifying form elements. If this problem persists, contact your site administrator'))
                 import ipdb; ipdb.set_trace()
             # render the admin user page for uid user
             return render_template('admin_user.html', state=get_state(),
