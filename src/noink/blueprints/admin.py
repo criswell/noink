@@ -92,7 +92,13 @@ def admin_user(uid):
             if request.method == "POST":
                 if "form_id" in request.form:
                     if request.form['form_id'] == 'general':
-                        print("General")
+                        password = request.form.get('password', '')
+                        pcheck = request.form.get('pcheck', '')
+                        if password != '' and password is not None:
+                            if password == pcheck:
+                                user_db.update_password(user, password)
+                        #user
+                        user_db.update_user(user)
                     elif request.form['form_id'] == 'groups':
                         print("Groups")
                     elif request.form['form_id'] == 'roles':
