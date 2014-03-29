@@ -5,7 +5,7 @@
 
 """
 
-from flask import Blueprint, render_template, abort, request
+from flask import Blueprint, render_template, abort, request, flash
 from jinja2 import TemplateNotFound
 
 from noink import mainApp, loginManager, _
@@ -97,7 +97,15 @@ def admin_user(uid):
                         if password != '' and password is not None:
                             if password == pcheck:
                                 user_db.update_password(user, password)
-                        #user
+                        new_name = request.form.get('name', user.name)
+                        if new_name != user.name and new_name is not None:
+                            # Make sure we don't have duplicate
+                            exists = user_db.find_user_by_name(new_name)
+                            if exists == []:
+                                user.name = new_name
+                                flash(_('User name updated'))
+                            else:
+                                flash(_('{0} user already exists!'.format(new_name)), 'error')
                         user_db.update_user(user)
                     elif request.form['form_id'] == 'groups':
                         print("Groups")
