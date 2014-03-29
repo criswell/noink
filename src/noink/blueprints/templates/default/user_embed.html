@@ -7,8 +7,10 @@
       <div class='panel-body'>
         {% include "bootstrap-user_settings_general.html" %}
 
+        {% if is_admin %}
         {% include "bootstrap-user_settings_groups.html" %}
         {% include "bootstrap-user_settings_roles.html" %}
+        {% endif %}
       </div>
     </div>
   </div>
