@@ -3,6 +3,7 @@
   <form action='' class='form-horizontal' role='form' method='post'
     autocomplete='off'>
     <!-- Primary Group -->
+    <input type="hidden" value="primary_group" name="form">
     <label for='primary_group' class='col-sm-2 control-label'>Primary Group</label>
     <div class='col-sm-10'>
       <select class='form-control' name='primary_group'>
@@ -15,6 +16,7 @@
         {% endfor %}
       </select>
     </div>
+    <input type="submit" name="update_primary_group" value="Update">
   </form>
 </div>
 
@@ -25,8 +27,9 @@
     {% for g in groups %}
     <div class='row'>
       {% if g.id == user.primary_group.id %}
-      <form action='' class='form-horizontal' role='form' method='pos'
+      <form action='' class='form-horizontal' role='form' method='post'
         autocomplete='off'>
+        <input type="hidden" value="groups" name="form">
         <fieldset disabled>
           <div class="col-lg-6">
             <div class="input-group">
@@ -34,28 +37,32 @@
               <span class="input-group-btn">
                 <button class="btn btn-default" name='delete' type="button"><span class="glyphicon glyphicon-ban-circle"></span></button>
               </span>
-            </div><!-- /input-group -->
-          </div><!-- /.col-lg-6 -->
+            </div>
+          </div>
         </fieldset>
       </form>
       {% else %}
-      <form action='' class='form-horizontal' role='form' method='pos'
+      <form action='' class='form-horizontal' role='form' method='post'
         autocomplete='off'>
+        <input type="hidden" value="groups" name="form">
         <div class="col-lg-6">
           <div class="input-group">
             <input type="text" class="form-control" id="disabledInput" placeholder='{{ g.name }}' disabled>
             <span class="input-group-btn">
               <button class="btn btn-default" name='delete' type="submit"><span class="glyphicon glyphicon-minus-sign"></span></button>
             </span>
-          </div><!-- /input-group -->
-        </div><!-- /.col-lg-6 -->
+          </div>
+        </div>
       </form>
       {% endif %}
     </div>
     {% endfor %}
     <div class='row'>
-      <form action='' class='form-horizontal' role='form' method='pos'
+      <form action='' class='form-horizontal' role='form' method='post'
         autocomplete='off'>
+        <input type="hidden" value="groups" name="form">
+        <div class="col-lg-6">
+        <div class="col-lg-6">
         <div class='col-lg-6'>
           <div class='input-group'>
             <select class='form-control' name='add_groups'>
@@ -72,5 +79,4 @@
     </div>
   </div>
 </div>
-
 
