@@ -1,59 +1,52 @@
 {% macro nomacro_roledisplay_group(g, roles_by_group, avail_roles_by_group) -%}
-<div class="panel panel-default">
-  <div class="panel-heading">Group: "{{ g.name }}"</div>
-  <div class="panel-body">
-    <div class='col-sm-5'>
-      <div class='input-group'>
-        {% for r in roles_by_group[g.id] -%}
-        <div class='col-lg-10'>
+<form action='' class='form-horizontal' role='form' method='post'
+  autocomplete='off'>
+  <input type='hidden' value='roles' name='form'>
+  <input type='hidden' value='{{ g.id }}' name='group'>
+  <div class='form-group'>
+    <div class="panel panel-default">
+      <div class="panel-heading">Group: "{{ g.name }}"</div>
+      <div class="panel-body">
+        <div class='col-sm-5'>
           <div class='input-group'>
-            <input type="text" class="form-control" id="disabledInput" placeholder="{{ r.role.name }}" disabled>
-            <span class="input-group-btn">
-              <button class="btn btn-default" name='delete' type='submit'><span class='glyphicon glyphicon-minus-sign'></span></button>
-            </span>
-          </div>
-        </div>
-        {%- endfor %}
-      </div>
-      {% if avail_roles_by_group[g.id]|length > 0 %}
-      <div class='col-lg-10'>
-        <div class="input-group">
-          <select class='form-control' name='add_role'>
-            {% for r in avail_roles_by_group[g.id] -%}
-            <option>{{ r.name }}</option>
+            {% for r in roles_by_group[g.id] -%}
+            <div class='col-lg-10'>
+              <div class='input-group'>
+                <input type="text" class="form-control" id="disabledInput" placeholder="{{ r.role.name }}" disabled>
+                <span class="input-group-btn">
+                  <button class="btn btn-default" name='delete' type='submit'><span class='glyphicon glyphicon-minus-sign'></span></button>
+                </span>
+              </div>
+            </div>
             {%- endfor %}
-          </select>
-          <span class='input-group-btn'>
-            <button class='btn btn-default' name='add_role' type='submit'><span class='glyphicon glyphicon-plus-sign'></span></button>
-          </span>
+          </div>
+          {% if avail_roles_by_group[g.id]|length > 0 %}
+          <div class='col-lg-10'>
+            <div class="input-group">
+              <select class='form-control' name='add_role'>
+                {% for r in avail_roles_by_group[g.id] -%}
+                <option>{{ r.name }}</option>
+                {%- endfor %}
+              </select>
+              <span class='input-group-btn'>
+                <button class='btn btn-default' name='add_role' type='submit'><span class='glyphicon glyphicon-plus-sign'></span></button>
+              </span>
+            </div>
+          </div>
+          {% endif %}
         </div>
       </div>
-      {% endif %}
     </div>
   </div>
-</div>
+</form>
 {%- endmacro %}
 
 <div class='col-sm-2 control-label'><h3>Roles</h3></div>
 <div class='col-sm-10'>
   {% for g in groups -%}
-  <form action='' class='form-horizontal' role='form' method='post'
-    autocomplete='off'>
-    <input type='hidden' value='roles' name='form'>
-    <input type='hidden' value='{{ g.id }}' name='group'>
-    <div class='form-group'>
-      {{ nomacro_roledisplay_group(g, roles_by_group, avail_roles_by_group) }}
-    </div>
-  </form>
+  {{ nomacro_roledisplay_group(g, roles_by_group, avail_roles_by_group) }}
   {%- endfor %}
   {% for g in avail_groups -%}
-  <form action='' class='form-horizontal' role='form' method='post'
-    autocomplete='off'>
-    <input type='hidden' value='roles' name='form'>
-    <input type='hidden' value='{{ g.id }}' name='group'>
-    <div class='form-group'>
-      {{ nomacro_roledisplay_group(g, roles_by_group, avail_roles_by_group) }}
-    </div>
-  </form>
+  {{ nomacro_roledisplay_group(g, roles_by_group, avail_roles_by_group) }}
   {%- endfor %}
 </div>
