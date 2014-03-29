@@ -238,6 +238,40 @@ class UserDB:
         else:
             return False
 
+    def update_password(self, u, newpass):
+        '''
+        Updates the user's password. Assumes that the password has been
+        validated.
+
+        @param u: The user to update. Can be an integer for the uid, a username,
+                  or a user object.
+        @param newpass: The new password.
+        '''
+        user = u
+        if type(u) is IntType:
+            user = User.query.filter_by(id=u).first()
+        elif type(u) is StringType:
+            user = User.query.filter_by(name=u).first()
+
+        if user is not None:
+            user.passhash = mainCrypt.generate_password_hash(newpass)
+            mainDB.session.commit()
+        else:
+            raise UserNotFound("User not found in database")
+
+    def update_user(self, u):
+        '''
+        Given a user object, update the database with whatever changes it
+        contains.
+
+        @param u: A user object.
+        '''
+        if isinstance(u, User):
+            exists = User.query.get(u.id)
+            if exists == []:
+                mainDB.session.add(u)
+            mainDB.session.commit()
+
     def in_group(self, u, g):
         '''
         Checks if a user is in a group
