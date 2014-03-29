@@ -1,12 +1,12 @@
-<div class='form-group'>
-  <!-- Group membership -->
-  <div class='col-sm-2 control-label'><h3>Groups</h3></div>
-  <div class='col-sm-10'>
-    {% for g in groups %}
-    <div class='row'>
-      {% if g.id == user.primary_group.id %}
-      <form action='' class='form-horizontal' role='form' method='post'
-        autocomplete='off'>
+<!-- Group membership -->
+<div class='col-sm-2 control-label'><h3>Groups</h3></div>
+<div class='col-sm-10'>
+  {% for g in groups %}
+  <div class='row'>
+    {% if g.id == user.primary_group.id %}
+    <form action='' class='form-horizontal' role='form' method='post'
+      autocomplete='off'>
+      <div class='form-group'>
         <input type="hidden" value="groups" name="form">
         <fieldset disabled>
           <div class="col-lg-6">
@@ -18,10 +18,12 @@
             </div>
           </div>
         </fieldset>
-      </form>
-      {% else %}
-      <form action='' class='form-horizontal' role='form' method='post'
-        autocomplete='off'>
+      </div>
+    </form>
+    {% else %}
+    <form action='' class='form-horizontal' role='form' method='post'
+      autocomplete='off'>
+      <div class='form-group'>
         <input type="hidden" value="groups" name="form">
         <div class="col-lg-6">
           <div class="input-group">
@@ -31,13 +33,15 @@
             </span>
           </div>
         </div>
-      </form>
-      {% endif %}
-    </div>
-    {% endfor %}
-    <div class='row'>
-      <form action='' class='form-horizontal' role='form' method='post'
-        autocomplete='off'>
+      </div>
+    </form>
+    {% endif %}
+  </div>
+  {% endfor %}
+  <div class='row'>
+    <form action='' class='form-horizontal' role='form' method='post'
+      autocomplete='off'>
+      <div class='form-group'>
         <input type="hidden" value="groups" name="form">
         <div class="col-lg-6">
           <div class='input-group'>
@@ -51,8 +55,8 @@
             </span>
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
 </div>
 
