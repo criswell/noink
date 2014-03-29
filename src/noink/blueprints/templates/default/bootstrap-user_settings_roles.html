@@ -36,16 +36,24 @@
 
 <div class='col-sm-2 control-label'><h3>Roles</h3></div>
 <div class='col-sm-10'>
+  {% for g in groups -%}
   <form action='' class='form-horizontal' role='form' method='post'
     autocomplete='off'>
     <input type='hidden' value='roles' name='form'>
+    <input type='hidden' value='{{ g.id }}' name='group'>
     <div class='form-group'>
-      {% for g in groups -%}
       {{ nomacro_roledisplay_group(g, roles_by_group, avail_roles_by_group) }}
-      {%- endfor %}
-      {% for g in avail_groups -%}
+    </div>
+  </form>
+  {%- endfor %}
+  {% for g in avail_groups -%}
+  <form action='' class='form-horizontal' role='form' method='post'
+    autocomplete='off'>
+    <input type='hidden' value='roles' name='form'>
+    <input type='hidden' value='{{ g.id }}' name='group'>
+    <div class='form-group'>
       {{ nomacro_roledisplay_group(g, roles_by_group, avail_roles_by_group) }}
-      {%- endfor %}
-    </form>
-  </div>
+    </div>
+  </form>
+  {%- endfor %}
 </div>
