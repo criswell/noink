@@ -15,6 +15,7 @@ from entries import entries
 from noink import mainApp
 from noink.user_db import UserDB
 from noink.entry_db import EntryDB
+from noink.role_db import RoleDB
 
 class SimpleEntries:
 
@@ -23,6 +24,7 @@ class SimpleEntries:
 
         self.userDB = UserDB()
         self.entryDB = EntryDB()
+        self.roleDB = RoleDB()
 
         u = self.userDB.add("criswell", "password", "Sam Hart")
         u1 = self.userDB.add("charles", "password", "Charles Xavier")
@@ -33,6 +35,12 @@ class SimpleEntries:
         all_groups = ['junkbar', 'dollarbillyall', 'coldnwet']
         for g in all_groups:
             self.userDB.add_group(g)
+        role_names = ['tomato', 'spaghetti', 'nuts']
+        role_desc = ['Tomato Paste', 'Swirly Cheesy', 'Hardcore Nuts']
+        for x in range(len(role_names)):
+            self.roleDB.add_role(
+                role_names[x],
+                role_desc[x])
         parents = []
         for e in entries:
             parent = None
