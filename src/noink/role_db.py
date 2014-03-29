@@ -99,7 +99,7 @@ class RoleDB:
         elif type(role) is StringType:
             r = self.find_role_by_name(role)
 
-        return depickle(role.activities)
+        return depickle(r.activities)
 
     def assign_role(self, user, group, role):
         '''
