@@ -92,11 +92,17 @@ def admin_user(uid):
             if request.method == "POST":
                 if "form_id" in request.form:
                     if request.form['form_id'] == 'general':
+                        #
+                        # PASSWORD UPDATE
+                        #
                         password = request.form.get('password', '')
                         pcheck = request.form.get('pcheck', '')
                         if password != '' and password is not None:
                             if password == pcheck:
                                 user_db.update_password(user, password)
+                        #
+                        # NAME UPDATE
+                        #
                         new_name = request.form.get('name', user.name)
                         if new_name != user.name and new_name is not None:
                             # Make sure we don't have duplicate
@@ -106,6 +112,14 @@ def admin_user(uid):
                                 flash(_('User name updated'))
                             else:
                                 flash(_('{0} user already exists!'.format(new_name)), 'error')
+                        #
+                        # FULLNAME & BIO UPDATE
+                        #
+                        user.fullname = request.form.get('fullname', user.fullname)
+                        user.bio = request.form.get('bio', user.bio)
+                        #
+                        # UPDATE DATABASE
+                        #
                         user_db.update_user(user)
                     elif request.form['form_id'] == 'groups':
                         print("Groups")
