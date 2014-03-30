@@ -100,6 +100,9 @@ def admin_user(uid):
                         if password != '' and password is not None:
                             if password == pcheck:
                                 user_db.update_password(user, password)
+                                flash(_('Updated password'))
+                            else:
+                                flash(_('Passwords do not match!'))
                         #
                         # NAME UPDATE
                         #
@@ -133,6 +136,7 @@ def admin_user(uid):
                         if isinstance(active, Boolean):
                             if active != user.active:
                                 user.active = active
+                                flash(_('User active setting changed'))
                         #
                         # UPDATE DATABASE
                         #
@@ -145,7 +149,7 @@ def admin_user(uid):
                         return render_template('noink_message.html',
                             state=get_state(), title=_('Form error'),
                             message=_('There was a problem identifying form elements. If this problem persists, contact your site administrator'))
-                import ipdb; ipdb.set_trace()
+                #import ipdb; ipdb.set_trace()
             # render the admin user page for uid user
             return render_template('admin_user.html', state=get_state(),
                 user=user, groups=group, avail_groups=avail_groups,
