@@ -133,7 +133,7 @@ def admin_user(uid):
                         # ACTIVE
                         #
                         active = request.form.get('active', None)
-                        if isinstance(active, Boolean):
+                        if isinstance(active, bool):
                             if active != user.active:
                                 user.active = active
                                 flash(_('User active setting changed'))

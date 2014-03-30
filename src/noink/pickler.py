@@ -10,10 +10,7 @@ import sys
 from copy import copy, deepcopy
 from pickle import dumps, loads
 
-if sys.version_info[0] == 3:
-    _string_types = str,
-else:
-    _string_types = basestring,
+from noink.util import string_types as _string_types
 
 # Entries
 class PEntry:

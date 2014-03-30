@@ -3,7 +3,7 @@
 ##BOILERPLATE_COPYRIGHT_END
 '''
 
-from types import IntType, StringType
+from types import IntType
 
 from noink import mainDB, mainCrypt, loginManager, mainApp
 from noink.data_models import User, Group, GroupMapping
@@ -11,6 +11,8 @@ from noink.event_log import EventLog
 
 from noink.exceptions import (DuplicateUser, DuplicateGroup, UserNotFound,
     UserHasNoGroups)
+
+from noink.util import string_types
 
 from flask.ext.login import login_user, logout_user
 
@@ -61,7 +63,7 @@ class UserDB:
         users = [u]
         if isinstance(u,IntType):
             users = [self.find_user_by_id(u)]
-        elif isinstance(u, StringType):
+        elif isinstance(u, string_types):
             users = self.find_user_by_name(u)
 
         return users
@@ -135,17 +137,8 @@ class UserDB:
         @param g: The group to link. Can be an integer for the gid, a string for
                   group name, or a group object
         '''
-        user = u
-        if type(u) is IntType:
-            user = User.query.filter_by(id=u).first()
-        elif type(u) is StringType:
-            user = User.query.filter_by(name=u).first()
-
-        group = g
-        if type(g) is IntType:
-            group = Group.query.filter_by(id=g).first()
-        elif type(g) is StringType:
-            group = Group.query.filter_by(name=g).first()
+        user = self.get_user(u)[0]
+        group = self.get_group(g)
 
         exist = GroupMapping.query.filter_by(user=user).filter_by(group=group).all()
 
@@ -164,10 +157,10 @@ class UserDB:
 
         @return The group object found, or None.
         '''
-        group = None
-        if type(g) is IntType:
+        group = g
+        if isinstance(g, IntType):
             group = Group.query.filter_by(id=g).first()
-        elif type(g) is StringType:
+        elif isinstance(g, string_types):
             group = Group.query.filter_by(name=g).first()
 
         return group
@@ -187,11 +180,7 @@ class UserDB:
 
         @return A list of groups the user is a member of.
         '''
-        user = u
-        if type(u) is IntType:
-            user = User.query.filter_by(id=u).first()
-        elif type(u) is StringType:
-            user = User.query.filter_by(name=u).first()
+        user = self.get_user(u)[0]
 
         gms = GroupMapping.query.filter_by(user=user)
 
@@ -216,17 +205,8 @@ class UserDB:
 
         @return True on success, False on failure
         '''
-        user = u
-        if type(u) is IntType:
-            user = User.query.filter_by(id=u).first()
-        elif type(u) is StringType:
-            user = User.query.filter_by(name=u).first()
-
-        group = g
-        if type(g) is IntType:
-            group = Group.query.filter_by(id=g).first()
-        elif type(g) is StringType:
-            group = Group.query.filter_by(name=g).first()
+        user = self.get_user(u)[0]
+        group = self.get_group(g)
 
         if isinstance(user, User) and isinstance(group, Group):
             exists = GroupMapping.query.filter_by(user=user).filter_by(group=group).first()
@@ -247,11 +227,7 @@ class UserDB:
                   or a user object.
         @param newpass: The new password.
         '''
-        user = u
-        if type(u) is IntType:
-            user = User.query.filter_by(id=u).first()
-        elif type(u) is StringType:
-            user = User.query.filter_by(name=u).first()
+        user = self.get_user(u)[0]
 
         if user is not None:
             user.passhash = mainCrypt.generate_password_hash(newpass)
@@ -281,17 +257,8 @@ class UserDB:
         @param g: The group to link. Can be an integer for the gid, a string for
                   group name, or a group object
         '''
-        user = u
-        if type(u) is IntType:
-            user = User.query.filter_by(id=u).first()
-        elif type(u) is StringType:
-            user = User.query.filter_by(name=u).first()
-
-        group = g
-        if type(g) is IntType:
-            group = Group.query.filter_by(id=g).first()
-        elif type(g) is StringType:
-            group = Group.query.filter_by(name=g).first()
+        user = self.get_user(u)[0]
+        group = self.get_group(g)
 
         exist = GroupMapping.query.filter_by(user=user).filter_by(group=group).first()
 
@@ -308,9 +275,8 @@ class UserDB:
                   object
         '''
 
-        user = u
-        if type(u) is IntType:
-            user = User.query.filter_by(id=u).first()
+        user = self.get_user(u)[0]
+        # FIXME - Need a check here
         uid = int(user.id)
         uname = str(user.name)
         mainDB.session.delete(user)
@@ -347,9 +313,7 @@ class UserDB:
 
         @param u: A user to logout. Can be a uid or a user object.
         '''
-        user = u
-        if type(u) is IntType:
-            user = User.query.filter_by(id=u).first()
+        user = self.get_user(u)[0]
         if u.authenticated or u.active:
             u.authenticated = False
             u.active = False
@@ -365,3 +329,4 @@ def _user_load(uid):
     # FIXME - need try here?
     u = UserDB()
     return u.get_user(int(uid))[0]
+
