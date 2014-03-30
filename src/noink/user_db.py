@@ -51,7 +51,7 @@ class UserDB:
         '''
         return User.query.get(uid)
 
-    def get_user(self, u):
+    def get_users(self, u):
         '''
         Given user information, returns the user object
 
@@ -67,6 +67,27 @@ class UserDB:
             users = self.find_user_by_name(u)
 
         return users
+
+    def get_user(self, u):
+        '''
+         Given user information, returns the user object
+
+        @param u: The user to find. Can be an integer uid, username string, or
+                  even a user object.
+
+        @return the user object found
+        '''
+        user = u
+        if isinstance(u,IntType):
+            user = self.find_user_by_id(u)
+        elif isinstance(u, string_types):
+            tu = self.find_user_by_name(u)
+            if len(tu) > 0:
+                user = tu[0]
+            else:
+                user = None
+
+        return user
 
     def add(self, username, password, fullname, bio="", group=None):
         '''
@@ -137,7 +158,7 @@ class UserDB:
         @param g: The group to link. Can be an integer for the gid, a string for
                   group name, or a group object
         '''
-        user = self.get_user(u)[0]
+        user = self.get_user(u)
         group = self.get_group(g)
 
         exist = GroupMapping.query.filter_by(user=user).filter_by(group=group).all()
@@ -180,7 +201,7 @@ class UserDB:
 
         @return A list of groups the user is a member of.
         '''
-        user = self.get_user(u)[0]
+        user = self.get_user(u)
 
         gms = GroupMapping.query.filter_by(user=user)
 
@@ -205,7 +226,7 @@ class UserDB:
 
         @return True on success, False on failure
         '''
-        user = self.get_user(u)[0]
+        user = self.get_user(u)
         group = self.get_group(g)
 
         if isinstance(user, User) and isinstance(group, Group):
@@ -227,7 +248,7 @@ class UserDB:
                   or a user object.
         @param newpass: The new password.
         '''
-        user = self.get_user(u)[0]
+        user = self.get_user(u)
 
         if user is not None:
             user.passhash = mainCrypt.generate_password_hash(newpass)
@@ -257,7 +278,7 @@ class UserDB:
         @param g: The group to link. Can be an integer for the gid, a string for
                   group name, or a group object
         '''
-        user = self.get_user(u)[0]
+        user = self.get_user(u)
         group = self.get_group(g)
 
         exist = GroupMapping.query.filter_by(user=user).filter_by(group=group).first()
@@ -275,7 +296,7 @@ class UserDB:
                   object
         '''
 
-        user = self.get_user(u)[0]
+        user = self.get_user(u)
         # FIXME - Need a check here
         uid = int(user.id)
         uname = str(user.name)
@@ -313,7 +334,7 @@ class UserDB:
 
         @param u: A user to logout. Can be a uid or a user object.
         '''
-        user = self.get_user(u)[0]
+        user = self.get_user(u)
         if u.authenticated or u.active:
             u.authenticated = False
             u.active = False
@@ -328,5 +349,5 @@ class UserDB:
 def _user_load(uid):
     # FIXME - need try here?
     u = UserDB()
-    return u.get_user(int(uid))[0]
+    return u.get_user(int(uid))
 

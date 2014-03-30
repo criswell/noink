@@ -165,7 +165,7 @@ class EntryDB:
         if type(e) is IntType:
             entry = Entry.query.filter_by(id=e).first()
 
-        users = UserDB().get_user(u)
+        users = UserDB().get_users(u)
         if len(users) > 0:
             user = users[0]
             editor = Editor.query.filter_by(entry_id=e.id).filter_by(user_id=user.id).first()

@@ -110,7 +110,7 @@ class RoleDB:
         @param role: The role. Can be role object, rid, or stringe name.
         '''
         userDB = UserDB()
-        u = userDB.get_user(user)[0]
+        u = userDB.get_user(user)
         g = userDB.get_group(group)
         r = role
         if type(role) is IntType:
@@ -137,7 +137,7 @@ class RoleDB:
         @return A list of role mappings.
         '''
         userDB = UserDB()
-        u = userDB.get_user(user)[0]
+        u = userDB.get_user(user)
         rm = RoleMapping.query.filter_by(user=u)
         if group is not None:
             g = userDB.get_group(group)
