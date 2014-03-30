@@ -118,6 +118,22 @@ def admin_user(uid):
                         user.fullname = request.form.get('fullname', user.fullname)
                         user.bio = request.form.get('bio', user.bio)
                         #
+                        # PRIMARY GROUP
+                        #
+                        primary_group = request.form.get('primary_group', None)
+                        if primary_group is not None and primary_group != user.primary_group.name:
+                            if user_db.update_primary(user, primary_group):
+                                flash(_('Updated primary group'))
+                            else:
+                                flash(_('Failed to update primary group'), 'error')
+                        #
+                        # ACTIVE
+                        #
+                        active = request.form.get('active', None)
+                        if isinstance(active, Boolean):
+                            if active != user.active:
+                                user.active = active
+                        #
                         # UPDATE DATABASE
                         #
                         user_db.update_user(user)
