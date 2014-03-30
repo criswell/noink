@@ -111,7 +111,7 @@ def admin_user(uid):
                                 user.name = new_name
                                 flash(_('User name updated'))
                             else:
-                                flash(_('{0} user already exists!'.format(new_name)), 'error')
+                                flash(_('"{0}" user already exists!'.format(new_name)), 'error')
                         #
                         # FULLNAME & BIO UPDATE
                         #
