@@ -8,10 +8,8 @@ from types import IntType
 from noink import mainDB, mainCrypt, loginManager, mainApp
 from noink.data_models import User, Group, GroupMapping
 from noink.event_log import EventLog
-
 from noink.exceptions import (DuplicateUser, DuplicateGroup, UserNotFound,
     UserHasNoGroups)
-
 from noink.util import string_types
 
 from flask.ext.login import login_user, logout_user
