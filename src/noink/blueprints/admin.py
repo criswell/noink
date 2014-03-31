@@ -61,8 +61,7 @@ def admin_user(uid):
             return render_template('noink_message.html', state=get_state(),
                 title=_('User not found!'),
                 message=_('User with ID "{0}" was not found!'.format(uid)))
-        elif isinstance(user, list):
-            user = user[0]
+        else:
             group = user_db.get_users_groups(user)
 
         gs = set(user_db.get_all_groups())
