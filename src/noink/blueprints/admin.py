@@ -12,6 +12,7 @@ from noink import mainApp, loginManager, _
 from noink.state import get_state
 from noink.user_db import UserDB
 from noink.role_db import RoleDB
+from noink.data_models import Group
 
 from flask.ext.login import current_user
 
@@ -142,9 +143,17 @@ def admin_user(uid):
                         user_db.update_user(user)
                     elif request.form['form_id'] == 'groups':
                         if 'delete' in request.form:
-                            print(request.form['delete'])
-                        print("Groups")
-                        import ipdb; ipdb.set_trace()
+                            rm_g = user_db.get_group(int(request.form['delete']))
+                            if isinstance(rm_g, Group):
+                                if user_db.remove_from_group(user, rm_g):
+                                    flash(_('User removed from group "{0}".'.format(rm_g.name)))
+                                    group.remove(rm_g)
+                                else:
+                                    flash(_('Unable to remove user "{0}" from group "{1}".'.format(user.name, rm_g.name)))
+                            else:
+                                flash(_('Unable to remove user "{0}" from group "{1}".'.format(user.name, rm_g.name)))
+                            #print("Groups")
+                            #import ipdb; ipdb.set_trace()
                     elif request.form['form_id'] == 'roles':
                         print("Roles")
                     else:
