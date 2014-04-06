@@ -258,7 +258,9 @@ class UserDB:
 
             mainDB.session.delete(gm)
             mainDB.session.commit()
-            self.eventLog.add('rm_from_group', user.id, True, None, (user, group))
+            self.eventLog.add('rm_from_group', user.id, True, None, user, group)
+            return True
+        return False
 
     def update_password(self, u, newpass):
         '''
