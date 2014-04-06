@@ -141,14 +141,16 @@ def admin_user(uid):
                         #
                         user_db.update_user(user)
                     elif request.form['form_id'] == 'groups':
+                        if 'delete' in request.form:
+                            print(request.form['delete'])
                         print("Groups")
+                        import ipdb; ipdb.set_trace()
                     elif request.form['form_id'] == 'roles':
                         print("Roles")
                     else:
                         return render_template('noink_message.html',
                             state=get_state(), title=_('Form error'),
                             message=_('There was a problem identifying form elements. If this problem persists, contact your site administrator'))
-                #import ipdb; ipdb.set_trace()
             # render the admin user page for uid user
             return render_template('admin_user.html', state=get_state(),
                 user=user, groups=group, avail_groups=avail_groups,

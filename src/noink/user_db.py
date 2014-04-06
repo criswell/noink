@@ -9,7 +9,7 @@ from noink import mainDB, mainCrypt, loginManager, mainApp
 from noink.data_models import User, Group, GroupMapping
 from noink.event_log import EventLog
 from noink.exceptions import (DuplicateUser, DuplicateGroup, UserNotFound,
-    UserHasNoGroups)
+    UserHasNoGroups, CannotRemovePrimaryGroup, UserNotInGroup)
 from noink.util import string_types
 
 from flask.ext.login import login_user, logout_user
@@ -236,6 +236,29 @@ class UserDB:
             return True
         else:
             return False
+
+    def remove_from_group(self, u, g):
+        """
+        Removes a group association from a user.
+        """
+        user = self.get_user(u)
+        group = self.get_group(g)
+
+        if isinstance(user, User) and isinstance(group, Group):
+            if user.primary_group == group:
+                raise CannotRemovePrimaryGroup(
+                    'Cannot remove {0} from their primary group {1}'.format(
+                    user, group))
+
+            gm = GroupMapping.query.filter_by(user=user).filter_by(group=group).first()
+            if gm == []:
+                raise UserNotInGroup(
+                    'User {0} was not a member of the group {1}'.format(
+                    user, group))
+
+            mainDB.session.delete(gm)
+            mainDB.session.commit()
+            self.eventLog.add('rm_from_group', user.id, True, None, (user, group))
 
     def update_password(self, u, newpass):
         '''
