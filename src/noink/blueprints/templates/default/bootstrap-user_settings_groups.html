@@ -39,6 +39,7 @@
       {% endif %}
     </div>
     {% endfor %}
+    {% if avail_groups|length > 0 %}
     <div class='row'>
       <form action='' class='form-horizontal' role='form' method='post'
         autocomplete='off'>
@@ -58,6 +59,7 @@
           </div>
         </div>
       </form>
+      {% endif %}
     </div>
   </div>
 </div>

@@ -147,7 +147,9 @@ def admin_user(uid):
                             if isinstance(rm_g, Group):
                                 if user_db.remove_from_group(user, rm_g):
                                     flash(_('User removed from group "{0}".'.format(rm_g.name)))
-                                    group.remove(rm_g)
+                                    group = user_db.get_users_groups(user)
+                                    all_groups = set(group)
+                                    avail_groups = list(gs - all_groups)
                                 else:
                                     flash(_('Unable to remove user "{0}" from group "{1}".'.format(user.name, rm_g.name)))
                             else:
