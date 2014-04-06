@@ -151,9 +151,22 @@ def admin_user(uid):
                                 else:
                                     flash(_('Unable to remove user "{0}" from group "{1}".'.format(user.name, rm_g.name)))
                             else:
-                                flash(_('Unable to remove user "{0}" from group "{1}".'.format(user.name, rm_g.name)))
-                            #print("Groups")
+                                flash(_('Unable to remove user "{0}" from group "{1}".'.format(user.name, request.form['delete'])))
+                        elif 'add' in request.form:
                             #import ipdb; ipdb.set_trace()
+                            add_g = user_db.get_group(request.form.get('add_group', None))
+                            if isinstance(add_g, Group):
+                                user_db.add_to_group(user, add_g)
+                                group = user_db.get_users_groups(user)
+                                all_groups = set(group)
+                                avail_groups = list(gs - all_groups)
+                                if add_g in group:
+                                    flash(_('Added user to group "{0}".'.format(add_g.name)))
+                                else:
+                                    flash(_('Problem adding user "{0} to group "{1}"!'.format(user.name, add_g.name)), 'error')
+                            else:
+                                flash(_('Unable to find group "{0}"!'.format(request.form['add'])), 'error')
+                            #print("Groups")
                     elif request.form['form_id'] == 'roles':
                         print("Roles")
                     else:

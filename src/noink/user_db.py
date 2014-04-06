@@ -119,7 +119,7 @@ class UserDB:
 
     def add_group(self, group_name, user_id=None):
         '''
-        Adds a new grou to the database.
+        Adds a new group to the database.
 
         @param group_name: The group name to add, must be unique.
         @param user_id: (Optional) Single or multiple user IDs to associate with this group.
