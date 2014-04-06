@@ -66,7 +66,6 @@ class RoleDB:
 
         return r
 
-
     def add_role(self, name, description, activities=None):
         '''
         Add a new role to the DB.
