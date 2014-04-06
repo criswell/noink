@@ -7,46 +7,43 @@
     <div class="panel panel-default">
       <div class="panel-heading">Group: "{{ g.name }}"</div>
       <div class="panel-body">
-        <div class='col-sm-5'>
+        <div class='input-group'>
+          {% for r in roles_by_group[g.id] -%}
           <div class='input-group'>
-            {% for r in roles_by_group[g.id] -%}
-            <div class='col-lg-10'>
-              <div class='input-group'>
-                <input type="text" class="form-control" id="disabledInput" placeholder="{{ r.role.name }}" disabled>
-                <span class="input-group-btn">
-                  <button class="btn btn-default" name='delete' type='submit' value='{{ r.role.id }}'><span class='glyphicon glyphicon-minus-sign'></span></button>
-                </span>
-              </div>
-            </div>
-            {%- endfor %}
+            <input type="text" class="form-control" id="disabledInput" placeholder="{{ r.role.name }}" disabled>
+            <span class="input-group-btn">
+              <button class="btn btn-default" name='delete' type='submit' value='{{ r.role.id }}'><span class='glyphicon glyphicon-minus-sign'></span></button>
+            </span>
           </div>
-          {% if avail_roles_by_group[g.id]|length > 0 %}
-          <div class='col-lg-10'>
-            <div class="input-group">
-              <select class='form-control' name='add_role'>
-                {% for r in avail_roles_by_group[g.id] -%}
-                <option>{{ r.name }}</option>
-                {%- endfor %}
-              </select>
-              <span class='input-group-btn'>
-                <button class='btn btn-default' name='add' value='add' type='submit'><span class='glyphicon glyphicon-plus-sign'></span></button>
-              </span>
-            </div>
-          </div>
-          {% endif %}
+          {%- endfor %}
         </div>
-      </div>
+        {% if avail_roles_by_group[g.id]|length > 0 %}
+        <div class="input-group">
+          <select class='form-control' name='add_role'>
+            {% for r in avail_roles_by_group[g.id] -%}
+            <option>{{ r.name }}</option>
+            {%- endfor %}
+          </select>
+          <span class='input-group-btn'>
+            <button class='btn btn-default' name='add' value='add' type='submit'><span class='glyphicon glyphicon-plus-sign'></span></button>
+          </span>
+        </div>
+        {% endif %}
+        -</div>
     </div>
   </div>
 </form>
 {%- endmacro %}
 
-<div class='col-sm-2 control-label'><h3>Roles</h3></div>
-<div class='col-sm-10'>
-  {% for g in groups -%}
-  {{ nomacro_roledisplay_group(g, roles_by_group, avail_roles_by_group) }}
-  {%- endfor %}
-  {% for g in avail_groups -%}
-  {{ nomacro_roledisplay_group(g, roles_by_group, avail_roles_by_group) }}
-  {%- endfor %}
+<div class="container">
+  <div class='col-sm-2 control-label'><h3>Roles</h3></div>
+  <div class='col-sm-6'>
+    {% for g in groups -%}
+    {{ nomacro_roledisplay_group(g, roles_by_group, avail_roles_by_group) }}
+    {%- endfor %}
+    {% for g in avail_groups -%}
+    {{ nomacro_roledisplay_group(g, roles_by_group, avail_roles_by_group) }}
+    {%- endfor %}
+  </div>
 </div>
+

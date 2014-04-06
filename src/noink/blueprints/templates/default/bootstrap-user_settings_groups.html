@@ -1,62 +1,64 @@
 <!-- Group membership -->
-<div class='col-sm-2 control-label'><h3>Groups</h3></div>
-<div class='col-sm-10'>
-  {% for g in groups %}
-  <div class='row'>
-    {% if g.id == user.primary_group.id %}
-    <form action='' class='form-horizontal' role='form' method='post'
-      autocomplete='off'>
-      <div class='form-group'>
-        <input type="hidden" value="groups" name="form_id">
-        <fieldset disabled>
+<div class='container'>
+  <div class='col-sm-2 control-label'><h3>Groups</h3></div>
+  <div class='col-sm-10'>
+    {% for g in groups %}
+    <div class='row'>
+      {% if g.id == user.primary_group.id %}
+      <form action='' class='form-horizontal' role='form' method='post'
+        autocomplete='off'>
+        <div class='form-group'>
+          <input type="hidden" value="groups" name="form_id">
+          <fieldset disabled>
+            <div class="col-lg-6">
+              <div class="input-group">
+                <input type="text" class="form-control" id="disabledInput" placeholder='{{ g.name }}'>
+                <span class="input-group-btn">
+                  <button class="btn btn-default" name='delete' value='{{ g.id }}' type="button"><span class="glyphicon glyphicon-ban-circle"></span></button>
+                </span>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </form>
+      {% else %}
+      <form action='' class='form-horizontal' role='form' method='post'
+        autocomplete='off'>
+        <div class='form-group'>
+          <input type="hidden" value="groups" name="form_id">
           <div class="col-lg-6">
             <div class="input-group">
-              <input type="text" class="form-control" id="disabledInput" placeholder='{{ g.name }}'>
+              <input type="text" class="form-control" id="disabledInput" placeholder='{{ g.name }}' disabled>
               <span class="input-group-btn">
-                <button class="btn btn-default" name='delete' value='{{ g.id }}' type="button"><span class="glyphicon glyphicon-ban-circle"></span></button>
+                <button class="btn btn-default" name='delete' value='{{ g.id }}' type="submit"><span class="glyphicon glyphicon-minus-sign"></span></button>
               </span>
             </div>
           </div>
-        </fieldset>
-      </div>
-    </form>
-    {% else %}
-    <form action='' class='form-horizontal' role='form' method='post'
-      autocomplete='off'>
-      <div class='form-group'>
-        <input type="hidden" value="groups" name="form_id">
-        <div class="col-lg-6">
-          <div class="input-group">
-            <input type="text" class="form-control" id="disabledInput" placeholder='{{ g.name }}' disabled>
-            <span class="input-group-btn">
-              <button class="btn btn-default" name='delete' value='{{ g.id }}' type="submit"><span class="glyphicon glyphicon-minus-sign"></span></button>
-            </span>
+        </div>
+      </form>
+      {% endif %}
+    </div>
+    {% endfor %}
+    <div class='row'>
+      <form action='' class='form-horizontal' role='form' method='post'
+        autocomplete='off'>
+        <div class='form-group'>
+          <input type="hidden" value="groups" name="form_id">
+          <div class="col-lg-6">
+            <div class='input-group'>
+              <select class='form-control' name='add_group'>
+                {% for g in avail_groups %}
+                <option>{{ g.name }}</option>
+                {% endfor %}
+              </select>
+              <span class="input-group-btn">
+                <button class="btn btn-default" name="add" type='submit'><span class="glyphicon glyphicon-plus-sign"></span></button>
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-    </form>
-    {% endif %}
-  </div>
-  {% endfor %}
-  <div class='row'>
-    <form action='' class='form-horizontal' role='form' method='post'
-      autocomplete='off'>
-      <div class='form-group'>
-        <input type="hidden" value="groups" name="form_id">
-        <div class="col-lg-6">
-          <div class='input-group'>
-            <select class='form-control' name='add_group'>
-              {% for g in avail_groups %}
-              <option>{{ g.name }}</option>
-              {% endfor %}
-            </select>
-            <span class="input-group-btn">
-              <button class="btn btn-default" name="add" type='submit'><span class="glyphicon glyphicon-plus-sign"></span></button>
-            </span>
-          </div>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </div>
 
