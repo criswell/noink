@@ -11,6 +11,8 @@ specific items here in future data parsing, searching, processing, etc.
 
 '''
 
+# FIXME - Should us modern string formatting
+
 event_table = {
     'db_setup' : 'Initial database creation',
     'db_finish' : 'Database initialization complete',
