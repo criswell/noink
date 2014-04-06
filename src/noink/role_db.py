@@ -6,7 +6,7 @@
 """
 
 import datetime
-from types import IntType, StringType
+from types import IntType
 
 from noink import mainDB
 from noink.data_models import Role, RoleMapping
@@ -15,6 +15,7 @@ from noink.activity_table import get_activity_dict
 from noink.exceptions import DuplicateRole
 from noink.event_log import EventLog
 from noink.pickler import pickle, depickle
+from noink.util import string_types
 
 class RoleDB:
     __borg_state = {}
@@ -50,6 +51,21 @@ class RoleDB:
         @return The role object found.
         '''
         return Role.query.get(rid)
+
+    def get_role(self, role):
+        """
+        Given a role identifier, return the role object.
+
+        @param role: The role. Can be role object, rid, or string name.
+        """
+        r = role
+        if isinstance(role, IntType):
+            r = self.find_role_by_id(role)
+        elif isinstance(role, string_types):
+            r = self.find_role_by_name(role)
+
+        return r
+
 
     def add_role(self, name, description, activities=None):
         '''
@@ -90,12 +106,7 @@ class RoleDB:
 
         @return Decoded/decoupled activity dictionary
         '''
-
-        r = role
-        if type(role) is IntType:
-            r = self.find_role_by_id(role)
-        elif type(role) is StringType:
-            r = self.find_role_by_name(role)
+        r = self.get_role(role)
 
         return depickle(r.activities)
 
@@ -107,22 +118,39 @@ class RoleDB:
         @param user: The user. Can be user object, uid, or string name of the
                      user.
         @param group: The group. Can be group object, gid, or string name.
-        @param role: The role. Can be role object, rid, or stringe name.
+        @param role: The role. Can be role object, rid, or string name.
         '''
         userDB = UserDB()
         u = userDB.get_user(user)
         g = userDB.get_group(group)
-        r = role
-        if type(role) is IntType:
-            r = self.find_role_by_id(role)
-        elif type(role) is StringType:
-            r = self.find_role_by_name(role)
+        r = self.get_role(role)
 
         exist = RoleMapping.query.filter_by(user=u).filter_by(group=g).filter_by(role=r).all()
 
         if exist == []:
             rm = RoleMapping(r, u, g)
             mainDB.session.add(rm)
+
+        mainDB.session.commit()
+
+    def revoke_role(self, user, group, role):
+        """
+        Given a user, group and role, revoke the user's rights to that role
+        when part of the group.
+
+        @param user: The user. Can be a user object, uid, or string name of
+                     the user.
+        @param group: The group. Can be a group object, gid, or string name.
+        @param role: The role. Can be role object, rid, or string name.
+        """
+        user_db = UserDB()
+        u = user_db.get_user(user)
+        g = user_db.get_group(group)
+        r = self.get_role(role)
+        rmaps = RoleMapping.query.filter_by(user=u).filter_by(group=g).filter_by(role=r).all()
+
+        for rm in rmaps:
+            mainDB.session.delete(rm)
 
         mainDB.session.commit()
 

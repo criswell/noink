@@ -142,6 +142,9 @@ def admin_user(uid):
                         #
                         user_db.update_user(user)
                     elif request.form['form_id'] == 'groups':
+                        #
+                        # UPDATE GROUP MEMBERSHIPS
+                        #
                         if 'delete' in request.form:
                             rm_g = user_db.get_group(int(request.form['delete']))
                             if isinstance(rm_g, Group):
@@ -155,7 +158,6 @@ def admin_user(uid):
                             else:
                                 flash(_('Unable to remove user "{0}" from group "{1}".'.format(user.name, request.form['delete'])))
                         elif 'add' in request.form:
-                            #import ipdb; ipdb.set_trace()
                             add_g = user_db.get_group(request.form.get('add_group', None))
                             if isinstance(add_g, Group):
                                 user_db.add_to_group(user, add_g)
@@ -168,9 +170,12 @@ def admin_user(uid):
                                     flash(_('Problem adding user "{0} to group "{1}"!'.format(user.name, add_g.name)), 'error')
                             else:
                                 flash(_('Unable to find group "{0}"!'.format(request.form['add'])), 'error')
-                            #print("Groups")
                     elif request.form['form_id'] == 'roles':
+                        #
+                        # UPDATE ROLE MEMBERSHIP
+                        #
                         print("Roles")
+                        import ipdb; ipdb.set_trace()
                     else:
                         return render_template('noink_message.html',
                             state=get_state(), title=_('Form error'),
