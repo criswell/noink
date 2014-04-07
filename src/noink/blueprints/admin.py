@@ -12,7 +12,7 @@ from noink import mainApp, loginManager, _
 from noink.state import get_state
 from noink.user_db import UserDB
 from noink.role_db import RoleDB
-from noink.data_models import Group
+from noink.data_models import Group, Role
 
 from flask.ext.login import current_user
 
@@ -174,8 +174,22 @@ def admin_user(uid):
                         #
                         # UPDATE ROLE MEMBERSHIP
                         #
-                        print("Roles")
-                        import ipdb; ipdb.set_trace()
+                        if 'delete' in request.form:
+                            rm_r = role_db.get_role(int(request.form['delete']))
+                            g = user_db.get_group(int(request.form.get('group', -1)))
+                            if isinstance(rm_r, Role) and isinstance(g, Group):
+                                rolemap = role_db.get_rolemapping(user, g, rm_r)
+                                if rolemap is not None:
+                                    role_db.revoke_role(user, g, rm_r)
+                                    roles_by_group[g.id].remove(rolemap)
+                                    avail_roles_by_group[g.id].append(rm_r)
+                                    flash(_('Role "{0}" revoked.'.format(rm_r.name)))
+                                else:
+                                    flash(_('Role not assigned to user.'), 'error')
+                            else:
+                                flash(_('Problem finding role or group.', 'error'))
+                        elif 'add' in request.form:
+                            import ipdb; ipdb.set_trace()
                     else:
                         return render_template('noink_message.html',
                             state=get_state(), title=_('Form error'),

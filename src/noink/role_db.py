@@ -66,6 +66,20 @@ class RoleDB:
 
         return r
 
+    def get_rolemapping(self, user, group, role):
+        """
+        Given a user, group and role, will return the rolemap of the three,
+        if it exists. Otherwise will return None.
+
+        FIXME - Docstring
+        """
+        r = self.get_role(role)
+        user_db = UserDB()
+        u = user_db.get_user(user)
+        g = user_db.get_group(group)
+
+        return RoleMapping.query.filter_by(user=u).filter_by(group=g).filter_by(role=r).first()
+
     def add_role(self, name, description, activities=None):
         '''
         Add a new role to the DB.
