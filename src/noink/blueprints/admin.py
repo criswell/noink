@@ -189,7 +189,20 @@ def admin_user(uid):
                             else:
                                 flash(_('Problem finding role or group.', 'error'))
                         elif 'add' in request.form:
-                            import ipdb; ipdb.set_trace()
+                            g = user_db.get_group(int(request.form.get('group', -1)))
+                            r = role_db.get_role(request.form.get('add_role', None))
+                            if isinstance(r, Role) and isinstance(g, Group):
+                                role_db.assign_role(user, g, r)
+                                rolemap = role_db.get_rolemapping(user, g, r)
+                                if r in avail_roles_by_group[g.id]:
+                                    avail_roles_by_group[g.id].remove(r)
+                                if g.id not in roles_by_group:
+                                    roles_by_group[g.id] = []
+                                if rolemap not in roles_by_group[g.id]:
+                                    roles_by_group[g.id].append(rolemap)
+                                flash(_('Role "{0}" assigned for user "{1}" with group "{2}".'.format(r.name, user.name, g.name)))
+                            else:
+                                flash(_('Problem finding role or group.', 'error'))
                     else:
                         return render_template('noink_message.html',
                             state=get_state(), title=_('Form error'),
