@@ -10,7 +10,7 @@
     <div class="container">
       <div class="well">
         <ul>
-          {% if admin %}
+          {% if is_admin %}
           <li><a href="/admin/user">Administrate Users</a></li>
           {% endif %}
           <li><a href="/admin/user/{{ current_user.id }}">My User Settings</a></li>
