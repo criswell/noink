@@ -5,6 +5,8 @@
 
 """
 
+from collections import OrderedDict
+
 from flask import (Blueprint, render_template, abort, request, flash,
         url_for)
 from jinja2 import TemplateNotFound
@@ -27,7 +29,7 @@ def admin_page():
     role_db = RoleDB()
 
     if current_user.is_authenticated() and current_user.is_active():
-        links = {}
+        links = OrderedDict()
 
         is_admin = user_db.in_group(current_user, mainApp.config['ADMIN_GROUP'])
 
