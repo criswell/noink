@@ -1,22 +1,35 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
-  <head>
-    <title>{{ state.site_name }} | Admin</title>
-    {% include 'common_header.html' %}
-  </head>
-  <body>
-    {% include "page_head.html" %}
-    <div class="container">
-      <div class="well">
+<head>
+<title>{{ state.site_name }} | Admin</title>
+{% include 'common_header.html' %}
+</head>
+<body>
+{% include "page_head.html" %}
+<div class="container">
+  <div class="well">
+    {% for section, contents in links.iteritems() %}
+    {% if contents|length > 0 %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{ section }}</h3>
+      </div>
+      <div class="panel-body">
         <ul>
-          {% if is_admin %}
-          <li><a href="/admin/user">Administrate Users</a></li>
-          {% endif %}
-          <li><a href="/admin/user/{{ current_user.id }}">My User Settings</a></li>
-          <li><a href="/new">New Post</a></li>
+          {% for link in contents %}
+          <li>
+          <a href="{{ link.url }}">
+            <abbr title="{{ link.desc }}">{{ link.text }}</abbr>
+          </a>
+          </li>
+          {% endfor %}
         </ul>
       </div>
     </div>
-  </body>
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+</body>
 </html>
