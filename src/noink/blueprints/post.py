@@ -139,7 +139,8 @@ def _edit_post(eid=None):
                             tags.append(tm.tag.tag)
 
                 return render_template('new_post.html', state=get_state(),
-                    groups=groups, entry=entry, tags=tags, is_edit=True)
+                    groups=groups, entry=entry, tags=tags, is_edit=True,
+                    title=_('New Post'))
             else:
                 return not_authorized()
         else:

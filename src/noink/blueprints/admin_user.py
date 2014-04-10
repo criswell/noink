@@ -195,7 +195,7 @@ def admin_user_page(uid):
             return render_template('admin_user.html', state=get_state(),
                 user=user, groups=group, avail_groups=avail_groups,
                 is_admin=is_admin, role_map=rolemap, avail_roles=avail_roles,
-                roles_by_group=roles_by_group,
+                roles_by_group=roles_by_group, title=_('User Account'),
                 avail_roles_by_group=avail_roles_by_group)
 
     return render_template('noink_message.html', state=get_state(),

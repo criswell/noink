@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
   <head>
-    <title>{{ state.site_name }} | New Post</title>
+  <title>{{ state.site_name }} | {{ title }}</title>
     {% include 'common_header.html' %}
   </head>
   <body>
@@ -10,7 +10,7 @@
     <div class='container'><div class='well'>
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h1 class="panel-title">New Post</h1>
+          <h1 class="panel-title">{{ title }}</h1>
         </div>
         <div class="panel-body">
           {% include "post_form.html" %}

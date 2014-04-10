@@ -27,4 +27,4 @@ def login_page():
             return redirect(request.args.get("next") or url_for("list_entries.show"))
         else:
             flash(_('Problem logging in.'), 'error')
-    return render_template('login.html', state=get_state())
+    return render_template('login.html', state=get_state(), title=_('Login'))

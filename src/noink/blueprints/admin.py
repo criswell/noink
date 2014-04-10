@@ -71,7 +71,7 @@ def admin_page():
                 })
 
         return render_template('admin.html', state=get_state(), links=links,
-                is_admin=is_admin)
+                is_admin=is_admin, title=_('Admin'))
 
     return render_template('noink_message.html', state=get_state(),
         title=_('Not authorized'),
