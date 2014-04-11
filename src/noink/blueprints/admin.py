@@ -57,6 +57,12 @@ def admin_page():
                     'text' : _('My User Settings'),
                     'desc' : _('Adjust your personal user settings.')
                 })
+        if 'new_user' in all_activities:
+            links[personal_and_group].append({
+                    'url' : url_for("admin_user.new_user", uid=-1),
+                    'text' : _('Create New User'),
+                    'desc' : _('Create a new user.')
+                })
 
         entries = _('Entries')
         links[entries] = []
