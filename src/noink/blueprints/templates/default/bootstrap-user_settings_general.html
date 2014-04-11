@@ -12,7 +12,13 @@
   <div class='form-group'>
     <label class='col-sm-2 control-label'>Username</label>
     <div class='col-sm-10'>
+      {% if can_edit_users %}
       <input type="text" class='form-control' value='{{ user.name }}' name='name'>
+      {% else %}
+      <fieldset disabled>
+        <input type="text" class='form-control' id='disabledInput'  value='{{ user.name }}' name='name'>
+      </fieldset>
+      {% endif %}
     </div>
   </div>
 

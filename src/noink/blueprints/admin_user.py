@@ -32,7 +32,8 @@ def admin_user_page(uid):
     if current_user.is_authenticated() and current_user.is_active():
         all_groups = set(user_db.get_users_groups(current_user))
         rolemap = role_db.get_roles(current_user)
-        is_admin = user_db.in_group(current_user, mainApp.config['ADMIN_GROUP'])
+        admin_group = user_db.get_group(mainApp.config['ADMIN_GROUP'])
+        is_admin = user_db.in_group(current_user, admin_group)
 
         user = None
         group = []
@@ -71,6 +72,15 @@ def admin_user_page(uid):
                     avail_roles_by_group[rm.group_id].remove(rm.role)
 
             roles_by_group[rm.group_id].append(rm)
+
+        #
+        # DETERMINE PERMISSIONS MORE SPECIFICALLY
+        #
+        can_edit_users = False
+        if admin_group.id in roles_by_group:
+            for rm in roles_by_group[admin_group.id]:
+                acts = role_db.get_activities(rm.role)
+                can_edit_users = acts.get('edit_user')
 
         if is_admin or uid == current_user.id:
             if request.method == "POST":
@@ -196,7 +206,8 @@ def admin_user_page(uid):
                 user=user, groups=group, avail_groups=avail_groups,
                 is_admin=is_admin, role_map=rolemap, avail_roles=avail_roles,
                 roles_by_group=roles_by_group, title=_('User Account'),
-                avail_roles_by_group=avail_roles_by_group)
+                avail_roles_by_group=avail_roles_by_group,
+                can_edit_users=can_edit_users)
 
     return render_template('noink_message.html', state=get_state(),
         title=_('Not authorized'),
