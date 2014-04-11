@@ -43,6 +43,21 @@ ADMIN_ROLE_DESC = "The full, site administration, role."
 # group in the database!
 DEFAULT_GROUP = 'default'
 
+# The name of the default role. This is the role which all new users of
+# the system automatically get.
+DEFAULT_ROLE_NAME = 'default'
+
+# The description of the default role.
+DEFAULT_ROLE_DESC = "Default role for all users."
+
+# The activities of the default role. These are the activities persons
+# in the default role can do. Generally speaking, you wont want to
+# modify this unless you know what you're doing. Any activity entries
+# that are missing from this dictionary will be set to False
+DEFAULT_ROLE_ACTIVITIES = {
+        'edit_self': True
+    }
+
 # The top level group is the group that someone must have 'new_post' access
 # to in order to make posts at the top level of the site - Note that this is
 # yet another field which SHOULD NOT be changed after the database has been

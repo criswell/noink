@@ -107,6 +107,8 @@ class UserDB:
         if exists:
             raise DuplicateUser("%s already exists in database with id '%s'" % (username, str(exists)))
         else:
+            from noink.role_db import RoleDB
+            role_db = RoleDB()
             passHash = mainCrypt.generate_password_hash(password)
             u = User(username, fullname, bio, passHash)
             if group is None:
@@ -115,6 +117,8 @@ class UserDB:
             mainDB.session.add(u)
             mainDB.session.commit()
             self.eventLog.add('add_user', u.id, True, None, username)
+            self.add_to_group(u, group)
+            role_db.assign_role(u, group, mainApp.config['DEFAULT_ROLE_NAME'])
             return u
 
     def add_group(self, group_name, user_id=None):

@@ -29,6 +29,14 @@ def setup_DB():
     mainDB.create_all()
     event_log.add('db_setup', -1, True)
     default_group = userDB.add_group(mainApp.config['DEFAULT_GROUP'])
+    default_acts = get_activity_dict(False)
+    default_acts.update(mainApp.config['DEFAULT_ROLE_ACTIVITIES'])
+
+    def_role = roleDB.add_role(
+            mainApp.config['DEFAULT_ROLE_NAME'],
+            mainApp.config['DEFAULT_ROLE_DESC'],
+            default_acts)
+
     user = userDB.add(mainApp.config['ADMIN_USER'], mainApp.config["ADMIN_PASSWD"],
         mainApp.config['ADMIN_FULLNAME'])
     admin_group = userDB.add_group(mainApp.config['ADMIN_GROUP'], user.id)

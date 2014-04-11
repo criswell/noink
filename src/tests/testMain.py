@@ -45,7 +45,10 @@ class testMain(object):
             'SITE_ADMIN_EMAIL = "foo@bar.com"\n',
             'ADMIN_ROLE_NAME = "admin"\n',
             'ADMIN_ROLE_DESC = "Test admin role"\n',
-            'TOP_LEVEL_GROUP = "top"\n'
+            'TOP_LEVEL_GROUP = "top"\n',
+            'DEFAULT_ROLE_NAME = "default"\n',
+            'DEFAULT_ROLE_DESC = "default role"\n',
+            'DEFAULT_ROLE_ACTIVITIES = { "edit_self":True }\n'
         ]
 
         with open(self.TEST_CONF_FILE, 'w') as f:
