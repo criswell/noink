@@ -140,7 +140,8 @@ def _edit_post(eid=None):
 
                 return render_template('new_post.html', state=get_state(),
                     groups=groups, entry=entry, tags=tags, is_edit=True,
-                    title=_('New Post'))
+                    title=_('New Post'), submit_button=_('Submit'),
+                    preview_button=_('Preview'))
             else:
                 return not_authorized()
         else:

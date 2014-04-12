@@ -24,7 +24,9 @@ def login_page():
         udb = UserDB()
         if udb.authenticate(username, password, remember):
             flash(_('%s logged in.' % username))
-            return redirect(request.args.get("next") or url_for("list_entries.show"))
+            return redirect(request.args.get("next") or \
+                url_for("list_entries.show"))
         else:
             flash(_('Problem logging in.'), 'error')
-    return render_template('login.html', state=get_state(), title=_('Login'))
+    return render_template('login.html', state=get_state(),
+        title=_('Login'), submit_button=_('Login'))
