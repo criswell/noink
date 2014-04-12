@@ -1,12 +1,14 @@
 <form action='' class='form-horizontal' role='form' method='post' autocomplete='off'>
   <input type="hidden" value="general" name="form_id">
   <!-- USER ID -->
+  {% if user.id %}
   <div class='form-group'>
     <label class="col-sm-2 control-label">User ID</label>
     <div class="col-sm-10">
       <p class="form-control-static">{{ user.id }}</p>
     </div>
   </div>
+  {% endif %}
 
   <!-- USERNAME -->
   <div class='form-group'>
@@ -84,7 +86,7 @@
   </div>
   {% endif %}
   <p class="text-right">
-  <input type="submit" name="update" value="Update">
+  <input type="submit" name="update" value="{{ submit_button }}">
   </p>
 </form>
 

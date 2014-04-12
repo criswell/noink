@@ -207,7 +207,8 @@ def admin_user_page(uid):
                 is_admin=is_admin, role_map=rolemap, avail_roles=avail_roles,
                 roles_by_group=roles_by_group, title=_('User Account'),
                 avail_roles_by_group=avail_roles_by_group,
-                can_edit_users=can_edit_users)
+                can_edit_users=can_edit_users,
+                submit_button=_('Update'))
 
     return _not_auth()
 
@@ -225,7 +226,6 @@ def new_user():
     role_db = RoleDB()
 
     if current_user.is_authenticated() and current_user.is_active():
-        links = OrderedDict()
 
         is_admin = user_db.in_group(current_user, mainApp.config['ADMIN_GROUP'])
 
@@ -237,7 +237,12 @@ def new_user():
                     all_activities.add(act)
 
         if 'new_user' in all_activities:
-            pass
+            user = user_db.create_temp_empty_user()
+            groups = user_db.get_all_groups()
+            return render_template('admin_new_user.html',
+                state=get_state(), user=user, groups=groups,
+                title=_('Add new user'), can_edit_users=True,
+                is_admin=is_admin, submit_button=_('Add'))
         else:
             return _not_auth()
 

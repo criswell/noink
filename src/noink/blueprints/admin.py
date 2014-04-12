@@ -59,7 +59,7 @@ def admin_page():
                 })
         if 'new_user' in all_activities:
             links[personal_and_group].append({
-                    'url' : url_for("admin_user.new_user", uid=-1),
+                    'url' : url_for("admin_user.new_user"),
                     'text' : _('Create New User'),
                     'desc' : _('Create a new user.')
                 })
