@@ -121,6 +121,12 @@ class UserDB:
             role_db.assign_role(u, group, mainApp.config['DEFAULT_ROLE_NAME'])
             return u
 
+    def create_temp_empty_user(self):
+        """
+        Returns a temporary, empty user object.
+        """
+        return User(None, None, None, None)
+
     def add_group(self, group_name, user_id=None):
         '''
         Adds a new group to the database.

@@ -209,7 +209,37 @@ def admin_user_page(uid):
                 avail_roles_by_group=avail_roles_by_group,
                 can_edit_users=can_edit_users)
 
+    return _not_auth()
+
+def _not_auth():
     return render_template('noink_message.html', state=get_state(),
         title=_('Not authorized'),
         message=_('You are not authorized to vew this page!'))
+
+@admin_user.route("/admin/user/new", methods=['GET', 'POST'])
+def new_user():
+    """
+    Dialog for new user.
+    """
+    user_db = UserDB()
+    role_db = RoleDB()
+
+    if current_user.is_authenticated() and current_user.is_active():
+        links = OrderedDict()
+
+        is_admin = user_db.in_group(current_user, mainApp.config['ADMIN_GROUP'])
+
+        all_activities = set()
+        for m in role_db.get_roles(current_user):
+            acts = role_db.get_activities(m.role_id)
+            for act in acts:
+                if acts[act]:
+                    all_activities.add(act)
+
+        if 'new_user' in all_activities:
+            pass
+        else:
+            return _not_auth()
+
+    return _not_auth()
 
