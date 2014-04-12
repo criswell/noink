@@ -5,7 +5,8 @@
 
 """
 
-from flask import Blueprint, render_template, abort, request, flash
+from flask import (Blueprint, render_template, abort, request, flash,
+        redirect, url_for)
 from jinja2 import TemplateNotFound
 
 from noink import mainApp, loginManager, _
@@ -89,14 +90,14 @@ def admin_user_page(uid):
                         #
                         # PASSWORD UPDATE
                         #
-                        password = request.form.get('password', '')
-                        pcheck = request.form.get('pcheck', '')
+                        password = _check_password(
+                            request.form.get('password', None),
+                            request.form.get('pcheck', None))
                         if password != '' and password is not None:
-                            if password == pcheck:
-                                user_db.update_password(user, password)
-                                flash(_('Updated password'))
-                            else:
-                                flash(_('Passwords do not match!'))
+                            user_db.update_password(user, password)
+                            flash(_('Updated password'))
+                        else:
+                            flash(_('Passwords do not match!'))
                         #
                         # NAME UPDATE
                         #
@@ -217,6 +218,17 @@ def _not_auth():
         title=_('Not authorized'),
         message=_('You are not authorized to vew this page!'))
 
+def _check_password(password, pcheck):
+    """
+    Checks that two passwords match. Returns the password if they match
+    and None if they do not.
+    """
+    if password != '' and password is not None:
+        if password == pcheck:
+            return password
+        else:
+            return None
+
 @admin_user.route("/admin/user/new", methods=['GET', 'POST'])
 def new_user():
     """
@@ -239,6 +251,14 @@ def new_user():
         if 'new_user' in all_activities:
             user = user_db.create_temp_empty_user()
             groups = user_db.get_all_groups()
+
+            if 'cancel' in request.form:
+                return redirect(request.args.get("next") or \
+                    url_for("admin.admin_page"))
+            elif 'update' in request.form:
+                password = _check_password(
+                    request.form.get('password', None),
+                    request.form.get('pcheck', None))
             return render_template('admin_new_user.html',
                 state=get_state(), user=user, groups=groups,
                 title=_('Add new user'), can_edit_users=True,
