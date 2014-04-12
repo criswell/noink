@@ -87,6 +87,9 @@
   {% endif %}
   <p class="text-right">
   <input type="submit" name="update" value="{{ submit_button }}">
+  {% if cancel_button %}
+  <input type="submit" name="cancel" value="{{ cancel_button }}">
+  {% endif %}
   </p>
 </form>
 

@@ -242,7 +242,8 @@ def new_user():
             return render_template('admin_new_user.html',
                 state=get_state(), user=user, groups=groups,
                 title=_('Add new user'), can_edit_users=True,
-                is_admin=is_admin, submit_button=_('Add'))
+                is_admin=is_admin, submit_button=_('Add'),
+                cancel_button=_('Cancel'))
         else:
             return _not_auth()
 
