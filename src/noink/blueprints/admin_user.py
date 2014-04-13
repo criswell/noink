@@ -31,12 +31,19 @@ def admin_user_page(uid):
     role_db = RoleDB()
 
     if current_user.is_authenticated() and current_user.is_active():
-        all_groups = set(user_db.get_users_groups(current_user))
-        # FIXME Only grabs group and role mappings for logged in user,
-        # not for user we're editing
-        rolemap = role_db.get_roles(current_user)
+        # Gather permissions for currently logged in user
+        cur_all_groups = set(user_db.get_users_groups(current_user))
+        cur_rolemap = role_db.get_roles(current_user)
         admin_group = user_db.get_group(mainApp.config['ADMIN_GROUP'])
         is_admin = user_db.in_group(current_user, admin_group)
+        gs = set(user_db.get_all_groups())
+
+        avail_roles = role_db.get_all_roles()
+        avail_roles_by_group = dict()
+        for g in gs:
+            avail_roles_by_group[g.id] = list(avail_roles)
+
+        cur_roles_by_group = _get_roles_by_group(cur_rolemap, avail_roles_by_group)
 
         user = None
         group = []
@@ -53,35 +60,23 @@ def admin_user_page(uid):
         else:
             group = user_db.get_users_groups(user)
 
-        gs = set(user_db.get_all_groups())
+        all_groups = set(user_db.get_users_groups(user))
+        rolemap = role_db.get_roles(user)
+
         avail_groups = list(gs - all_groups)
 
         user_roles = set()
         for m in rolemap:
             user_roles.add(m.role)
 
-        avail_roles = role_db.get_all_roles()
-        avail_roles_by_group = dict()
-        for g in gs:
-            avail_roles_by_group[g.id] = list(avail_roles)
-
-        roles_by_group = dict()
-        for rm in rolemap:
-            if rm.group_id not in roles_by_group:
-                roles_by_group[rm.group_id] = []
-
-            if rm.group_id in avail_roles_by_group:
-                if rm.role in avail_roles_by_group[rm.group_id]:
-                    avail_roles_by_group[rm.group_id].remove(rm.role)
-
-            roles_by_group[rm.group_id].append(rm)
+        roles_by_group = _get_roles_by_group(rolemap, avail_roles_by_group)
 
         #
         # DETERMINE PERMISSIONS MORE SPECIFICALLY
         #
         can_edit_users = False
-        if admin_group.id in roles_by_group:
-            for rm in roles_by_group[admin_group.id]:
+        if admin_group.id in cur_roles_by_group:
+            for rm in cur_roles_by_group[admin_group.id]:
                 acts = role_db.get_activities(rm.role)
                 can_edit_users = acts.get('edit_user')
 
@@ -243,6 +238,20 @@ def _check_password(password, pcheck):
             return password
         else:
             return None
+
+def _get_roles_by_group(rolemap, avail_roles_by_group):
+    roles_by_group = dict()
+    for rm in rolemap:
+        if rm.group_id not in roles_by_group:
+            roles_by_group[rm.group_id] = []
+
+        if rm.group_id in avail_roles_by_group:
+            if rm.role in avail_roles_by_group[rm.group_id]:
+                avail_roles_by_group[rm.group_id].remove(rm.role)
+
+        roles_by_group[rm.group_id].append(rm)
+
+    return roles_by_group
 
 @admin_user.route("/admin/user/new", methods=['GET', 'POST'])
 def new_user():
