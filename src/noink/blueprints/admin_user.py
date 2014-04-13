@@ -32,6 +32,8 @@ def admin_user_page(uid):
 
     if current_user.is_authenticated() and current_user.is_active():
         all_groups = set(user_db.get_users_groups(current_user))
+        # FIXME Only grabs group and role mappings for logged in user,
+        # not for user we're editing
         rolemap = role_db.get_roles(current_user)
         admin_group = user_db.get_group(mainApp.config['ADMIN_GROUP'])
         is_admin = user_db.in_group(current_user, admin_group)
