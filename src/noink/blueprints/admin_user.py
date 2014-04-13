@@ -90,22 +90,22 @@ def admin_user_page(uid):
                         #
                         # PASSWORD UPDATE
                         #
-                        password = _check_password(
-                            request.form.get('password', None),
-                            request.form.get('pcheck', None))
-                        if password != '' and password is not None:
-                            user_db.update_password(user, password)
-                            flash(_('Updated password'))
-                        else:
-                            flash(_('Passwords do not match!'))
+                        if request.form.get('password', '') != '':
+                            password = _check_password(
+                                request.form.get('password', None),
+                                request.form.get('pcheck', None))
+                            if password != '' and password is not None:
+                                user_db.update_password(user, password)
+                                flash(_('Updated password'))
+                            else:
+                                flash(_('Passwords do not match!'))
                         #
                         # NAME UPDATE
                         #
-                        new_name = request.form.get('name', user.name)
-                        if new_name != user.name and new_name is not None:
-                            # Make sure we don't have duplicate
-                            exists = user_db.find_user_by_name(new_name)
-                            if exists == []:
+                        if request.form.get('name', user.name) != user.name:
+                            new_name = _check_username(
+                                request.form.get('name', user.name))
+                            if new_name != user.name and new_name is not None:
                                 user.name = new_name
                                 flash(_('User name updated'))
                             else:
@@ -127,7 +127,7 @@ def admin_user_page(uid):
                         #
                         # ACTIVE
                         #
-                        active = request.form.get('active', None)
+                        active = request.form.get('active', None) == 'on'
                         if isinstance(active, bool):
                             if active != user.active:
                                 user.active = active
@@ -218,6 +218,19 @@ def _not_auth():
         title=_('Not authorized'),
         message=_('You are not authorized to vew this page!'))
 
+def _check_username(username):
+    """
+    Checks that a username is valid and is not already in use. Returns
+    the username if valid, or None if it is not.
+    """
+    checked_name = None
+    if username is not None and username != '':
+        user_db = UserDB()
+        exists = user_db.find_user_by_name(username)
+        if exists == []:
+            checked_name = username
+    return checked_name
+
 def _check_password(password, pcheck):
     """
     Checks that two passwords match. Returns the password if they match
@@ -259,6 +272,29 @@ def new_user():
                 password = _check_password(
                     request.form.get('password', None),
                     request.form.get('pcheck', None))
+                user.name = _check_username(
+                    request.form.get('name', None))
+                user.fullname = request.form.get('fullname', None)
+                user.bio = request.form.get('bio', None)
+                g = user_db.get_group(request.form.get('primary_group', None))
+                user.primary_group_id = g.id
+                user.active = request.form.get('active', None) == 'on'
+                # Validation
+                if user.name is not None:
+                    if password is not None:
+                        if g is not None:
+                            u = user_db.add(user.name, password,
+                                user.fullname, user.bio, g, user.active)
+                            flash(_('User "{0}" added.'.format(u.name)))
+                            return redirect(url_for(
+                                'admin_user.admin_user_page', uid=u.id))
+                        else:
+                            flash(_('Invalid group'))
+                    else:
+                        flash(_('Passwords do not match!'))
+                else:
+                    flash(_('Username invalid'))
+
             return render_template('admin_new_user.html',
                 state=get_state(), user=user, groups=groups,
                 title=_('Add new user'), can_edit_users=True,

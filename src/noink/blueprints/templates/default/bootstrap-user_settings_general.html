@@ -15,7 +15,13 @@
     <label class='col-sm-2 control-label'>Username</label>
     <div class='col-sm-10'>
       {% if can_edit_users %}
-      <input type="text" class='form-control' value='{{ user.name }}' name='name'>
+      <input type="text" class='form-control'
+      {% if user.name %}
+      value='{{ user.name }}'
+      {% else %}
+      placeholder='Username'
+      {% endif %}
+      name='name'>
       {% else %}
       <fieldset disabled>
         <input type="text" class='form-control' id='disabledInput'  value='{{ user.name }}' name='name'>
@@ -44,7 +50,13 @@
   <div class='form-group'>
     <label for='fullname' class='col-sm-2 control-label'>Fullname</label>
     <div class='col-sm-10'>
-      <input type='text' class='form-control' value='{{ user.fullname }}' name='fullname'>
+      <input type='text' class='form-control'
+      {% if user.fullname %}
+      value='{{ user.fullname }}'
+      {% else %}
+      placeholder='Fullname'
+      {% endif %}
+      name='fullname'>
     </div>
   </div>
 
@@ -53,7 +65,7 @@
     <label for='bio' class='col-sm-2 control-label'>User Bio</label>
     <div class='col-sm-10'>
       <textarea class='form-control' rows='3' name='bio'
-        >{{ user.bio }}</textarea>
+        >{% if user.bio %}{{ user.bio }}{% endif %}</textarea>
     </div>
   </div>
   {% if is_admin %}

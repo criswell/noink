@@ -87,7 +87,8 @@ class UserDB:
 
         return user
 
-    def add(self, username, password, fullname, bio="", group=None):
+    def add(self, username, password, fullname, bio="", group=None,
+            active=False):
         '''
         Adds a user to the database.
 
@@ -96,6 +97,7 @@ class UserDB:
         @param fullname: The user's full name
         @param bio: The user's bio (optional)
         @param group: The user's primary group (optional)
+        @param active: Whether the user is active or not
 
         @return The user object for the user crated.
         '''
@@ -114,6 +116,7 @@ class UserDB:
             if group is None:
                 group = self.get_group(mainApp.config['DEFAULT_GROUP'])
             u.primary_group = group
+            u.active = active
             mainDB.session.add(u)
             mainDB.session.commit()
             self.eventLog.add('add_user', u.id, True, None, username)
