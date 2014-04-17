@@ -21,8 +21,9 @@ except:
     __setup = False
 
 def _parse_config():
-    '''
-    '''
+    """
+    Inner config parser.
+    """
     try:
         mainApp.config.from_envvar('NOINK_CONFIGURATION')
     except:
@@ -39,9 +40,9 @@ def _parse_config():
         mainApp.jinja_loader.searchpath = __new_template_path
 
 def re_init():
-    '''
+    """
     Call this method when you want to re-initialize as much as possible.
-    '''
+    """
     _parse_config()
 
 if not __setup:
@@ -59,7 +60,7 @@ if not __setup:
             nofilter_newlines
 
     # custom tests
-    from custom_tests import is_editable, is_deletable
+    from noink.custom_tests import is_editable, is_deletable
 
     # blueprints
     from noink.blueprints.listentries import list_entries
