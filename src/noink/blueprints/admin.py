@@ -7,9 +7,7 @@
 
 from collections import OrderedDict
 
-from flask import (Blueprint, render_template, abort, request, flash,
-        url_for)
-from jinja2 import TemplateNotFound
+from flask import (Blueprint, render_template, url_for)
 
 from noink import mainApp, _
 from noink.state import get_state
