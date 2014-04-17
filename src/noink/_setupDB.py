@@ -22,6 +22,9 @@ from noink.role_db import RoleDB
 from noink.exceptions import SetupError
 
 def setup_DB():
+    """
+    Called when the DB is to be initialized. Should only be called once.
+    """
     event_log = EventLog()
     sc = _SiteConfig()
     userDB = UserDB()
@@ -32,20 +35,22 @@ def setup_DB():
     default_acts = get_activity_dict(False)
     default_acts.update(mainApp.config['DEFAULT_ROLE_ACTIVITIES'])
 
-    def_role = roleDB.add_role(
+    dummy = roleDB.add_role(
             mainApp.config['DEFAULT_ROLE_NAME'],
             mainApp.config['DEFAULT_ROLE_DESC'],
             default_acts)
 
-    user = userDB.add(mainApp.config['ADMIN_USER'], mainApp.config["ADMIN_PASSWD"],
-        mainApp.config['ADMIN_FULLNAME'])
+    user = userDB.add(mainApp.config['ADMIN_USER'],
+        mainApp.config["ADMIN_PASSWD"], mainApp.config['ADMIN_FULLNAME'])
     admin_group = userDB.add_group(mainApp.config['ADMIN_GROUP'], user.id)
     if not userDB.update_primary(user, admin_group):
-        raise SetupError('Could not assign the admin user "%s" primary group to the admin group "%s"!' %
-            (user, admin_group))
+        raise SetupError(
+            'Could not assign the admin user "{0}" primary group to the ' \
+            'admin group "{1}"!'.format(user, admin_group))
 
     # By default, the admin is part of the top level group as well as default
-    top_level_group = userDB.add_group(mainApp.config['TOP_LEVEL_GROUP'], user.id)
+    dummy = userDB.add_group(mainApp.config['TOP_LEVEL_GROUP'],
+        user.id)
     userDB.add_to_group(user, default_group)
 
     admin_role = get_activity_dict(True)
@@ -58,6 +63,7 @@ def setup_DB():
     roleDB.assign_role(user, mainApp.config['TOP_LEVEL_GROUP'], role)
     roleDB.assign_role(user, mainApp.config['DEFAULT_GROUP'], role)
 
-    sc.add(mainApp.noink_version, mainApp.config['SITE_NAME'], mainApp.config['SITE_ADMIN_EMAIL'])
+    sc.add(mainApp.noink_version, mainApp.config['SITE_NAME'],
+            mainApp.config['SITE_ADMIN_EMAIL'])
 
     event_log.add('db_finish', -1, True)
