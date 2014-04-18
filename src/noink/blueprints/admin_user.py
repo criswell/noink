@@ -5,11 +5,10 @@
 
 """
 
-from flask import (Blueprint, render_template, abort, request, flash,
+from flask import (Blueprint, render_template, request, flash,
         redirect, url_for)
-from jinja2 import TemplateNotFound
 
-from noink import mainApp, loginManager, _
+from noink import mainApp, _
 from noink.state import get_state
 from noink.user_db import UserDB
 from noink.role_db import RoleDB
