@@ -5,16 +5,17 @@
 
 """
 
+from math import ceil
+
 from flask import (Blueprint, render_template, request, flash,
         redirect, url_for)
+from flask.ext.login import current_user
 
 from noink import mainApp, _
 from noink.state import get_state
 from noink.user_db import UserDB
 from noink.role_db import RoleDB
 from noink.data_models import Group, Role
-
-from flask.ext.login import current_user
 
 admin_user = Blueprint('admin_user', __name__)
 
@@ -340,4 +341,39 @@ def new_user():
             return _not_auth()
 
     return _not_auth()
+
+@admin_user.route("/admin/users", methods=['GET', 'POST'])
+def list_users():
+    """
+    Renders the list users page
+    """
+    page_num = int(request.args.get('page', 0))
+    per_page = mainApp.config['NUM_ENTRIES_PER_PAGE'][0]
+    user_db = UserDB()
+    role_db = RoleDB()
+
+    if current_user.is_authenticated() and current_user.is_active():
+        is_admin = user_db.in_group(current_user, mainApp.config['ADMIN_GROUP'])
+        all_activities = set()
+        for m in role_db.get_roles(current_user):
+            acts = role_db.get_activities(m.role_id)
+            for act in acts:
+                if acts[act]:
+                    all_activities.add(act)
+
+        can_edit_users = 'edit_users' in all_activities
+
+        if is_admin or 'view_users' in all_activities:
+            users = user_db.get_all_users()
+            total_pages = 0
+            if len(users) > per_page:
+                total_pages = int(ceil(float(len(users)) / float(per_page)))
+
+            return render_template('list_users.html', users=users,
+                state=get_state(), page_num=page_num, total_pages=total_pages,
+                can_edit_users=can_edit_users, is_admin=is_admin)
+        else:
+            return _not_auth()
+    else:
+        return _not_auth()
 
