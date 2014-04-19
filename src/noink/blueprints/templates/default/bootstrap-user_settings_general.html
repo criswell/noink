@@ -15,7 +15,7 @@
     <label class='col-sm-2 control-label'>Username</label>
     <div class='col-sm-10'>
       {% if can_edit_users %}
-      <input type="text" class='form-control'
+      <input type="text" class='form-control' autocomplete='off'
       {% if user.name %}
       value='{{ user.name }}'
       {% else %}
@@ -34,7 +34,7 @@
   <div class='form-group'>
     <label for='password' class='col-sm-2 control-label'>Password</label>
     <div class='col-sm-10'>
-      <input type='password' class='form-control' placeholder='Password' name='password'>
+      <input type='password' class='form-control' placeholder='Password' name='password' autocomplete='off' value=''>
     </div>
   </div>
 
@@ -42,7 +42,7 @@
   <div class='form-group'>
     <label for='pcheck' class='col-sm-2 control-label'>Verify Password</label>
     <div class='col-sm-10'>
-      <input type='password' class='form-control' placeholder='Password' name='pcheck'>
+      <input type='password' class='form-control' placeholder='Password' name='pcheck' autocomplete='off' value=''>
     </div>
   </div>
 
@@ -50,7 +50,7 @@
   <div class='form-group'>
     <label for='fullname' class='col-sm-2 control-label'>Fullname</label>
     <div class='col-sm-10'>
-      <input type='text' class='form-control'
+      <input type='text' class='form-control' autocomplete='off'
       {% if user.fullname %}
       value='{{ user.fullname }}'
       {% else %}

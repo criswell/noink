@@ -23,15 +23,13 @@ admin_user = Blueprint('admin_user', __name__)
 def admin_user_page(uid):
     """
     Renders the user admin page
-
-    FIXME: Finish
     """
     user_db = UserDB()
     role_db = RoleDB()
 
     if current_user.is_authenticated() and current_user.is_active():
         # Gather permissions for currently logged in user
-        cur_all_groups = set(user_db.get_users_groups(current_user))
+        #cur_all_groups = set(user_db.get_users_groups(current_user))
         cur_rolemap = role_db.get_roles(current_user)
         admin_group = user_db.get_group(mainApp.config['ADMIN_GROUP'])
         is_admin = user_db.in_group(current_user, admin_group)
@@ -42,7 +40,8 @@ def admin_user_page(uid):
         for g in gs:
             avail_roles_by_group[g.id] = list(avail_roles)
 
-        cur_roles_by_group = _get_roles_by_group(cur_rolemap, avail_roles_by_group)
+        cur_roles_by_group = _get_roles_by_group(cur_rolemap,
+            avail_roles_by_group)
 
         user = None
         group = []
@@ -105,21 +104,25 @@ def admin_user_page(uid):
                                 user.name = new_name
                                 flash(_('User name updated'))
                             else:
-                                flash(_('"{0}" user already exists!'.format(new_name)), 'error')
+                                flash(_('"{0}" user already exists!'.
+                                    format(new_name)), 'error')
                         #
                         # FULLNAME & BIO UPDATE
                         #
-                        user.fullname = request.form.get('fullname', user.fullname)
+                        user.fullname = request.form.get('fullname',
+                                user.fullname)
                         user.bio = request.form.get('bio', user.bio)
                         #
                         # PRIMARY GROUP
                         #
                         primary_group = request.form.get('primary_group', None)
-                        if primary_group is not None and primary_group != user.primary_group.name:
+                        if primary_group is not None and \
+                            primary_group != user.primary_group.name:
                             if user_db.update_primary(user, primary_group):
                                 flash(_('Updated primary group'))
                             else:
-                                flash(_('Failed to update primary group'), 'error')
+                                flash(_('Failed to update primary group'),
+                                        'error')
                         #
                         # ACTIVE
                         #
@@ -137,51 +140,69 @@ def admin_user_page(uid):
                         # UPDATE GROUP MEMBERSHIPS
                         #
                         if 'delete' in request.form:
-                            rm_g = user_db.get_group(int(request.form['delete']))
+                            rm_g = user_db.get_group(int(
+                                request.form['delete']))
                             if isinstance(rm_g, Group):
                                 if user_db.remove_from_group(user, rm_g):
-                                    flash(_('User removed from group "{0}".'.format(rm_g.name)))
+                                    flash(_('User removed from group "{0}".'.
+                                        format(rm_g.name)))
                                     group = user_db.get_users_groups(user)
                                     all_groups = set(group)
                                     avail_groups = list(gs - all_groups)
                                 else:
-                                    flash(_('Unable to remove user "{0}" from group "{1}".'.format(user.name, rm_g.name)))
+                                    flash(_('Unable to remove user "{0}" from'\
+                                            ' group "{1}".'.format(user.name,
+                                            rm_g.name)))
                             else:
-                                flash(_('Unable to remove user "{0}" from group "{1}".'.format(user.name, request.form['delete'])))
+                                flash(_('Unable to remove user "{0}" from'\
+                                        'group "{1}".'.format(user.name,
+                                        request.form['delete'])))
                         elif 'add' in request.form:
-                            add_g = user_db.get_group(request.form.get('add_group', None))
+                            add_g = user_db.get_group(
+                                    request.form.get('add_group', None))
                             if isinstance(add_g, Group):
                                 user_db.add_to_group(user, add_g)
                                 group = user_db.get_users_groups(user)
                                 all_groups = set(group)
                                 avail_groups = list(gs - all_groups)
                                 if add_g in group:
-                                    flash(_('Added user to group "{0}".'.format(add_g.name)))
+                                    flash(_(
+                                        'Added user to group "{0}".'.format(
+                                            add_g.name)))
                                 else:
-                                    flash(_('Problem adding user "{0} to group "{1}"!'.format(user.name, add_g.name)), 'error')
+                                    flash(_('Problem adding user "{0} to '\
+                                            'group "{1}"!'.format(user.name,
+                                            add_g.name)), 'error')
                             else:
-                                flash(_('Unable to find group "{0}"!'.format(request.form['add'])), 'error')
+                                flash(_('Unable to find group "{0}"!'.format(
+                                    request.form['add'])), 'error')
                     elif request.form['form_id'] == 'roles':
                         #
                         # UPDATE ROLE MEMBERSHIP
                         #
                         if 'delete' in request.form:
                             rm_r = role_db.get_role(int(request.form['delete']))
-                            g = user_db.get_group(int(request.form.get('group', -1)))
+                            g = user_db.get_group(int(request.form.get(
+                                'group', -1)))
                             if isinstance(rm_r, Role) and isinstance(g, Group):
                                 rolemap = role_db.get_rolemapping(user, g, rm_r)
                                 if rolemap is not None:
                                     role_db.revoke_role(user, g, rm_r)
                                     roles_by_group[g.id].remove(rolemap)
                                     avail_roles_by_group[g.id].append(rm_r)
-                                    flash(_('Role "{0}" revoked.'.format(rm_r.name)))
+                                    flash(_('Role "{0}" revoked.'.format(
+                                        rm_r.name)))
                                 else:
-                                    flash(_('Role not assigned to user.'), 'error')
+                                    flash(_('Role not assigned to user.'),
+                                            'error')
                             else:
-                                flash(_('Problem finding role or group.', 'error'))
+                                flash(_('Problem finding role or group.',
+                                    'error'))
                         elif 'add' in request.form:
-                            g = user_db.get_group(int(request.form.get('group', -1)))
-                            r = role_db.get_role(request.form.get('add_role', None))
+                            g = user_db.get_group(int(request.form.get(
+                                'group', -1)))
+                            r = role_db.get_role(request.form.get(
+                                'add_role', None))
                             if isinstance(r, Role) and isinstance(g, Group):
                                 role_db.assign_role(user, g, r)
                                 rolemap = role_db.get_rolemapping(user, g, r)
@@ -191,13 +212,18 @@ def admin_user_page(uid):
                                     roles_by_group[g.id] = []
                                 if rolemap not in roles_by_group[g.id]:
                                     roles_by_group[g.id].append(rolemap)
-                                flash(_('Role "{0}" assigned for user "{1}" with group "{2}".'.format(r.name, user.name, g.name)))
+                                flash(_('Role "{0}" assigned for user "{1}"' \
+                                        ' with group "{2}".'.format(
+                                        r.name, user.name, g.name)))
                             else:
-                                flash(_('Problem finding role or group.', 'error'))
+                                flash(_('Problem finding role or group.',
+                                    'error'))
                     else:
                         return render_template('noink_message.html',
                             state=get_state(), title=_('Form error'),
-                            message=_('There was a problem identifying form elements. If this problem persists, contact your site administrator'))
+                            message=_('There was a problem identifying form '\
+                                'elements. If this problem persists, contact'\
+                                ' your site administrator'))
             # render the admin user page for uid user
             return render_template('admin_user.html', state=get_state(),
                 user=user, groups=group, avail_groups=avail_groups,
