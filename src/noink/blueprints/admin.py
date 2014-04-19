@@ -61,6 +61,12 @@ def admin_page():
                     'text' : _('Create New User'),
                     'desc' : _('Create a new user.')
                 })
+        if 'view_users' in all_activities:
+            links[personal_and_group].append({
+                    'url' : url_for("admin_user.list_users"),
+                    'text' : _('List All Users'),
+                    'desc' : _('View all users and administrate them')
+                })
 
         entries = _('Entries')
         links[entries] = []

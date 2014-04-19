@@ -361,7 +361,7 @@ def list_users():
                 if acts[act]:
                     all_activities.add(act)
 
-        can_edit_users = 'edit_users' in all_activities
+        can_edit_users = 'edit_user' in all_activities
 
         if is_admin or 'view_users' in all_activities:
             users = user_db.get_all_users()
@@ -371,7 +371,9 @@ def list_users():
 
             return render_template('list_users.html', users=users,
                 state=get_state(), page_num=page_num, total_pages=total_pages,
-                can_edit_users=can_edit_users, is_admin=is_admin)
+                can_edit_users=can_edit_users, is_admin=is_admin,
+                title=_('Users'), delete_button=_('Delete'),
+                update_button=_('Update'), new_button=_('New'))
         else:
             return _not_auth()
     else:
