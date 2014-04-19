@@ -1,0 +1,41 @@
+<form action='' class='form-horizontal' role='form' method='post'>
+  <input type='hidden' value='list_users' name='form_id'>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <tr>
+        <td width="10%">Select</td>
+        <td width="10%"><b>User ID</b></td>
+        <td><b>Username</b></td>
+        <td><b>Fullname</b></td>
+        <td width="10%"><b>Active</b></td>
+        <td></td>
+      </tr>
+      {% for u in users %}
+      <tr>
+        <td>
+          <input type="checkbox" name="select" id="{{ u.id }}">
+        </td>
+        <td>{{ u.id }}</td>
+        <td>{{ u.name }}</td>
+        <td>{{ u.fullname }}</td>
+        <td>
+          <input type="checkbox" name="active" id="{{ u.id }}"
+          {% if u.active %}
+          checked='checked'
+          {% endif %}
+          >
+        </td>
+        <td><a href="/admin/user/{{ u.id }}">Edit User</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <p class='text-right'>
+  <button class="btn btn-danger" type="submit" name="delete" 
+    >{{ delete_button }}</button>
+  <button class="btn btn-default" type="submit" name="update"
+    >{{ update_button }}</button>
+  <button class="btn btn-default" type="submit" name="new"
+    >{{ new_button }}</button>
+  </p>
+</form>
