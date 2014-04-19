@@ -16,6 +16,7 @@ from noink.state import get_state
 from noink.user_db import UserDB
 from noink.role_db import RoleDB
 from noink.data_models import Group, Role
+from noink.exceptions import UserNotFound
 
 admin_user = Blueprint('admin_user', __name__)
 
@@ -364,16 +365,43 @@ def list_users():
         can_edit_users = 'edit_user' in all_activities
 
         if is_admin or 'view_users' in all_activities:
+            if request.method == "POST":
+                if 'new' in request.form:
+                    return redirect(url_for("admin_user.new_user"))
+                elif 'delete' in request.form:
+                    uids = request.form.getlist('select')
+                    for uid in uids:
+                        try:
+                            user_db.delete(int(uid))
+                            flash(_('User with ID "{0}" deleted.'.format(uid)))
+                        except UserNotFound:
+                            flash(_('"{0}" user id not found!'.format(uid)),
+                                    'error')
+                elif 'update' in request.form:
+                    uids = {int(i):True for i in request.form.getlist('active')}
+                    if len(uids) > 0:
+                        users = user_db.get_all_users()
+                        for u in users:
+                            if u.id in uids:
+                                u.active = True
+                            else:
+                                u.active = False
+                            user_db.update_user(u)
+                #import ipdb; ipdb.set_trace()
             users = user_db.get_all_users()
             total_pages = 0
             if len(users) > per_page:
                 total_pages = int(ceil(float(len(users)) / float(per_page)))
 
             return render_template('list_users.html', users=users,
-                state=get_state(), page_num=page_num, total_pages=total_pages,
-                can_edit_users=can_edit_users, is_admin=is_admin,
-                title=_('Users'), delete_button=_('Delete'),
-                update_button=_('Update'), new_button=_('New'))
+                    state=get_state(), page_num=page_num,
+                    total_pages=total_pages,
+                    can_edit_users=can_edit_users, is_admin=is_admin,
+                    title=_('Users'), delete_button=_('Delete'),
+                    update_button=_('Update'), new_button=_('New User'),
+                    del_title=_('Delete User(s)'), cancel_button=_('Cancel'),
+                    del_warn=_('Deleting users is a permanent action. '\
+                            'Are you sure?'))
         else:
             return _not_auth()
     else:
