@@ -57,9 +57,11 @@ class Group(mainDB.Model):
 
     id = mainDB.Column(mainDB.Integer, primary_key=True)
     name = mainDB.Column(mainDB.String(60))
+    description = mainDB.Column(mainDB.String(200))
 
-    def __init__(self, name):
+    def __init__(self, name, description=''):
         self.name = name
+        self.description = description
 
     def __repr__(self):
         return "<Group %s, id %s>" % (self.name, self.id)

@@ -67,6 +67,12 @@ def admin_page():
                     'text' : _('List All Users'),
                     'desc' : _('View all users and administrate them')
                 })
+        if 'view_groups' in all_activities:
+            links[personal_and_group].append({
+                    'url' : url_for("admin_group.admin_group_page"),
+                    'text' : _('Edit Groups'),
+                    'desc' : _('View and edit all groups')
+                })
 
         entries = _('Entries')
         links[entries] = []

@@ -13,8 +13,9 @@ activities = [
     'new_user',
     'edit_user',
     'edit_self',
-    'group_admin',
-    'view_users'
+    'edit_group',
+    'view_users',
+    'view_groups'
 ]
 
 def get_activity_dict(default=False):
