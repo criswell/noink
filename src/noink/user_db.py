@@ -9,7 +9,7 @@ from noink import mainDB, mainCrypt, loginManager, mainApp
 from noink.data_models import User, Group, GroupMapping
 from noink.event_log import EventLog
 from noink.exceptions import (DuplicateUser, DuplicateGroup, UserNotFound,
-    UserHasNoGroups, CannotRemovePrimaryGroup, UserNotInGroup)
+    UserHasNoGroups, CannotRemovePrimaryGroup, UserNotInGroup, GroupNotFound)
 from noink.util import string_types
 
 from flask.ext.login import login_user, logout_user
@@ -363,6 +363,20 @@ class UserDB:
             self.eventLog.add('del_user', uid, True, None, uname)
         else:
             raise UserNotFound("User not found in database")
+
+    def delete_group(self, g):
+        """
+        Deletes a group from the database. Group can be integer, string, or
+        group object.
+        """
+        group = self.get_group(g)
+        if group is not None:
+            gid = int(group.id)
+            mainDB.session.delete(group)
+            mainDB.session.commit()
+            self.eventLog.add('del_group', gid, True, None, None)
+        else:
+            raise GroupNotFound('Group not found in database')
 
     def authenticate(self, username, passwd, remember):
         '''

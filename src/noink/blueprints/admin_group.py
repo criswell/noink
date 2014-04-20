@@ -9,6 +9,7 @@ from noink import mainApp, _
 from noink.state import get_state
 from noink.user_db import UserDB
 from noink.role_db import RoleDB
+from noink.exceptions import GroupNotFound
 
 from noink.blueprints.admin_user import _not_auth
 
@@ -38,6 +39,17 @@ def admin_group_page(gid):
 
         if is_admin or can_view_groups:
             if gid is None:
+                if request.method == "POST":
+                    if 'delete' in request.form:
+                        gids = request.form.getlist('select')
+                        for gid in gids:
+                            try:
+                                user_db.delete_group(int(gid))
+                                flash(_('Group with ID "{0}" deleted.'.format(
+                                    gid)))
+                            except GroupNotFound:
+                                flash(_('"{0}" group id not found!'.format(
+                                    gid)), 'error')
                 groups = user_db.get_all_groups()
                 return render_template('list_groups.html', groups=groups,
                     state=get_state(), can_view_groups=can_view_groups,
