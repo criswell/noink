@@ -1,0 +1,49 @@
+<form action='' class='form-horizontal' role='form' method='post'>
+  <input type='hidden' value='list_groups' name='form_id'>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <tr>
+        <td width="10%">Select</td>
+        <td width="10%"><b>Group ID</b></td>
+        <td><b>Group Name</b></td>
+        <td><b>Description</b></td>
+        <td></td>
+      </tr>
+      {% for g in groups %}
+      <tr>
+        <td>
+          <input type="checkbox" name="select" value="{{ g.id }}">
+        </td>
+        <td>{{ g.id }}</td>
+        <td>{{ g.name }}</td>
+        <td>{{ g.description }}</td>
+        <td><a href="/admin/group/{{ g.id }}">Edit Group</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <p class='text-right'>
+  <button class="btn btn-danger" data-toggle="modal" data-target="#delModal"
+    type="button">{{ delete_button }}</button>
+  <button class="btn btn-default" type="submit" name="new"
+    >{{ new_button }}</button>
+  </p>
+  <!-- Modal -->
+  <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="delModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="delModalLabel">{{ del_title }}</h4>
+        </div>
+        <div class="modal-body">
+          {{ del_warn }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">{{ cancel_button }}</button>
+          <button class="btn btn-danger" type="submit" name='delete'>{{ delete_button }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
