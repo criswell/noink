@@ -326,6 +326,17 @@ class UserDB:
                 mainDB.session.add(u)
             mainDB.session.commit()
 
+    def update_group(self, g):
+        """
+        Given a group object, update the database with whatever changes it
+        contains.
+        """
+        if isinstance(g, Group):
+            exists = Group.query.get(g.id)
+            if exists == []:
+                mainDB.session.add(g)
+            mainDB.session.commit()
+
     def in_group(self, u, g):
         '''
         Checks if a user is in a group
@@ -397,7 +408,7 @@ class UserDB:
                 u.active = False
                 mainDB.session.commit()
                 return False
-        except: # XXX - may want better handling
+        except:
             raise
         return False
 

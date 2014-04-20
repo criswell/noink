@@ -38,17 +38,17 @@
     <div class="col-sm-10">
       {% if can_edit_groups %}
       <textarea class="form-control" autocomplete="off" name='description'
-        >{% if group.description %}{{ group.name }}{% endif %}</textarea>
+        >{% if group.description %}{{ group.description }}{% endif %}</textarea>
       {% else %}
       <fieldset disabled>
         <textarea class="form-control" autocomplete="off" name='description'
-          >{% if group.description %}{{ group.name }}{% endif %}</textarea>
+          >{% if group.description %}{{ group.description }}{% endif %}</textarea>
       </fieldset>
       {% endif %}
     </div>
   </div>
   <p class="text-right">
-  <input type="submit" name="update" value="{{ submit_button }}">
+  <input type="submit" name="submit" value="{{ submit_button }}">
   {% if cancel_button %}
   <input type="submit" name="cancel" value="{{ cancel_button }}">
   {% endif %}

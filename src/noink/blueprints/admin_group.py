@@ -63,6 +63,14 @@ def admin_group_page(gid):
                 if request.method == "POST":
                     if 'cancel' in request.form:
                         return redirect(url_for('admin_group.admin_group_page'))
+                    elif 'submit' in request.form:
+                        group = user_db.get_group(gid)
+                        if group is not None:
+                            group.name = request.form.get('group_name',
+                                group.name)
+                            group.description = request.form.get('description',
+                                group.description)
+                            user_db.update_group(group)
 
                 group = user_db.get_group(gid)
 
