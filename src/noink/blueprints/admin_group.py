@@ -1,4 +1,5 @@
 """
+Admin group page
 """
 
 from flask import (Blueprint, render_template, request, flash,
@@ -59,11 +60,20 @@ def admin_group_page(gid):
                     del_warn=_('Deleting groups is a permanent action. '\
                             'Are you sure?'))
             else:
-                pass
+                if request.method == "POST":
+                    if 'cancel' in request.form:
+                        return redirect(url_for('admin_group.admin_group_page'))
 
-            return render_template('admin_group_page.html',
-                    state=get_state())
+                group = user_db.get_group(gid)
 
+                if group is not None:
+                    return render_template('edit_group.html', group=group,
+                        state=get_state(), title=_('Edit Group'),
+                        cancel_button=_('Cancel'), submit_button=_('Submit'),
+                        can_edit_groups=can_edit_groups)
+                else:
+                    flash(_('Group "{0}" not found!'.format(gid)), 'error')
+                    return redirect(url_for("admin_group.admin_group_page"))
         else:
             return _not_auth()
     else:
