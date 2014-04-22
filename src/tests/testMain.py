@@ -33,7 +33,9 @@ class testMain(object):
             'ADMIN_PASSWD = "password"\n',
             'ADMIN_FULLNAME = "Administrator"\n',
             'ADMIN_GROUP = "admin"\n',
+            'ADMIN_GROUP_DESC = "Admin group"\n',
             'DEFAULT_GROUP = "default"\n',
+            'DEFAULT_GROUP_DESC = "Default group"\n',
             'SQLALCHEMY_DATABASE_URI = "%s"\n' % self.TEST_DB_FILE,
             'SECRET_KEY = "%032x"\n' % random.getrandbits(128),
             'HTML_TEMPLATES = [ "../../noink/blueprints/templates/default" ]\n',
@@ -46,6 +48,7 @@ class testMain(object):
             'ADMIN_ROLE_NAME = "admin"\n',
             'ADMIN_ROLE_DESC = "Test admin role"\n',
             'TOP_LEVEL_GROUP = "top"\n',
+            'TOP_LEVEL_GROUP_DESC = "Top group"\n',
             'DEFAULT_ROLE_NAME = "default"\n',
             'DEFAULT_ROLE_DESC = "default role"\n',
             'DEFAULT_ROLE_ACTIVITIES = { "edit_self":True }\n'

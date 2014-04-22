@@ -148,11 +148,12 @@ class UserDB:
         """
         return Group(None, None)
 
-    def add_group(self, group_name, user_id=None):
+    def add_group(self, group_name, description='', user_id=None):
         '''
         Adds a new group to the database.
 
         @param group_name: The group name to add, must be unique.
+        @param description: (Optional) The group description.
         @param user_id: (Optional) Single or multiple user IDs to associate
                         with this group.
 
@@ -165,7 +166,7 @@ class UserDB:
             raise DuplicateGroup("%s already exists in database with id '%s'".
                 format(group_name, exists.id))
         else:
-            g = Group(group_name)
+            g = Group(group_name, description)
             mainDB.session.add(g)
             mainDB.session.flush()
             if user_id:

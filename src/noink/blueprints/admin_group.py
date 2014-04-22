@@ -10,7 +10,7 @@ from noink import mainApp, _
 from noink.state import get_state
 from noink.user_db import UserDB
 from noink.role_db import RoleDB
-from noink.exceptions import GroupNotFound
+from noink.exceptions import GroupNotFound, DuplicateGroup
 
 from noink.blueprints.admin_user import _not_auth
 
@@ -55,12 +55,12 @@ def admin_group_page(gid):
                         return redirect(url_for('admin_group.admin_new_group'))
                 groups = user_db.get_all_groups()
                 return render_template('list_groups.html', groups=groups,
-                    state=get_state(), can_view_groups=can_view_groups,
-                    can_edit_groups=can_edit_groups, title=_('All Groups'),
-                    delete_button=_('Delete'), new_button=_('New'),
-                    cancel_button=_('Cancel'), del_title=_('Delete Group(s)'),
-                    del_warn=_('Deleting groups is a permanent action. '\
-                            'Are you sure?'))
+                        state=get_state(), can_view_groups=can_view_groups,
+                        can_edit_groups=can_edit_groups, title=_('All Groups'),
+                        delete_button=_('Delete'), new_button=_('New'),
+                        cancel_button=_('Cancel'), del_title=_('Delete Group(s)'),
+                        del_warn=_('Deleting groups is a permanent action. '\
+                                'Are you sure?'))
             else:
                 if request.method == "POST":
                     if 'cancel' in request.form:
@@ -69,18 +69,18 @@ def admin_group_page(gid):
                         group = user_db.get_group(gid)
                         if group is not None:
                             group.name = request.form.get('group_name',
-                                group.name)
+                                    group.name)
                             group.description = request.form.get('description',
-                                group.description)
+                                    group.description)
                             user_db.update_group(group)
 
                 group = user_db.get_group(gid)
 
                 if group is not None:
                     return render_template('edit_group.html', group=group,
-                        state=get_state(), title=_('Edit Group'),
-                        cancel_button=_('Cancel'), submit_button=_('Submit'),
-                        can_edit_groups=can_edit_groups)
+                            state=get_state(), title=_('Edit Group'),
+                            cancel_button=_('Cancel'), submit_button=_('Submit'),
+                            can_edit_groups=can_edit_groups)
                 else:
                     flash(_('Group "{0}" not found!'.format(gid)), 'error')
                     return redirect(url_for("admin_group.admin_group_page"))
@@ -98,7 +98,6 @@ def admin_new_group():
     role_db = RoleDB()
 
     if current_user.is_authenticated() and current_user.is_active():
-        #is_admin = user_db.in_group(current_user, mainApp.config['ADMIN_GROUP'])
         all_activities = set()
         for m in role_db.get_roles(current_user):
             acts = role_db.get_activities(m.role_id)
@@ -107,15 +106,32 @@ def admin_new_group():
                     all_activities.add(act)
 
         if 'new_group' in all_activities:
+            group = user_db.create_temp_empty_group()
             if 'cancel' in request.form:
                 return redirect(url_for('admin_group.admin_group_page'))
-
-            group = user_db.create_temp_empty_group()
+            elif 'submit' in request.form:
+                gname = request.form.get('group_name', None)
+                group.name = gname
+                group.description = request.form.get('description', None)
+                if gname is not None and gname != '':
+                    g = user_db.get_group(gname)
+                    if g is None:
+                        try:
+                            group = user_db.add_group(group.name,
+                                   group.description)
+                            flash(_('Group "{0}" added.'.format(gname)))
+                            return redirect(url_for(
+                               'admin_group.admin_group_page'))
+                        except DuplicateGroup:
+                            flash(_('Group name "{0}" is already in use!'),
+                                   'error')
+                else:
+                    flash(_("Group name cannot be empty!"), 'error')
 
             return render_template('edit_group.html', group=group,
-                state=get_state(), title=_('Edit Group'),
-                cancel_button=_('Cancel'), submit_button=_('Submit'),
-                can_edit_groups=True)
+                    state=get_state(), title=_('Edit Group'),
+                    cancel_button=_('Cancel'), submit_button=_('Submit'),
+                    can_edit_groups=True)
         else:
             return _not_auth()
     else:

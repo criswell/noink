@@ -26,6 +26,9 @@ ADMIN_PASSWD = "admin"
 # group in the database!
 ADMIN_GROUP = "admin"
 
+# The description of the admin group
+ADMIN_GROUP_DESC = "Administrative group"
+
 # The name of the administration role - Note that this field SHOULD NOT be
 # changed after the database has been created, as it will not update the admin
 # role in the database!
@@ -42,6 +45,9 @@ ADMIN_ROLE_DESC = "The full, site administration, role."
 # changed after the database has been created, as it will not update the
 # group in the database!
 DEFAULT_GROUP = 'default'
+
+# The description of the default group
+DEFAULT_GROUP_DESC = 'Default user group'
 
 # The name of the default role. This is the role which all new users of
 # the system automatically get.
@@ -64,13 +70,16 @@ DEFAULT_ROLE_ACTIVITIES = {
 # created.
 TOP_LEVEL_GROUP = 'top'
 
+# The description of the top level group
+TOP_LEVEL_GROUP_DESC = "Owner of all top level posts"
+
 # The path(s) to the HTML templates. Can be a relative path, or absolute.
 HTML_TEMPLATES = [
     "blueprints/templates/default"
 ]
 
 # The path to the static folders. Can be a relative path, or absolute.
-STATIC_PATH =  "blueprints/templates/default/static"
+STATIC_PATH = "blueprints/templates/default/static"
 
 # The secret key is used by flask for session signing
 SECRET_KEY = 'Klaus Karl Kassbaum is Nick St. Nicholas'
