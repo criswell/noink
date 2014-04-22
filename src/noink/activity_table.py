@@ -16,7 +16,10 @@ activities = [
     'edit_group',
     'view_users',
     'view_groups',
-    'new_group'
+    'new_group',
+    'view_roles',
+    'edit_role',
+    'new_role'
 ]
 
 def get_activity_dict(default=False):

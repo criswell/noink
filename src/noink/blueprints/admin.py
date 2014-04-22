@@ -73,6 +73,12 @@ def admin_page():
                     'text' : _('Edit Groups'),
                     'desc' : _('View and edit all groups')
                 })
+        if 'view_roles' in all_activities:
+            links[personal_and_group].append({
+                    'url' : url_for("admin_role.admin_role_page"),
+                    'text' : _('Edit roles'),
+                    'desc' : _('View and edit all roles')
+                })
 
         entries = _('Entries')
         links[entries] = []
