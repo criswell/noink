@@ -142,6 +142,12 @@ class UserDB:
         """
         return User(None, None, None, None)
 
+    def create_temp_empty_group(self):
+        """
+        Returns a temporary, empty group object.
+        """
+        return Group(None, None)
+
     def add_group(self, group_name, user_id=None):
         '''
         Adds a new group to the database.

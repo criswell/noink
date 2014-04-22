@@ -51,6 +51,8 @@ def admin_group_page(gid):
                             except GroupNotFound:
                                 flash(_('"{0}" group id not found!'.format(
                                     gid)), 'error')
+                    elif 'new' in request.form:
+                        return redirect(url_for('admin_group.admin_new_group'))
                 groups = user_db.get_all_groups()
                 return render_template('list_groups.html', groups=groups,
                     state=get_state(), can_view_groups=can_view_groups,
@@ -82,6 +84,38 @@ def admin_group_page(gid):
                 else:
                     flash(_('Group "{0}" not found!'.format(gid)), 'error')
                     return redirect(url_for("admin_group.admin_group_page"))
+        else:
+            return _not_auth()
+    else:
+        return _not_auth()
+
+@admin_group.route("/admin/group/new", methods=['GET', 'POST'])
+def admin_new_group():
+    """
+    Renders the new group page
+    """
+    user_db = UserDB()
+    role_db = RoleDB()
+
+    if current_user.is_authenticated() and current_user.is_active():
+        #is_admin = user_db.in_group(current_user, mainApp.config['ADMIN_GROUP'])
+        all_activities = set()
+        for m in role_db.get_roles(current_user):
+            acts = role_db.get_activities(m.role_id)
+            for act in acts:
+                if acts[act]:
+                    all_activities.add(act)
+
+        if 'new_group' in all_activities:
+            if 'cancel' in request.form:
+                return redirect(url_for('admin_group.admin_group_page'))
+
+            group = user_db.create_temp_empty_group()
+
+            return render_template('edit_group.html', group=group,
+                state=get_state(), title=_('Edit Group'),
+                cancel_button=_('Cancel'), submit_button=_('Submit'),
+                can_edit_groups=True)
         else:
             return _not_auth()
     else:
