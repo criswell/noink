@@ -1,10 +1,12 @@
 {% macro render_activities(acts) -%}
-{% for k in acts -%}
-{% if acts[k] -%}
+{% for k,v in acts|dictsort(true) -%}
+<abbr title='{{ k }}'>
+{% if v -%}
 <span class="label label-primary">Y</span>
 {%- else -%}
 <span class="label label-default">N</span>
 {%- endif %}
+</abbr>
 {%- endfor %}
 {%- endmacro %}
 
@@ -24,14 +26,14 @@
       {% for r in roles %}
       <tr>
         <td>
-          <input type="checkbox" name="select" value="{{ g.id }}">
+          <input type="checkbox" name="select" value="{{ r.id }}">
         </td>
         <td>{{ r.id }}</td>
         <td>{{ r.name }}</td>
         <td>{{ r.description }}</td>
         <td>{{ render_activities(r|nofilter_getactivities) }}</td>
         <td>{{ r.date_added.strftime('%Y-%m-%d') }}</td>
-        <td><a href="/admin/role/{{ g.id }}">Edit Group</a></td>
+        <td><a href="/admin/role/{{ r.id }}">Edit Group</a></td>
       </tr>
       {% endfor %}
     </table>

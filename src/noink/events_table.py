@@ -27,5 +27,6 @@ event_table = {
     'update_sitename' : "Site name updated to '%s'",
     'add_role' : "Role '%s' added",
     'rm_from_group' : "User '%s' remove from group '%s'",
-    'del_group' : "Group '%s' deleted"
+    'del_group' : "Group '%s' deleted",
+    'del_role' : "Role '%s' deleted"
 }

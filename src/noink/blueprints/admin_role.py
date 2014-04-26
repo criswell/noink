@@ -10,6 +10,7 @@ from noink import mainApp, _
 from noink.state import get_state
 from noink.user_db import UserDB
 from noink.role_db import RoleDB
+from noink.exceptions import RoleNotFound
 
 from noink.blueprints.admin_user import _not_auth
 
@@ -38,6 +39,15 @@ def admin_role_page(rid):
 
         if is_admin or can_view_roles:
             if rid is None:
+                if request.method == 'POST':
+                    rids = request.form.getlist('select')
+                    for rid in rids:
+                        try:
+                            role_db.delete_role(int(rid))
+                            flash(_('Role with ID "{0}" deleted'.format(rid)))
+                        except RoleNotFound:
+                            flash(_('"{0}" role id not found!'.format(rid)),
+                                    'error')
                 roles = role_db.get_all_roles()
                 return render_template('list_roles.html', roles=roles,
                         state=get_state(), can_view_roles=can_view_roles,

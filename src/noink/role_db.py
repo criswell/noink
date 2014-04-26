@@ -12,7 +12,7 @@ from noink import mainDB
 from noink.data_models import Role, RoleMapping
 from noink.user_db import UserDB
 from noink.activity_table import get_activity_dict
-from noink.exceptions import DuplicateRole
+from noink.exceptions import DuplicateRole, RoleNotFound
 from noink.event_log import EventLog
 from noink.pickler import pickle, depickle
 from noink.util import string_types
@@ -166,6 +166,20 @@ class RoleDB:
             mainDB.session.delete(rm)
 
         mainDB.session.commit()
+
+    def delete_role(self, role):
+        """
+        Given a role, delete it from the database. Role can be integer,
+        string or role object.
+        """
+        r = self.get_role(role)
+        if role is not None:
+            rid = int(r.id)
+            mainDB.session.delete(r)
+            mainDB.session.commit()
+            self.eventLog.add('del_role', rid, True, None, None)
+        else:
+            raise RoleNotFound('Role not found in database')
 
     def get_roles(self, user, group=None):
         '''
