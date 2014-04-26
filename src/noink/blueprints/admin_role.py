@@ -38,7 +38,15 @@ def admin_role_page(rid):
 
         if is_admin or can_view_roles:
             if rid is None:
-                pass
+                roles = role_db.get_all_roles()
+                return render_template('list_roles.html', roles=roles,
+                        state=get_state(), can_view_roles=can_view_roles,
+                        can_edit_roles=can_edit_roles, title=_('All Roles'),
+                        delete_button=_('Delete'), new_button=_('New'),
+                        cancel_button=_('Cancel'),
+                        del_title=_('Delete Roles(s)'),
+                        del_warn=_('Deleting roles is a permanent action. '\
+                                'Are you sure?'))
             else:
                 pass
         else:
