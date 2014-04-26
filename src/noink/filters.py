@@ -6,6 +6,7 @@
 """
 
 from noink import mainApp
+from noink.role_db import RoleDB
 
 @mainApp.template_filter('nofilter_breaksplit')
 def nofilter_breaksplit(s):
@@ -40,3 +41,16 @@ def nofilter_newlines(s):
     @return: A string with new lines replaced with line break tags
     """
     return mainApp.config['LINEBREAK_TAG'].join(s.split('\n'))
+
+@mainApp.template_filter('nofilter_getactivities')
+def nofilter_getactivities(r):
+    """
+    Given a role, return the activities that role can do.
+
+    @param r: The role
+
+    @return: A dict containing the activities
+    """
+    role_db = RoleDB()
+    return role_db.get_activities(r)
+

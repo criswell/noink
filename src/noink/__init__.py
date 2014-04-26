@@ -57,7 +57,7 @@ if not __setup:
 
     # filters
     from noink.filters import nofilter_breaksplit, nofilter_breakclean, \
-            nofilter_newlines
+            nofilter_newlines, nofilter_getactivities
 
     # custom tests
     from noink.custom_tests import is_editable, is_deletable
