@@ -58,7 +58,8 @@ def admin_group_page(gid):
                         state=get_state(), can_view_groups=can_view_groups,
                         can_edit_groups=can_edit_groups, title=_('All Groups'),
                         delete_button=_('Delete'), new_button=_('New'),
-                        cancel_button=_('Cancel'), del_title=_('Delete Group(s)'),
+                        cancel_button=_('Cancel'),
+                        del_title=_('Delete Group(s)'),
                         del_warn=_('Deleting groups is a permanent action. '\
                                 'Are you sure?'))
             else:
@@ -77,9 +78,10 @@ def admin_group_page(gid):
                 group = user_db.get_group(gid)
 
                 if group is not None:
-                    return render_template('edit_group.html', group=group,
+                    return render_template('admin_group.html', group=group,
                             state=get_state(), title=_('Edit Group'),
-                            cancel_button=_('Cancel'), submit_button=_('Submit'),
+                            cancel_button=_('Cancel'),
+                            submit_button=_('Submit'),
                             can_edit_groups=can_edit_groups)
                 else:
                     flash(_('Group "{0}" not found!'.format(gid)), 'error')
@@ -128,7 +130,7 @@ def admin_new_group():
                 else:
                     flash(_("Group name cannot be empty!"), 'error')
 
-            return render_template('edit_group.html', group=group,
+            return render_template('admin_group.html', group=group,
                     state=get_state(), title=_('Edit Group'),
                     cancel_button=_('Cancel'), submit_button=_('Submit'),
                     can_edit_groups=True)
