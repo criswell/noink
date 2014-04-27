@@ -58,7 +58,7 @@ def admin_role_page(rid):
                         state=get_state(), can_view_roles=can_view_roles,
                         can_edit_roles=can_edit_roles, title=_('All Roles'),
                         delete_button=_('Delete'), new_button=_('New'),
-                        cancel_button=_('Cancel'),
+                        cancel_button=_('Cancel'), activities=activities,
                         del_title=_('Delete Roles(s)'),
                         del_warn=_('Deleting roles is a permanent action. '\
                                 'Are you sure?'))

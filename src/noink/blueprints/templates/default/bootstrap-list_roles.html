@@ -1,6 +1,6 @@
 {% macro render_activities(acts) -%}
 {% for k,v in acts|dictsort(true) -%}
-<abbr title='{{ k }}'>
+<abbr title='{{ activities[k] }}'>
 {% if v -%}
 <span class="label label-primary">Y</span>
 {%- else -%}
