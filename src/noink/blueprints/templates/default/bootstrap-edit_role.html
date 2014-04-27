@@ -1,3 +1,17 @@
+{% macro render_activity_table(acts) -%}
+<ul>
+  {% for k, v in acts|dictsort(true) -%}
+  <li>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox"> {{ k }}
+    </label>
+  </div>
+  </li>
+  {%- endfor %}
+</ul>
+{%- endmacro %}
+
 <form action='' class='form-horizontal' role='form' method='post' autocomplete='off'>
   <input type="hidden" value="role_edit" name="form_id">
 
