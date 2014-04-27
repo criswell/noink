@@ -6,21 +6,21 @@ Defines all the possible activity types.
 ##BOILERPLATE_COPYRIGHT_END
 '''
 
-activities = [
-    'new_post',
-    'edit_post',
-    'delete_post',
-    'new_user',
-    'edit_user',
-    'edit_self',
-    'edit_group',
-    'view_users',
-    'view_groups',
-    'new_group',
-    'view_roles',
-    'edit_role',
-    'new_role'
-]
+activities = {
+        'new_post' : "Can make a new post",
+        'edit_post' : "Can edit a post",
+        'delete_post' : "Can delete a post",
+        'new_user' : "Can create a new user",
+        'edit_user' : "Can edit a user",
+        'edit_self' : "Can edit their user",
+        'edit_group' : "Can edit groups",
+        'view_users' : "Can view users",
+        'view_groups' : "Can view groups",
+        'new_group' : "Can create groups",
+        'view_roles' : "Can view roles",
+        'edit_role' : "Can edit roles",
+        'new_role' : "Can create new roles"
+        }
 
 def get_activity_dict(default=False):
     '''

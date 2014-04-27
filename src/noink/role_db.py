@@ -114,7 +114,8 @@ class RoleDB:
         """
         Returns a temporary, empty role object.
         """
-        return Role(None, None, None, None)
+        pact = pickle(get_activity_dict(False))
+        return Role(None, None, pact, None)
 
     def get_activities(self, role):
         '''
@@ -127,7 +128,10 @@ class RoleDB:
         '''
         r = self.get_role(role)
 
-        return depickle(r.activities)
+        if r is not None:
+            return depickle(r.activities)
+        else:
+            return None
 
     def assign_role(self, user, group, role):
         '''

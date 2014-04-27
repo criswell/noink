@@ -11,6 +11,7 @@ from noink.state import get_state
 from noink.user_db import UserDB
 from noink.role_db import RoleDB
 from noink.exceptions import RoleNotFound
+from noink.activity_table import activities
 
 from noink.blueprints.admin_user import _not_auth
 
@@ -93,7 +94,7 @@ def admin_new_role():
             return render_template('admin_role.html', role=role,
                 state=get_state(), title=_('Edit Role'),
                 cancel_button=_('Cancel'), submit_button=_('Submit'),
-                can_edit_roles=True)
+                can_edit_roles=True, activities=activities)
 
         else:
             return _not_auth()
