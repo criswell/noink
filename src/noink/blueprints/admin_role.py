@@ -64,7 +64,24 @@ def admin_role_page(rid):
                                 'Are you sure?'))
             else:
                 if request.method == "POST":
-                    pass
+                    if 'cancel' in request.form:
+                        return redirect(url_for('admin_role.admin_role_page'))
+                    elif 'submit' in request.form:
+                        role = role_db.get_role(rid)
+                        if role is not None:
+                            role.name = request.form.get('role_name',
+                                    role.name)
+                            role.description = request.form.get('description',
+                                    role.description)
+                            updated_acts = request.form.getlist('activities')
+                            ract = get_activity_dict(False)
+                            for a in updated_acts:
+                                ract[a] = True
+                            role = role_db.update_temp_role_activities(
+                                    role, ract)
+                            role_db.update_role(role)
+                            return redirect(url_for(
+                                'admin_role.admin_role_page'))
 
                 role = role_db.get_role(rid)
                 if role is not None:

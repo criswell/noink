@@ -110,6 +110,17 @@ class RoleDB:
         self.eventLog.add('add_role', -1, True, blob)
         return role
 
+    def update_role(self, role):
+        """
+        Given a role object, update the database with whatever changes it
+        contains.
+        """
+        if isinstance(role, Role):
+            exists = Role.query.get(role.id)
+            if exists == []:
+                mainDB.session.add(role)
+            mainDB.session.commit()
+
     def create_temp_empty_role(self):
         """
         Returns a temporary, empty role object.
