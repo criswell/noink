@@ -73,5 +73,29 @@ def admin_new_role():
     """
     Renders the new role page
     """
-    pass
+    role_db = RoleDB()
 
+    if current_user.is_authenticated() and current_user.is_active():
+        all_activities = set()
+        for m in role_db.get_roles(current_user):
+            acts = role_db.get_activities(m.role_id)
+            for act in acts:
+                if acts[act]:
+                    all_activities.add(act)
+
+        if 'new_role' in all_activities:
+            role = role_db.create_temp_empty_role()
+            if 'cancel' in request.form:
+                return redirect(url_for('admin_role.admin_role_page'))
+            elif 'submit' in request.form:
+                pass
+
+            return render_template('admin_role.html', role=role,
+                state=get_state(), title=_('Edit Role'),
+                cancel_button=_('Cancel'), submit_button=_('Submit'),
+                can_edit_roles=True)
+
+        else:
+            return _not_auth()
+    else:
+        return _not_auth()

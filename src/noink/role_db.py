@@ -110,6 +110,12 @@ class RoleDB:
         self.eventLog.add('add_role', -1, True, blob)
         return role
 
+    def create_temp_empty_role(self):
+        """
+        Returns a temporary, empty role object.
+        """
+        return Role(None, None, None, None)
+
     def get_activities(self, role):
         '''
         Given a role, return the activities that role can do.
