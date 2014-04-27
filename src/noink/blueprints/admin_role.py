@@ -10,8 +10,8 @@ from noink import mainApp, _
 from noink.state import get_state
 from noink.user_db import UserDB
 from noink.role_db import RoleDB
-from noink.exceptions import RoleNotFound
-from noink.activity_table import activities
+from noink.exceptions import RoleNotFound, DuplicateRole
+from noink.activity_table import activities, get_activity_dict
 
 from noink.blueprints.admin_user import _not_auth
 
@@ -89,7 +89,27 @@ def admin_new_role():
             if 'cancel' in request.form:
                 return redirect(url_for('admin_role.admin_role_page'))
             elif 'submit' in request.form:
-                pass
+                rname = request.form.get('role_name', None)
+                role.name = rname
+                role.description = request.form.get('description', None)
+                updated_acts = request.form.getlist('activities')
+                ract = get_activity_dict(False)
+                for a in updated_acts:
+                    ract[a] = True
+
+                role = role_db.update_temp_role_activities(role, ract)
+                if rname is not None and rname != '':
+                    r = role_db.get_role(rname)
+                    if r is None:
+                        try:
+                            role = role_db.add_role(role.name,
+                                    role.description, ract)
+                            flash(_('Role "{0}" added.'.format(rname)))
+                            return redirect(url_for(
+                                'admin_role.admin_role_page'))
+                        except DuplicateRole:
+                            flash(_('Role name "{0}" is already in use!'.format(
+                                rname)), 'error')
 
             return render_template('admin_role.html', role=role,
                 state=get_state(), title=_('Edit Role'),

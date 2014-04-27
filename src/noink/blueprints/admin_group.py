@@ -125,8 +125,10 @@ def admin_new_group():
                             return redirect(url_for(
                                'admin_group.admin_group_page'))
                         except DuplicateGroup:
-                            flash(_('Group name "{0}" is already in use!'),
-                                   'error')
+                            flash(_(
+                                'Group name "{0}" is already in use!'.format(
+                                gname)),
+                                'error')
                 else:
                     flash(_("Group name cannot be empty!"), 'error')
 

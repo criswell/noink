@@ -117,6 +117,16 @@ class RoleDB:
         pact = pickle(get_activity_dict(False))
         return Role(None, None, pact, None)
 
+    def update_temp_role_activities(self, role, acts):
+        """
+        Given a temportary role and updated activies for it, update it.
+
+        Retuns updated role.
+        """
+        pact = pickle(acts)
+        role.activities = pact
+        return role
+
     def get_activities(self, role):
         '''
         Given a role, return the activities that role can do.
