@@ -40,14 +40,18 @@ def admin_role_page(rid):
         if is_admin or can_view_roles:
             if rid is None:
                 if request.method == 'POST':
-                    rids = request.form.getlist('select')
-                    for rid in rids:
-                        try:
-                            role_db.delete_role(int(rid))
-                            flash(_('Role with ID "{0}" deleted'.format(rid)))
-                        except RoleNotFound:
-                            flash(_('"{0}" role id not found!'.format(rid)),
-                                    'error')
+                    if 'delete' in request.form:
+                        rids = request.form.getlist('select')
+                        for rid in rids:
+                            try:
+                                role_db.delete_role(int(rid))
+                                flash(_('Role with ID "{0}" deleted'.format(
+                                    rid)))
+                            except RoleNotFound:
+                                flash(_('"{0}" role id not found!'.format(
+                                    rid)), 'error')
+                    elif 'new' in request.form:
+                        return redirect(url_for('admin_role.admin_new_role'))
                 roles = role_db.get_all_roles()
                 return render_template('list_roles.html', roles=roles,
                         state=get_state(), can_view_roles=can_view_roles,
@@ -63,3 +67,11 @@ def admin_role_page(rid):
             return _not_auth()
     else:
         return _not_auth()
+
+@admin_role.route("/admin/role/new", methods=['GET', 'POST'])
+def admin_new_role():
+    """
+    Renders the new role page
+    """
+    pass
+
