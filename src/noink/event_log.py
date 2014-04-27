@@ -33,7 +33,8 @@ class EventLog:
         if name in event_table:
             now = datetime.datetime.now()
             if len(args) > 0:
-                e = Event(name, event_table[name] % args, now, user, blob)
+                e = Event(name, event_table[name].format(args), now, user,
+                    blob)
             else:
                 e = Event(name, event_table[name], now, user, blob)
 
@@ -44,7 +45,7 @@ class EventLog:
             mainDB.session.add(e)
             mainDB.session.commit()
         else:
-            raise KeyError('%s not in event_table!' % name)
+            raise KeyError('{0} not in event_table!'.format(name))
 
     def get_next_unprocessed(self):
         """

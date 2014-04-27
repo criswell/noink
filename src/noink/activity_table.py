@@ -19,7 +19,8 @@ activities = {
         'new_group' : "Can create groups",
         'view_roles' : "Can view roles",
         'edit_role' : "Can edit roles",
-        'new_role' : "Can create new roles"
+        'new_role' : "Can create new roles",
+        'view_log' : "Can view the event log"
         }
 
 def get_activity_dict(default=False):

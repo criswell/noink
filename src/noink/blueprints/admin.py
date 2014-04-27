@@ -92,6 +92,18 @@ def admin_page():
                     'desc' : _('Create a new entry')
                 })
 
+        sysadmin = _('System Administrative')
+        links[sysadmin] = []
+        #
+        # System
+        #
+        if 'view_log' in all_activities:
+            links[sysadmin].append({
+                    'url' : url_for("admin_events.event_viewer"),
+                    'text' : _('View log'),
+                    'desc' : _('View the events log')
+                })
+
         return render_template('admin.html', state=get_state(), links=links,
                 is_admin=is_admin, title=_('Admin'))
 

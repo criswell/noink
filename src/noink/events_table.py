@@ -11,22 +11,20 @@ specific items here in future data parsing, searching, processing, etc.
 
 '''
 
-# FIXME - Should us modern string formatting
-
 event_table = {
     'db_setup' : 'Initial database creation',
     'db_finish' : 'Database initialization complete',
-    'add_user' : "User '%s' added",
-    'add_group' : "Group '%s' added",
-    'add_entry' : "Entry '%s' added",
-    'del_entry' : "Entry '%s' deleted",
-    'update_entry' : "Entry '%s' updated",
-    'del_user' : "User '%s' deleted",
-    'add_tag' : "Tag '%s' added",
-    'update_siteconf' : "Site config updated to version '%s'",
-    'update_sitename' : "Site name updated to '%s'",
-    'add_role' : "Role '%s' added",
-    'rm_from_group' : "User '%s' remove from group '%s'",
-    'del_group' : "Group '%s' deleted",
-    'del_role' : "Role '%s' deleted"
+    'add_user' : "User '{0}' added",
+    'add_group' : "Group '{0}' added",
+    'add_entry' : "Entry '{0}' added",
+    'del_entry' : "Entry '{0}' deleted",
+    'update_entry' : "Entry '{0}' updated",
+    'del_user' : "User '{0}' deleted",
+    'add_tag' : "Tag '{0}' added",
+    'update_siteconf' : "Site config updated to version '{0}'",
+    'update_sitename' : "Site name updated to '{0}'",
+    'add_role' : "Role '{0}' added",
+    'rm_from_group' : "User '%s' remove from group '{0}'",
+    'del_group' : "Group '{0}' deleted",
+    'del_role' : "Role '{0}' deleted"
 }

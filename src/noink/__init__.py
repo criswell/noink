@@ -73,6 +73,7 @@ if not __setup:
     from noink.blueprints.post import post
     from noink.blueprints.admin_group import admin_group
     from noink.blueprints.admin_role import admin_role
+    from noink.blueprints.admin_events import admin_events
     mainApp.register_blueprint(list_entries)
     mainApp.register_blueprint(node)
     mainApp.register_blueprint(static_page)
@@ -83,6 +84,7 @@ if not __setup:
     mainApp.register_blueprint(post)
     mainApp.register_blueprint(admin_group)
     mainApp.register_blueprint(admin_role)
+    mainApp.register_blueprint(admin_events)
 
     loginManager.init_app(mainApp)
 
