@@ -63,7 +63,15 @@ def admin_role_page(rid):
                         del_warn=_('Deleting roles is a permanent action. '\
                                 'Are you sure?'))
             else:
-                pass
+                if request.method == "POST":
+                    pass
+
+                role = role_db.get_role(rid)
+                if role is not None:
+                    return render_template('admin_role.html', role=role,
+                        state=get_state(), title=_('Edit Role'),
+                        cancel_button=_('Cancel'), submit_button=_('Submit'),
+                        can_edit_roles=True, activities=activities)
         else:
             return _not_auth()
     else:
@@ -115,7 +123,6 @@ def admin_new_role():
                 state=get_state(), title=_('Edit Role'),
                 cancel_button=_('Cancel'), submit_button=_('Submit'),
                 can_edit_roles=True, activities=activities)
-
         else:
             return _not_auth()
     else:
