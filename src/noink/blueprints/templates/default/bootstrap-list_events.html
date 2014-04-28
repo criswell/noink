@@ -12,14 +12,15 @@
     <tr>
       <td>{{ e.id }}</td>
       <td>{{ e.event }}</td>
-      <td>{{ e.date }}</td>
+      <td>{{ e.date.strftime('%Y-%m-%d %H:%M') }}</td>
       <td>{{ e.description }}</td>
       <td>{{ e.user }}</td>
       <td>
         {% if e.processed %}
-        Y
+        <abbr title="{{ e.processed_date.strftime('%Y-%m-%d %H:%M') }}"
+          ><span class="label label-success">Y</span></abbr>
         {% else %}
-        N
+        <span class="label label-default">N</span>
         {% endif %}
       </td>
     </tr>
