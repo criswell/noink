@@ -33,7 +33,7 @@
         <td>{{ r.description }}</td>
         <td>{{ render_activities(r|nofilter_getactivities) }}</td>
         <td>{{ r.date_added.strftime('%Y-%m-%d') }}</td>
-        <td><a href="/admin/role/{{ r.id }}">Edit Group</a></td>
+        <td><a href="/admin/role/{{ r.id }}">Edit Role</a></td>
       </tr>
       {% endfor %}
     </table>
