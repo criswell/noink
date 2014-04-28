@@ -26,3 +26,35 @@
     {% endfor %}
   </table>
 </div>
+
+<ul class='list-inline'>
+  {% for p in [10, 20, 50, 100, 200] %}
+  {% if per_page == p %}
+  <li>{{ p }}</li>
+  {% else %}
+  <li><a href="{{ request.path }}?per_page={{ p }}"
+    >{{ p }}</a></li>
+  {% endif %}
+  {% endfor %}
+</ul>
+
+{% if total_pages > 0 %}
+<ul class="pagination">
+  {% if page_num > 0 %}
+  <li><a href="{{ request.path }}?page={{ page_num-1 }}&per_page={{ per_page }}"
+    ><span class="glyphicon glyphicon-chevron-left"></span></a></li>
+  {% endif %}
+  {% for i in range(total_pages) %}
+  {% if page_num == i %}
+  <li class="active"><a href="#">{{ i+1 }}</a></li>
+  {% else %}
+  <li><a href="{{ request.path }}?page={{ i }}&per_page={{ per_page }}">{{ i+1 }}</a></li>
+  {% endif %}
+  {% endfor %}
+  {% if page_num < total_pages-1 %}
+  <li><a href="{{ request.path }}?page={{ page_num+1 }}&per_page={{ per_page }}"
+    ><span class="glyphicon glyphicon-chevron-right"></span></a></li>
+  {% endif %}
+</ul>
+{% endif %}
+

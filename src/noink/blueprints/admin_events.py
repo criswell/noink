@@ -13,6 +13,8 @@ from noink.event_log import EventLog
 
 from noink.blueprints.admin_user import _not_auth
 
+from math import ceil
+
 admin_events = Blueprint('admin_events', __name__)
 
 @admin_events.route("/admin/events")
@@ -39,10 +41,15 @@ def event_viewer():
 
         if is_admin or can_view_logs:
             events = event_log.find_recent_by_num(per_page, page_num * per_page)
+            count = event_log.count()
+
+            total_pages = 0
+            if count > per_page:
+                total_pages = int(ceil(float(count) / float(per_page)))
 
             return render_template('admin_events.html', events=events,
                 state=get_state(), page_num=page_num, per_page=per_page,
-                title=_('Event log'))
+                title=_('Event log'), total_pages=total_pages)
         else:
             return _not_auth()
     else:

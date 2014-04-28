@@ -54,6 +54,12 @@ class EventLog:
         return Event.query.order_by(Event.date.desc()).offset(offset).limit(
             num).all()
 
+    def count(self):
+        """
+        Returns the number of possible events
+        """
+        return Event.query.order_by(Event.date.desc()).count()
+
     def get_next_unprocessed(self):
         """
         Returns the next unprocessed log entry
