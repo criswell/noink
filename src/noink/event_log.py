@@ -33,7 +33,7 @@ class EventLog:
         if name in event_table:
             now = datetime.datetime.now()
             if len(args) > 0:
-                e = Event(name, event_table[name].format(args), now, user,
+                e = Event(name, event_table[name].format(*args), now, user,
                     blob)
             else:
                 e = Event(name, event_table[name], now, user, blob)
@@ -46,6 +46,13 @@ class EventLog:
             mainDB.session.commit()
         else:
             raise KeyError('{0} not in event_table!'.format(name))
+
+    def find_recent_by_num(self, num, offset=0):
+        """
+        Finds the recent events with a maximum of 'num'.
+        """
+        return Event.query.order_by(Event.date.desc()).offset(offset).limit(
+            num).all()
 
     def get_next_unprocessed(self):
         """
