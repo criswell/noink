@@ -1,0 +1,28 @@
+<div class="table-responsive">
+  <table class='table table-striped'>
+    <tr>
+      <td width="10%"><b>Event ID</b></td>
+      <td><b>Event</b></td>
+      <td><b>Date</b></td>
+      <td><b>Description</b></td>
+      <td><b>User ID</b></td>
+      <td><b>Processed</b></td>
+    </tr>
+    {% for e in events %}
+    <tr>
+      <td>{{ e.id }}</td>
+      <td>{{ e.event }}</td>
+      <td>{{ e.date }}</td>
+      <td>{{ e.description }}</td>
+      <td>{{ e.user }}</td>
+      <td>
+        {% if e.processed %}
+        Y
+        {% else %}
+        N
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
