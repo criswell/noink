@@ -206,9 +206,10 @@ class RoleDB:
         r = self.get_role(role)
         if role is not None:
             rid = int(r.id)
+            rname = r.name
             mainDB.session.delete(r)
             mainDB.session.commit()
-            self.eventLog.add('del_role', rid, True, None, None)
+            self.eventLog.add('del_role', rid, True, None, rname)
         else:
             raise RoleNotFound('Role not found in database')
 
