@@ -390,9 +390,10 @@ class UserDB:
         group = self.get_group(g)
         if group is not None:
             gid = int(group.id)
+            gname = group.name
             mainDB.session.delete(group)
             mainDB.session.commit()
-            self.eventLog.add('del_group', gid, True, None, None)
+            self.eventLog.add('del_group', gid, True, None, gname)
         else:
             raise GroupNotFound('Group not found in database')
 
