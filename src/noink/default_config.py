@@ -81,6 +81,10 @@ HTML_TEMPLATES = [
 # The path to the static folders. Can be a relative path, or absolute.
 STATIC_PATH = "blueprints/templates/default/static"
 
+# The Icebox path. Path to where you'd like the frozen website to be. Can be
+# absolute or relative to the noink base directory.
+ICEBOX_PATH = "../output/"
+
 # The secret key is used by flask for session signing
 SECRET_KEY = 'Klaus Karl Kassbaum is Nick St. Nicholas'
 

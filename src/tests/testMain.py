@@ -11,7 +11,6 @@ import tempfile
 import shutil
 import random
 
-from noink import mainApp
 from noink import re_init
 from noink import _setupDB
 
@@ -52,6 +51,7 @@ class testMain(object):
             'DEFAULT_ROLE_NAME = "default"\n',
             'DEFAULT_ROLE_DESC = "default role"\n',
             'DEFAULT_ROLE_ACTIVITIES = { "edit_self":True }\n',
+            'ICEBOX_PATH = "../output/"\n'
         ]
 
         with open(self.TEST_CONF_FILE, 'w') as f:
@@ -61,4 +61,4 @@ class testMain(object):
         _setupDB.setup_DB()
 
     def __del__(self):
-            shutil.rmtree(self.TEST_ROOT, True)
+        shutil.rmtree(self.TEST_ROOT, True)
