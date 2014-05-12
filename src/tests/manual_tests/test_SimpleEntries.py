@@ -7,6 +7,8 @@
 
 '''
 
+from argparse import ArgumentParser
+
 from tests.testMain import testMain
 from random import randint, sample
 
@@ -76,5 +78,12 @@ class SimpleEntries:
         mainApp.run(host="0.0.0.0", debug=debug)
 
 if __name__ == '__main__':
+    parser = ArgumentParser(description='Simple, manual noink test')
+    parser.add_argument('-f', help='Freeze the site and output static',
+            action='store_true')
+    args = parser.parse_args()
     se = SimpleEntries()
-    se.run(True)
+    if args.f:
+        print('GENERATE PAGES HERE')
+    else:
+        se.run(True)

@@ -51,7 +51,7 @@ class testMain(object):
             'TOP_LEVEL_GROUP_DESC = "Top group"\n',
             'DEFAULT_ROLE_NAME = "default"\n',
             'DEFAULT_ROLE_DESC = "default role"\n',
-            'DEFAULT_ROLE_ACTIVITIES = { "edit_self":True }\n'
+            'DEFAULT_ROLE_ACTIVITIES = { "edit_self":True }\n',
         ]
 
         with open(self.TEST_CONF_FILE, 'w') as f:

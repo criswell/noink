@@ -60,14 +60,19 @@ class EventLog:
         """
         return Event.query.order_by(Event.date.desc()).count()
 
-    def get_next_unprocessed(self):
+    def get_unprocessed(self):
         """
-        Returns the next unprocessed log entry
+        Returns the unprocessed log entries
         """
-        pass
+        return Event.query.order_by(Event.date.desc()).filter_by(
+                processed=False).all()
 
     def mark_as_processed(self, entry):
         """
         Marks an unprocessed entry as processed.
         """
-        pass
+        entry.processed = True
+        now = datetime.datetime.now()
+        entry.processed_date = now
+        mainDB.session.commit()
+
