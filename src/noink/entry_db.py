@@ -5,11 +5,11 @@
 
 import datetime
 
-from types import IntType, StringType, ListType
+from types import IntType, StringType
 
 from noink import mainDB
 from noink.data_models import Entry, Tag, TagMapping, Editor
-from noink.pickler import PEntry, pickle, depickle
+from noink.pickler import PEntry, pickle
 from noink.event_log import EventLog
 from noink.exceptions import DuplicateURL
 from noink.user_db import UserDB
@@ -29,7 +29,8 @@ class EntryDB:
             self.event_log = EventLog()
             self._setup = True
 
-    def add(self, title, entry, author, group=None, weight=0, url=None, html=False, parent=None, static=False):
+    def add(self, title, entry, author, group=None, weight=0, url=None,
+            html=False, parent=None, static=False):
         """
         Adds an entry to the system.
 
@@ -56,11 +57,13 @@ class EntryDB:
         if group is None:
             group = author.primary_group
 
-        e = Entry(title, author, group, now, entry, weight, url, html, parent, static)
+        e = Entry(title, author, group, now, entry, weight, url, html, parent,
+                static)
 
         if type(url) is StringType:
             if self.find_by_URL(url):
-                raise DuplicateURL('The URL "%s" was already found in the UrlDB!' % url)
+                raise DuplicateURL(
+                        'The URL "%s" was already found in the UrlDB!' % url)
             else:
                 mainDB.session.add(e)
                 mainDB.session.commit()
@@ -95,7 +98,8 @@ class EntryDB:
         self.event_log.add('update_entry', entry.author.id, False, pickle(pe),
             entry.title)
 
-    def create_temp_entry(self, title, entry, author, group=None, weight=0, url=None, html=False, parent=None, static=False):
+    def create_temp_entry(self, title, entry, author, group=None, weight=0,
+            url=None, html=False, parent=None, static=False):
         '''
         Create a temporary entry object. Will not add it to the database.
 
@@ -121,11 +125,13 @@ class EntryDB:
         if group is None:
             group = author.primary_group
 
-        e = Entry(title, author, group, now, entry, weight, url, html, parent, static)
+        e = Entry(title, author, group, now, entry, weight, url, html, parent,
+                static)
 
         if type(url) is StringType:
             if self.find_by_URL(url):
-                raise DuplicateURL('The URL "%s" was already found in the UrlDB!' % url)
+                raise DuplicateURL(
+                        'The URL "%s" was already found in the UrlDB!' % url)
 
         return e
 
@@ -143,8 +149,10 @@ class EntryDB:
                 if t == None:
                     t = Tag(tag)
                     mainDB.session.add(t)
-                    self.event_log.add('add_tag', entry.author_id, False, tag, tag)
-                exist = TagMapping.query.filter_by(tag_id=t.id).filter_by(entry_id=entry.id).all()
+                    self.event_log.add('add_tag', entry.author_id, False, tag,
+                        tag)
+                exist = TagMapping.query.filter_by(tag_id=t.id).filter_by(
+                    entry_id=entry.id).all()
                 if exist == []:
                     tm = TagMapping(t, entry)
                     mainDB.session.add(tm)
@@ -168,7 +176,8 @@ class EntryDB:
         users = UserDB().get_users(u)
         if len(users) > 0:
             user = users[0]
-            editor = Editor.query.filter_by(entry_id=e.id).filter_by(user_id=user.id).first()
+            editor = Editor.query.filter_by(entry_id=e.id).filter_by(
+                user_id=user.id).first()
             if editor is None:
                 editor = Editor(user, entry, now)
                 mainDB.session.add(editor)
@@ -244,7 +253,8 @@ class EntryDB:
         if len(clauses) > 0:
             where = mainDB.or_(*clauses)
             # XXX - Is this the best way to do this?
-            for mapping in TagMapping.query.filter(where).join(Entry).order_by(Entry.weight).order_by(Entry.date).all():
+            for mapping in TagMapping.query.filter(where).join(Entry).order_by(
+                    Entry.weight).order_by(Entry.date).all():
                 e.append(Entry.query.get(mapping.entry_id))
 
         return e
@@ -262,9 +272,11 @@ class EntryDB:
         '''
         if type(num) is IntType:
             if weight:
-                return Entry.query.order_by(Entry.date.desc(), Entry.weight).offset(offset).limit(num).all()
+                return Entry.query.order_by(Entry.date.desc(),
+                        Entry.weight).offset(offset).limit(num).all()
             else:
-                return Entry.query.order_by(Entry.date.desc()).offset(offset).limit(num).all()
+                return Entry.query.order_by(Entry.date.desc()).offset(
+                        offset).limit(num).all()
         else:
             raise TypeError("Expected integer for num")
 
@@ -282,7 +294,8 @@ class EntryDB:
 
         @return Array containing one or more entry objects, or None.
         '''
-        return Entry.query.filter(Entry.Entry.title.like("%%%s%%" % title)).all()
+        return Entry.query.filter(Entry.Entry.title.like("%%%s%%" %
+            title)).all()
 
     def find_by_id(self, num):
         '''
@@ -301,6 +314,8 @@ class EntryDB:
         @param e: An entry to delete. Can be an integer for the entry id or an
                   entry object.
         '''
+        # FIXME
+        # Should deal with parents and children so as not to leave orphans
         entry = e
         if type(e) is IntType:
             entry = Entry.query.filter_by(id=e).first()
