@@ -45,6 +45,7 @@ class Icebox:
             for e in self.event_log.get_unprocessed():
                 if e.event in ('add_entry', 'update_entry'):
                     pe = depickle(e.blob)
+                    #import ipdb; ipdb.set_trace()
                     entry = self.entry_db.find_by_id(pe.id)
                     if entry is not None:
                         self._generate_page(entry)

@@ -18,6 +18,7 @@ from noink import mainApp
 from noink.user_db import UserDB
 from noink.entry_db import EntryDB
 from noink.role_db import RoleDB
+from noink.icebox import Icebox
 
 class SimpleEntries:
 
@@ -84,6 +85,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     se = SimpleEntries()
     if args.f:
-        print('GENERATE PAGES HERE')
+        icebox = Icebox()
+        icebox.generate_pages()
     else:
         se.run(True)
