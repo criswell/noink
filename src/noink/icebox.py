@@ -10,8 +10,6 @@ from noink.event_log import EventLog
 from noink.pickler import depickle
 from noink.entry_db import EntryDB
 
-from noink.blueprints.node import show_node
-
 class Icebox:
 
     __borg_state = {}
@@ -28,6 +26,7 @@ class Icebox:
             self.event_log = EventLog()
             self.entry_db = EntryDB()
             self.icebox_path = abspath(mainApp.config['ICEBOX_PATH'])
+            self.client = mainApp.test_client()
             self._setup = True
 
     def generate_pages(self, all_pages=False):
@@ -87,7 +86,9 @@ class Icebox:
         Given an entry, will generate the page for it (including any
         aliases).
         """
-        html = show_node(entry.id, None)
+        response = self.client.get('/node/{0}'.format(entry.id),
+            follow_redirects=True)
+        html = response.data
         # First, generate the node
         filename = 'node/{0}.html'.format(entry.id)
         self._write_page(html, filename)
