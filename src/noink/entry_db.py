@@ -185,6 +185,8 @@ class EntryDB:
                 editor.date = now
 
             mainDB.session.commit()
+            self.event_log.add('update_entry', user.id, False, pickle(
+                entry), entry.title)
 
     def find_editors_by_entry(self, entry):
         '''
