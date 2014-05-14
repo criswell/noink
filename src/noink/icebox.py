@@ -60,6 +60,7 @@ class Icebox:
                 elif e.event == 'del_entry':
                     pe = depickle(e.blob)
                     self._remove_page(pe.id, pe.url)
+                self.event_log.mark_as_processed(e)
 
         # Regenerate index
         self._generate_index()
