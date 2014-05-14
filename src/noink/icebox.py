@@ -2,8 +2,8 @@
 Our own freezing module. Inspired by, but different from, frozen flask.
 """
 
-from os.path import abspath, isdir, dirname
-from os import makedirs, remove, link
+from os.path import abspath, isdir, dirname, join, relpath, isfile
+from os import makedirs, remove, link, walk
 from math import ceil
 from glob import glob
 
@@ -29,6 +29,10 @@ class Icebox:
             self.event_log = EventLog()
             self.entry_db = EntryDB()
             self.icebox_path = abspath(mainApp.config['ICEBOX_PATH'])
+            if mainApp.config['ICEBOX_STATIC_PATH'] is not None:
+                self.static_path = abspath(mainApp.config['ICEBOX_STATIC_PATH'])
+            else:
+                self.static_path = None
             self.client = mainApp.test_client()
             self._setup = True
 
@@ -63,7 +67,8 @@ class Icebox:
         # Regenerate tags
 
         # Sync static pages
-        self.sync_static()
+        if self.static_path:
+            self.sync_static()
 
     def sync_static(self):
         """
@@ -72,11 +77,21 @@ class Icebox:
         base_dir = "{0}/s".format(self.icebox_path)
         if not isdir(base_dir):
             makedirs(base_dir)
-        rmfiles = glob("{0}/*".format(base_dir))
-        for f in rmfiles:
-            remove(f)
+        for root, dirs, files in walk(join(self.icebox_path, 's')):
+            for f in files:
+                if isfile(join(root, f)):
+                    remove(join(root, f))
 
-        import ipdb; ipdb.set_trace()
+        for root, dummy, files in walk(self.static_path):
+            for f in files:
+                source_name = join(root, f)
+                dest_name = join(join(
+                    '{0}/s'.format(self.icebox_path),
+                    relpath(root, self.static_path)), f)
+                base_dest = dirname(dest_name)
+                if not isdir(base_dest):
+                    makedirs(base_dest)
+                link(source_name, dest_name)
 
     def clear_icebox_path(self):
         """
@@ -127,7 +142,8 @@ class Icebox:
         rmfiles = ['{0}/index.html'.format(self.icebox_path)]
         rmfiles.extend(glob('{0}/index_page_*'.format(self.icebox_path)))
         for f in rmfiles:
-            remove(f)
+            if isfile(f):
+                remove(f)
 
         per_page = mainApp.config['NUM_ENTRIES_PER_PAGE'][0]
         count = self.entry_db.count()
