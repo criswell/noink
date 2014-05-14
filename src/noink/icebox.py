@@ -74,10 +74,29 @@ class Icebox:
         self._generate_index()
 
         # Regenerate tags
+        self._generate_tags()
 
         # Sync static pages
         if self.static_path:
             self.sync_static()
+
+    def _generate_tags(self):
+        """
+        Generate the tag pages.
+        """
+        # Clean up old tags
+        rmfiles = glob('{0}/tag/*'.format(self.icebox_path))
+        for f in rmfiles:
+            if isfile(f):
+                remove(f)
+
+        all_tags = self.entry_db.get_tags()
+        for t in all_tags:
+            response = self.client.get("/tag/{0}".format(t.id),
+                follow_redirects=True)
+            html = response.data
+            filename = 'tag/{0}.html'.format(t.id)
+            self._write_page(html, filename)
 
     def sync_static(self):
         """

@@ -160,6 +160,12 @@ class EntryDB:
         mainDB.session.commit()
         tags = self.find_tags_by_entry(entry)
 
+    def get_tags(self):
+        """
+        Obtain the tags currently in the system.
+        """
+        return Tag.query.order_by(Tag.id).all()
+
     def update_editor(self, u, e):
         '''
         Given a user and an entry, update that entry's editors with that user.
