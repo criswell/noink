@@ -3,7 +3,7 @@ Our own freezing module. Inspired by, but different from, frozen flask.
 """
 
 from os.path import abspath, isdir, dirname
-from os import makedirs, remove
+from os import makedirs, remove, link
 from math import ceil
 from glob import glob
 
@@ -63,6 +63,20 @@ class Icebox:
         # Regenerate tags
 
         # Sync static pages
+        self.sync_static()
+
+    def sync_static(self):
+        """
+        Synchronize static content
+        """
+        base_dir = "{0}/s".format(self.icebox_path)
+        if not isdir(base_dir):
+            makedirs(base_dir)
+        rmfiles = glob("{0}/*".format(base_dir))
+        for f in rmfiles:
+            remove(f)
+
+        import ipdb; ipdb.set_trace()
 
     def clear_icebox_path(self):
         """

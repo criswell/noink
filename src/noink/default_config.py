@@ -85,6 +85,11 @@ STATIC_PATH = "blueprints/templates/default/static"
 # absolute or relative to the noink base directory.
 ICEBOX_PATH = "../output/"
 
+# The path to static files for icebox. If you're using absolute paths
+# this can be identical to STATIC_PATH above. If you're using relative
+# paths, however, it should be relative to the main entry point.
+ICEBOX_STATIC_PATH = STATIC_PATH
+
 # The secret key is used by flask for session signing
 SECRET_KEY = 'Klaus Karl Kassbaum is Nick St. Nicholas'
 

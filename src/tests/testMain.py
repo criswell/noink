@@ -51,7 +51,8 @@ class testMain(object):
             'DEFAULT_ROLE_NAME = "default"\n',
             'DEFAULT_ROLE_DESC = "default role"\n',
             'DEFAULT_ROLE_ACTIVITIES = { "edit_self":True }\n',
-            'ICEBOX_PATH = "../output/"\n'
+            'ICEBOX_PATH = "../output/"\n',
+            'ICEBOX_STATIC_PATH="../../noink/blueprints/static/default"\n'
         ]
 
         with open(self.TEST_CONF_FILE, 'w') as f:
