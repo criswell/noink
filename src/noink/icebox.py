@@ -180,4 +180,12 @@ class Icebox:
         """
         Given an entry, will remove the page for it.
         """
-        pass
+        node_fn = 'node/{0}.html'.format(entry_id)
+        if isfile(node_fn):
+            remove(node_fn)
+
+        if entry_url:
+            filename = self._convert_url_to_path(entry_url)
+            if isfile(filename):
+                remove(filename)
+
