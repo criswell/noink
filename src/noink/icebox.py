@@ -44,7 +44,6 @@ class Icebox:
             for e in self.event_log.get_unprocessed():
                 if e.event in ('add_entry', 'update_entry'):
                     pe = depickle(e.blob)
-                    import ipdb; ipdb.set_trace()
                     entry = self.entry_db.find_by_id(pe.id)
                     if entry is not None:
                         self._generate_page(entry)
@@ -93,18 +92,20 @@ class Icebox:
         filename = 'node/{0}.html'.format(entry.id)
         self._write_page(html, filename)
 
-        filename = self._convert_url_to_path(entry.url)
-        self._write_page(html, filename)
+        if entry.url:
+            filename = self._convert_url_to_path(entry.url)
+            self._write_page(html, filename)
 
     def _write_page(self, html, filename):
         """
         Write the actual page to filename
         """
-        base_dir = dirname(filename)
+        fullname = "{0}/{1}".format(self.icebox_path, filename)
+        base_dir = dirname(fullname)
         if not isdir(base_dir):
             makedirs(base_dir)
 
-        with open(filename, 'wb') as fd:
+        with open(fullname, 'wb') as fd:
             fd.write(html)
 
     def _remove_page(self, entry_id, entry_url):

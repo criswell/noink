@@ -5,7 +5,7 @@ Common pickle objects for Noink event logs
 ##BOILERPLATE_COPYRIGHT_END
 '''
 
-from copy import copy
+from copy import deepcopy
 from pickle import dumps, loads
 
 from noink.util import string_types as _string_types
@@ -13,9 +13,9 @@ from noink.util import string_types as _string_types
 # Entries
 class PEntry:
     def __init__(self, entry):
-        self.id = copy(entry.id)
-        self.title = copy(entry.title)
-        self.url = copy(entry.url)
+        self.id = deepcopy(entry.id)
+        self.title = deepcopy(entry.title)
+        self.url = deepcopy(entry.url)
 
 def pickle(obj):
     '''

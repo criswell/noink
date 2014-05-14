@@ -10,4 +10,5 @@ tags
 *.pyc
 .directory
 .idea
+src/tests/output/*
 

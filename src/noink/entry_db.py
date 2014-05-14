@@ -95,6 +95,7 @@ class EntryDB:
         """
         mainDB.session.commit()
         pe = PEntry(entry)
+        import ipdb; ipdb.set_trace()
         self.event_log.add('update_entry', entry.author.id, False, pickle(pe),
             entry.title)
 
@@ -185,8 +186,9 @@ class EntryDB:
                 editor.date = now
 
             mainDB.session.commit()
+            pe = PEntry(entry)
             self.event_log.add('update_entry', user.id, False, pickle(
-                entry), entry.title)
+                pe), entry.title)
 
     def find_editors_by_entry(self, entry):
         '''
