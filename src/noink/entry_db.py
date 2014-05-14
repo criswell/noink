@@ -95,7 +95,6 @@ class EntryDB:
         """
         mainDB.session.commit()
         pe = PEntry(entry)
-        import ipdb; ipdb.set_trace()
         self.event_log.add('update_entry', entry.author.id, False, pickle(pe),
             entry.title)
 
