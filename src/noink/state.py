@@ -5,14 +5,24 @@
 
 """
 
-from noink import mainDB
-from noink.data_models import SiteConfig
 from noink.site_config import _SiteConfig
 
 from flask.ext.login import current_user
 
 class State:
-    pass
+    __borg_state = {}
+
+    def __init__(self):
+        self.__dict__ = self.__borg_state
+
+        try:
+            self._setup
+        except AttributeError:
+            self._setup = False
+
+        if not self._setup:
+            self.icebox = False
+            self._setup = True
 
 def get_state():
     """

@@ -3,12 +3,15 @@ Our own freezing module. Inspired by, but different from, frozen flask.
 """
 
 from os.path import abspath, isdir, dirname
-from os import makedirs
+from os import makedirs, remove
+from math import ceil
+from glob import glob
 
 from noink import mainApp
 from noink.event_log import EventLog
 from noink.pickler import depickle
 from noink.entry_db import EntryDB
+from noink.state import State
 
 class Icebox:
 
@@ -38,6 +41,9 @@ class Icebox:
         if not isdir(self.icebox_path):
             makedirs(self.icebox_path)
 
+        state = State()
+        state.icebox = True
+
         if all_pages:
             pass
         else:
@@ -50,6 +56,9 @@ class Icebox:
                 elif e.event == 'del_entry':
                     pe = depickle(e.blob)
                     self._remove_page(pe.id, pe.url)
+
+        # Regenerate index
+        self._generate_index()
 
         # Regenerate tags
 
@@ -94,6 +103,34 @@ class Icebox:
 
         if entry.url:
             filename = self._convert_url_to_path(entry.url)
+            self._write_page(html, filename)
+
+    def _generate_index(self):
+        """
+        Generate the main index
+        """
+        # First clear the old indexes out of the way
+        rmfiles = ['{0}/index.html'.format(self.icebox_path)]
+        rmfiles.extend(glob('{0}/index_page_*'.format(self.icebox_path)))
+        for f in rmfiles:
+            remove(f)
+
+        per_page = mainApp.config['NUM_ENTRIES_PER_PAGE'][0]
+        count = self.entry_db.count()
+        total_pages = 0
+        if count > per_page:
+            total_pages = int(ceil(float(count) / float(per_page)))
+
+        response = self.client.get('/', follow_redirects=True)
+        html = response.data
+        filename = 'index.html'
+        self._write_page(html, filename)
+
+        for i in range(total_pages):
+            response = self.client.get('/?page={0}'.format(i),
+                follow_redirects=True)
+            html = response.data
+            filename = 'index_page_{0}.html'.format(i)
             self._write_page(html, filename)
 
     def _write_page(self, html, filename):
