@@ -77,7 +77,7 @@ class Icebox:
         base_dir = "{0}/s".format(self.icebox_path)
         if not isdir(base_dir):
             makedirs(base_dir)
-        for root, dirs, files in walk(join(self.icebox_path, 's')):
+        for root, dummy, files in walk(join(self.icebox_path, 's')):
             for f in files:
                 if isfile(join(root, f)):
                     remove(join(root, f))
