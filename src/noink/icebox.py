@@ -3,7 +3,7 @@ Our own freezing module. Inspired by, but different from, frozen flask.
 """
 
 from os.path import abspath, isdir, dirname, join, relpath, isfile
-from os import makedirs, remove, link, walk
+from os import makedirs, remove, link, walk, rmdir
 from math import ceil
 from glob import glob
 
@@ -49,7 +49,15 @@ class Icebox:
         state.icebox = True
 
         if all_pages:
-            pass
+            self.clear_icebox_path()
+            count = self.entry_db.count()
+            per_page = mainApp.config['NUM_ENTRIES_PER_PAGE'][0]
+            total_pages = int(ceil(float(count) / float(per_page)))
+            for i in range(total_pages):
+                entries = self.entry_db.find_recent_by_num(per_page,
+                        i * per_page)
+                for e in entries:
+                    self._generate_page(e)
         else:
             for e in self.event_log.get_unprocessed():
                 if e.event in ('add_entry', 'update_entry'):
@@ -101,7 +109,20 @@ class Icebox:
         WARNING: This is destructive, and should only be used when you know
         what you're doing. This will nuke the contents of the icebox path.
         """
-        pass
+        rmfiles = []
+        for root, dirs, files in walk(self.icebox_path):
+            for d in dirs:
+                rmfiles.append(join(root, d))
+            for f in files:
+                rmfiles.append(join(root, f))
+        rmfiles.sort(key=len)
+        rmfiles.reverse()
+
+        for f in rmfiles:
+            if isfile(f):
+                remove(f)
+            elif isdir(f):
+                rmdir(f)
 
     def _convert_url_to_path(self, url):
         """

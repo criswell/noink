@@ -82,10 +82,14 @@ if __name__ == '__main__':
     parser = ArgumentParser(description='Simple, manual noink test')
     parser.add_argument('-f', help='Freeze the site and output static',
             action='store_true')
+    parser.add_argument('-a', help='Generate all site', action='store_true')
     args = parser.parse_args()
     se = SimpleEntries()
     if args.f:
         icebox = Icebox()
         icebox.generate_pages()
+    elif args.a:
+        icebox = Icebox()
+        icebox.generate_pages(True)
     else:
         se.run(True)
