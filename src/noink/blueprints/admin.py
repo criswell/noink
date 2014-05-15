@@ -103,6 +103,12 @@ def admin_page():
                     'text' : _('View log'),
                     'desc' : _('View the events log')
                 })
+        if 'make_static' in all_activities:
+            links[sysadmin].append({
+                    'url' : url_for("admin_static.static_page"),
+                    'text' : _('Generate static site'),
+                    'desc' : _('Generate the static site')
+                })
 
         return render_template('admin.html', state=get_state(), links=links,
                 is_admin=is_admin, title=_('Admin'))

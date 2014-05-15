@@ -1,0 +1,15 @@
+<form action='' class='form-horizontal' role='form' method='post'>
+  <input type='hidden' value='admin_static' name='form_id'>
+  <p>{{ sched_rebuild_text }}
+  <button class="btn btn-default" type="submit" name="sched_rebuild"
+    >{{ sched_rebuild_button }}</button>
+  </p>
+  <p>{{ incr_build_text }}
+  <button class="btn btn-default" type="submit" name="incr_build"
+    >{{ incr_build_button }}</button>
+  </p>
+  <p>{{ rebuild_now_text }}
+  <button class="btn btn-danger" type="submit" name="rebuild_now"
+    >{{ rebuild_now_button }}</button>
+  </p>
+</form>

@@ -20,7 +20,8 @@ activities = {
         'view_roles' : "Can view roles",
         'edit_role' : "Can edit roles",
         'new_role' : "Can create new roles",
-        'view_log' : "Can view the event log"
+        'view_log' : "Can view the event log",
+        'make_static' : "Can generate the static site"
         }
 
 def get_activity_dict(default=False):
