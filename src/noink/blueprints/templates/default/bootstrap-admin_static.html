@@ -4,12 +4,14 @@
   <button class="btn btn-default" type="submit" name="sched_rebuild"
     >{{ sched_rebuild_button }}</button>
   </p>
+  {% if can_admin_static_now %}
   <p>{{ incr_build_text }}
-  <button class="btn btn-default" type="submit" name="incr_build"
+  <button class="btn btn-warning" type="submit" name="incr_build"
     >{{ incr_build_button }}</button>
   </p>
   <p>{{ rebuild_now_text }}
   <button class="btn btn-danger" type="submit" name="rebuild_now"
     >{{ rebuild_now_button }}</button>
   </p>
+  {% endif %}
 </form>

@@ -21,7 +21,8 @@ activities = {
         'edit_role' : "Can edit roles",
         'new_role' : "Can create new roles",
         'view_log' : "Can view the event log",
-        'make_static' : "Can generate the static site"
+        'make_static' : "Can generate the static site",
+        'make_static_now' : "Can generate the static site immediately"
         }
 
 def get_activity_dict(default=False):

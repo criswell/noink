@@ -49,15 +49,7 @@ class Icebox:
         state.icebox = True
 
         if all_pages:
-            self.clear_icebox_path()
-            count = self.entry_db.count()
-            per_page = mainApp.config['NUM_ENTRIES_PER_PAGE'][0]
-            total_pages = int(ceil(float(count) / float(per_page)))
-            for i in range(total_pages):
-                entries = self.entry_db.find_recent_by_num(per_page,
-                        i * per_page)
-                for e in entries:
-                    self._generate_page(e)
+            self._rebuild_site()
         else:
             for e in self.event_log.get_unprocessed():
                 if e.event in ('add_entry', 'update_entry'):
@@ -65,6 +57,8 @@ class Icebox:
                     entry = self.entry_db.find_by_id(pe.id)
                     if entry is not None:
                         self._generate_page(entry)
+                elif e.event == 'rebuild_static':
+                    self._rebuild_site()
                 elif e.event == 'del_entry':
                     pe = depickle(e.blob)
                     self._remove_page(pe.id, pe.url)
@@ -79,6 +73,20 @@ class Icebox:
         # Sync static pages
         if self.static_path:
             self.sync_static()
+
+    def _rebuild_site(self):
+        """
+        Rebuild the entire site
+        """
+        self.clear_icebox_path()
+        count = self.entry_db.count()
+        per_page = mainApp.config['NUM_ENTRIES_PER_PAGE'][0]
+        total_pages = int(ceil(float(count) / float(per_page)))
+        for i in range(total_pages):
+            entries = self.entry_db.find_recent_by_num(per_page,
+                    i * per_page)
+            for e in entries:
+                self._generate_page(e)
 
     def _generate_tags(self):
         """

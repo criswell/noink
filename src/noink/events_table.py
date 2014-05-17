@@ -26,5 +26,6 @@ event_table = {
     'add_role' : "Role '{0}' added",
     'rm_from_group' : "User '%s' remove from group '{0}'",
     'del_group' : "Group '{0}' deleted",
-    'del_role' : "Role '{0}' deleted"
+    'del_role' : "Role '{0}' deleted",
+    'rebuild_static' : "Static site rebuilt scheduled"
 }
