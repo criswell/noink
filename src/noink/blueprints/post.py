@@ -180,10 +180,7 @@ def delete_post(num):
             message=_('You have not supplied an entry to delete.'))
 
     entry_db = EntryDB()
-    user_db = UserDB()
-    role_db = RoleDB()
 
-    # FIXME - DO WE DO ANY USER CHECKING HERE?
     entry = entry_db.find_by_id(num)
 
     if entry is None:
