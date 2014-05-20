@@ -11,6 +11,6 @@ def check_login_required(f):
         if mainApp.config['REQUIRE_LOGIN_FOR_DYNAMIC']:
             if not current_user.is_authenticated() or not \
                     current_user.is_active():
-                return redirect(url_for('login', next=request.url))
+                return redirect(url_for('login.login_page', next=request.url))
         return f(*args, **kwargs)
     return decorated_function
