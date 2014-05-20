@@ -6,16 +6,16 @@
 """
 
 from flask import Blueprint, render_template, abort
-from jinja2 import TemplateNotFound
 
-from noink import mainApp
 from noink.entry_db import EntryDB
 from noink.state import get_state
+from noink.blueprints.utils import check_login_required
 
 node = Blueprint('node', __name__)
 
 @node.route("/node/<num>", defaults={'name':None})
 @node.route("/<name>", defaults={'num':-1})
+@check_login_required
 def show_node(num, name):
     """
     Renders a page given it's entry id
@@ -43,4 +43,5 @@ def show_node(num, name):
     except:
         editors = None
 
-    return render_template('node.html', entry=entry, editors=editors, state=get_state())
+    return render_template('node.html', entry=entry, editors=editors,
+        state=get_state())

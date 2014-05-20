@@ -5,16 +5,14 @@
 
 """
 
-from flask import Blueprint, render_template, abort, request, redirect, \
+from flask import Blueprint, render_template, request, redirect, \
         url_for, flash
-from jinja2 import TemplateNotFound
 
-from noink import mainApp, loginManager, _
+from noink import mainApp, _
 from noink.state import get_state
 from noink.user_db import UserDB
 from noink.entry_db import EntryDB
 from noink.role_db import RoleDB
-from noink.exceptions import DuplicateURL
 from noink.custom_tests import is_deletable
 
 from flask.ext.login import current_user
@@ -121,7 +119,8 @@ def _edit_post(eid=None):
                         return render_template('noink_message.html',
                             state=get_state(),
                             title=_('Entry not found!'),
-                            message=_('The entry "{0}" was not found!'.format(eid)))
+                            message=_(
+                                'The entry "{0}" was not found!'.format(eid)))
                     if request.method == "POST":
                         entry = update_entry_object(entry)
                         if "tags" in request.form:
@@ -184,6 +183,7 @@ def delete_post(num):
     user_db = UserDB()
     role_db = RoleDB()
 
+    # FIXME - DO WE DO ANY USER CHECKING HERE?
     entry = entry_db.find_by_id(num)
 
     if entry is None:

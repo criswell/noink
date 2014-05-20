@@ -33,6 +33,7 @@ class testMain(object):
             'ADMIN_FULLNAME = "Administrator"\n',
             'ADMIN_GROUP = "admin"\n',
             'ADMIN_GROUP_DESC = "Admin group"\n',
+            'REQUIRE_LOGIN_FOR_DYNAMIC = False\n',
             'DEFAULT_GROUP = "default"\n',
             'DEFAULT_GROUP_DESC = "Default group"\n',
             'SQLALCHEMY_DATABASE_URI = "%s"\n' % self.TEST_DB_FILE,

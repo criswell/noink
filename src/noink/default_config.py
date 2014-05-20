@@ -29,6 +29,10 @@ ADMIN_GROUP = "admin"
 # The description of the admin group
 ADMIN_GROUP_DESC = "Administrative group"
 
+# Determines whether login is required for every page. If this is set, then
+# your dynamic site cannot be accessed unless the user is logged in.
+REQUIRE_LOGIN_FOR_DYNAMIC = False
+
 # The name of the administration role - Note that this field SHOULD NOT be
 # changed after the database has been created, as it will not update the admin
 # role in the database!

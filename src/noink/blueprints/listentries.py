@@ -5,12 +5,12 @@
 
 """
 
-from flask import Blueprint, render_template, abort, request
-from jinja2 import TemplateNotFound
+from flask import Blueprint, render_template, request
 
 from noink import mainApp
 from noink.entry_db import EntryDB
 from noink.state import get_state
+from noink.blueprints.utils import check_login_required
 
 from math import ceil
 
@@ -18,6 +18,7 @@ list_entries = Blueprint('list_entries', __name__)
 
 @list_entries.route("/", defaults={'tag':None})
 @list_entries.route("/tag/<int:tag>")
+@check_login_required
 def show(tag):
     '''
     Renders a page containing those entries defined by tag. If tag is None,
