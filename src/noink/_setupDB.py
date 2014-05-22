@@ -32,7 +32,7 @@ def setup_DB():
     mainDB.create_all()
     event_log.add('db_setup', -1, True)
     default_group = userDB.add_group(mainApp.config['DEFAULT_GROUP'],
-        mainApp.config['DEFAULT_GROUP_DESC'])
+            mainApp.config['DEFAULT_GROUP_DESC'])
     default_acts = get_activity_dict(False)
     default_acts.update(mainApp.config['DEFAULT_ROLE_ACTIVITIES'])
 

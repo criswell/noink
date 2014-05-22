@@ -78,7 +78,8 @@ class RoleDB:
         u = user_db.get_user(user)
         g = user_db.get_group(group)
 
-        return RoleMapping.query.filter_by(user=u).filter_by(group=g).filter_by(role=r).first()
+        return RoleMapping.query.filter_by(user=u).filter_by(
+                group=g).filter_by(role=r).first()
 
     def add_role(self, name, description, activities=None):
         '''
@@ -95,7 +96,8 @@ class RoleDB:
             exists = False
 
         if exists:
-            raise DuplicateRole("%s already exists as a role with id '%s'" % (name, str(exists)))
+            raise DuplicateRole("{0} already exists as a role with id "\
+                    "'{1}'".format(name, str(exists)))
 
         if activities is None:
             activities = get_activity_dict(False)
@@ -169,7 +171,8 @@ class RoleDB:
         g = userDB.get_group(group)
         r = self.get_role(role)
 
-        exist = RoleMapping.query.filter_by(user=u).filter_by(group=g).filter_by(role=r).all()
+        exist = RoleMapping.query.filter_by(user=u).filter_by(
+                group=g).filter_by(role=r).all()
 
         if exist == []:
             rm = RoleMapping(r, u, g)
@@ -191,7 +194,8 @@ class RoleDB:
         u = user_db.get_user(user)
         g = user_db.get_group(group)
         r = self.get_role(role)
-        rmaps = RoleMapping.query.filter_by(user=u).filter_by(group=g).filter_by(role=r).all()
+        rmaps = RoleMapping.query.filter_by(user=u).filter_by(
+                group=g).filter_by(role=r).all()
 
         for rm in rmaps:
             mainDB.session.delete(rm)
