@@ -1,6 +1,7 @@
 {% include "messages.html" %}
 <div class='jumbotron'>
   <a href="/"><h1>{{ state.site_name }}</h1></a>
+  {% if not state.icebox %}
   <p class="pull-right">
     {% if state.current_user.is_anonymous() %}
       <a href="/login">Login</a>
@@ -8,4 +9,5 @@
       <a href="/admin">Admin</a> | <a href="/logout">Logout</a>
     {% endif %}
   </p>
+  {% endif %}
 </div>
