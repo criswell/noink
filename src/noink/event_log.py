@@ -64,8 +64,8 @@ class EventLog:
         """
         Returns the unprocessed log entries
         """
-        return Event.query.order_by(Event.date).filter_by(
-                processed=False).all()
+        for i in range(self.count()):
+            yield Event.query.order_by(Event.date).offset(i).first()
 
     def mark_as_processed(self, entry):
         """
