@@ -23,7 +23,7 @@ def display_users():
     print("ID\t:User")
     print("--\t:----")
     for u in users:
-        print("{0}\t:{0}".format(u.id, u.name))
+        print("{0}\t:{1}".format(u.id, u.name))
 
 with open(sys.argv[2], 'w') as outfile:
     for row in c.execute("select * from users"):
@@ -33,5 +33,5 @@ with open(sys.argv[2], 'w') as outfile:
         uid = input("Enter a user mapping or -1 for no map: ")
         print("--------------------")
         if uid >= 0:
-            outfile.write("{0},{0}\n".format(uid, row[0]))
+            outfile.write("{0},{1}\n".format(uid, row[0]))
 
