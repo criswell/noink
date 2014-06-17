@@ -6,6 +6,7 @@
     {% if state.current_user.is_anonymous() %}
       <a href="/login">Login</a>
     {% else %}
+      <a href="/admin/user">{{ state.current_user.name }}</a> |
       <a href="/admin">Admin</a> | <a href="/logout">Logout</a>
     {% endif %}
   </p>
