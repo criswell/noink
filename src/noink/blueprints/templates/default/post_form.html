@@ -44,6 +44,18 @@ nomacro_tagdisplay, nomacro_checkbox %}
       <input type="checkbox" name="html"
       value="True" {{ nomacro_checkbox(entry, 'html', 'no')}}>Post is HTML
     </label>
+    <div class="pull-right">
+      <label for='weight' class="control-label">Weight</label>
+      <select class="form-control" name="weight">
+        {% for g in range(-15, 15) %}
+        <option
+        {% if g == 0 %}
+        selected="selected"
+        {% endif %}
+        >{{ g }}</option>
+        {% endfor %}
+      </select>
+    </div>
     <input type='submit' name='submit' value='{{ submit_button }}'>
     <input type='submit' name='preview' value='{{ preview_button }}'>
   </div>
