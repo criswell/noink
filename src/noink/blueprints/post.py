@@ -37,7 +37,7 @@ def process_entry_object(parent):
         request.form.get('entry', ''),
         current_user,
         group_used,
-        0, # FIXME - Currently unsupported
+        int(request.form.get('weight', 0)),
         purl,
         bool(request.form.get('html', False)),
         parent,
@@ -51,8 +51,11 @@ def update_entry_object(entry):
     entry.title = request.form.get('title', '')
     entry.html = request.form.get('html', False)
     entry.static = request.form.get('static', False)
-    entry.url = request.form.get('url', None)
-    # FIXME - Missing weight
+    purl = request.form.get('url', None)
+    if purl == '':
+        purl = None
+    entry.url = purl
+    entry.weight = int(request.form.get('weight', 0))
     return entry
 
 def not_authorized():
