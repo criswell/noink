@@ -49,9 +49,15 @@ nomacro_tagdisplay, nomacro_checkbox %}
       <select class="form-control" name="weight">
         {% for g in range(-15, 15) %}
         <option
-        {% if g == 0 %}
+        {% if entry != None -%}
+        {% if g == entry.weight -%}
         selected="selected"
-        {% endif %}
+        {%- endif %}
+        {% else -%}
+        {% if g == 0 -%}
+        selected="selected"
+        {%- endif %}
+        {%- endif %}
         >{{ g }}</option>
         {% endfor %}
       </select>
