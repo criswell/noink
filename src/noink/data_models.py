@@ -150,8 +150,8 @@ class Entry(mainDB.Model):
             backref=mainDB.backref('entries'))
     html = mainDB.Column(mainDB.Boolean)
     parent_id = mainDB.Column(mainDB.Integer, mainDB.ForeignKey("entries.id"))
-    #children = mainDB.relationship('Entry', backref=mainDB.backref('parent',
-    #    remote_side=[id]))
+    children = mainDB.relationship('Entry', backref=mainDB.backref('parent',
+        remote_side=[id]))
 
     def __init__(self, title, author, group, date, entry, weight=0, url=None,
             html=False, parent=None, static=False):

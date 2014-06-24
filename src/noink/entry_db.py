@@ -334,3 +334,19 @@ class EntryDB:
         mainDB.session.commit()
         self.event_log.add('del_entry', 0, False, pickle(pe), entry.title)
 
+    def get_children(self, e):
+        """
+        Given an entry, return its children, sorted by weight.
+
+        :param e: An entry to find children for. Can be an integer for the
+                  entry id or an entry object.
+
+        :returns: A list of ordered entries or empty list if none.
+        """
+        eid = None
+        if type(e) is IntType:
+            eid = e
+        else:
+            eid = e.id
+
+        return Entry.query.order_by(Entry.weight).filter_by(parent=eid).all()
