@@ -39,17 +39,17 @@ class EntryDB:
         duplicate. The one check it does do is to verify whether a URL is
         unique or not.
 
-        @param title: The title of the post.
-        @param entry: The entry of the post.
-        @param author: The user object for the post's author
-        @param group: The (optional) group this post will belong to. If None,
+        :param title: The title of the post.
+        :param entry: The entry of the post.
+        :param author: The user object for the post's author
+        :param group: The (optional) group this post will belong to. If None,
                       use the author's primary group
-        @param url: The (optional) URL for this post.
-        @param html: Flag detailing whether this post is in HTML or not
-        @param parent: The (optional) parent for this post.
-        @param static: (Optional) Whether or not the post is static.
+        :param url: The (optional) URL for this post.
+        :param html: Flag detailing whether this post is in HTML or not
+        :param parent: The (optional) parent for this post.
+        :param static: (Optional) Whether or not the post is static.
 
-        @return New entry object just added
+        :returns: New entry object just added
         """
 
         now = datetime.datetime.now()
@@ -79,7 +79,7 @@ class EntryDB:
         """
         Given an entry object, add it to the system.
 
-        @param entry: The entry object to add.
+        :param entry: The entry object to add.
         """
         mainDB.session.add(entry)
         mainDB.session.commit()
@@ -91,7 +91,7 @@ class EntryDB:
         """
         Given an entry object, update it.
 
-        @param entry: The entry object to update.
+        :param entry: The entry object to update.
         """
         mainDB.session.commit()
         pe = PEntry(entry)
@@ -108,17 +108,17 @@ class EntryDB:
         duplicate. The one check it does do is to verify whether a URL is
         unique or not.
 
-        @param title: The title of the post.
-        @param entry: The entry of the post.
-        @param author: The user object for the post's author
-        @param group: The (optional) group this post will belong to. If None,
+        :param title: The title of the post.
+        :param entry: The entry of the post.
+        :param author: The user object for the post's author
+        :param group: The (optional) group this post will belong to. If None,
                       use the author's primary group
-        @param url: The (optional) URL for this post.
-        @param html: Flag detailing whether this post is in HTML or not
-        @param parent: The (optional) parent for this post.
-        @param static: (Optional) Whether or not the post is static.
+        :param url: The (optional) URL for this post.
+        :param html: Flag detailing whether this post is in HTML or not
+        :param parent: The (optional) parent for this post.
+        :param static: (Optional) Whether or not the post is static.
 
-        @return New entry object
+        :returns: New entry object
         '''
         now = datetime.datetime.now()
 
@@ -136,13 +136,13 @@ class EntryDB:
         return e
 
     def add_tag(self, tags, entry):
-        '''
+        """
         Adds one or more tags to be associated with an entry. Or, if tags
         already exist, updates them to also point to the entry.
 
-        @param tags: Array of one or more tags.
-        @param entry: An entry to associate with the tags.
-        '''
+        :param tags: Array of one or more tags.
+        :param entry: An entry to associate with the tags.
+        """
         for tag in tags:
             if tag != '':
                 t = Tag.query.filter_by(tag=tag).first()
@@ -167,13 +167,13 @@ class EntryDB:
         return Tag.query.order_by(Tag.id).all()
 
     def update_editor(self, u, e):
-        '''
+        """
         Given a user and an entry, update that entry's editors with that user.
 
-        @param u: The user who edited the entry. Can be a user object, a uid,
+        :param u: The user who edited the entry. Can be a user object, a uid,
                   or a string representing the username.
-        @param e: The entry. Can be an entry id or an entry object.
-        '''
+        :param e: The entry. Can be an entry id or an entry object.
+        """
         now = datetime.datetime.now()
         entry = e
         if type(e) is IntType:
@@ -196,13 +196,13 @@ class EntryDB:
                 pe), entry.title)
 
     def find_editors_by_entry(self, entry):
-        '''
+        """
         Given an entry, find all editors associated with it.
 
-        @param entry: The entry. Either an Entry object or entry id.
+        :param entry: The entry. Either an Entry object or entry id.
 
-        @return Array containing zero or more editors.
-        '''
+        :return Array containing zero or more editors.
+        """
         eid = entry
         if type(entry) is not IntType:
             eid = entry.id
@@ -213,20 +213,20 @@ class EntryDB:
         """
         Given a URL, find all entries associated with it.
 
-        @param url: The URL string.
+        :param url: The URL string.
 
-        @return Array containing one or more entries.
+        :returns: Array containing one or more entries.
         """
         return Entry.query.filter_by(url=url).all()
 
     def find_tags_by_entry(self, entry):
-        '''
+        """
         Given an entry, find all tags associated with it.
 
-        @param entry: The entry. Either an Entry object or entry id.
+        :param entry: The entry. Either an Entry object or entry id.
 
-        @return Array containing one or more tag objects.
-        '''
+        :returns: Array containing one or more tag objects.
+        """
         e = entry
         if type(entry) is IntType:
             e = self.find_by_id(entry)
@@ -240,10 +240,10 @@ class EntryDB:
         """
         Given one or more tags, find all entries tagged with them.
 
-        @param tags: One or more tags. Tags can be tag ids, tag objects, or
+        :param tags: One or more tags. Tags can be tag ids, tag objects, or
                      tag strings. Tags must be iterable.
 
-        @return Array contating the entry objects.
+        :returns: Array contating the entry objects.
         """
         # FIXME - The following should order them by weight and date, instead
         # it will cluster them first by tags.
@@ -269,16 +269,16 @@ class EntryDB:
         return e
 
     def find_recent_by_num(self, num, offset=0, weight=True):
-        '''
+        """
         Finds the most recent entries with a maximum of 'num'.
 
-        @param num: The number of entries to find
-        @param offset: The offset for the entries to find.
-        @param weight: If the weight should be taken into account (defaults to
+        :param num: The number of entries to find
+        :param offset: The offset for the entries to find.
+        :param weight: If the weight should be taken into account (defaults to
                        true.
 
-        @return Array containing the entry objects.
-        '''
+        :returns: Array containing the entry objects.
+        """
         if type(num) is IntType:
             if weight:
                 return Entry.query.order_by(Entry.date.desc(),
@@ -290,39 +290,39 @@ class EntryDB:
             raise TypeError("Expected integer for num")
 
     def count(self):
-        '''
+        """
         Returns the number of possible entries.
-        '''
+        """
         return Entry.query.order_by(Entry.date.desc(), Entry.weight).count()
 
     def find_by_title(self, title):
-        '''
+        """
         Finds entries based upon the title. Can search using sub-strings.
 
-        @param title: The title of the post (or sub-string of title).
+        :param title: The title of the post (or sub-string of title).
 
-        @return Array containing one or more entry objects, or None.
-        '''
+        :returns: Array containing one or more entry objects, or None.
+        """
         return Entry.query.filter(Entry.Entry.title.like("%%%s%%" %
             title)).all()
 
     def find_by_id(self, num):
-        '''
+        """
         Finds entries based upon the ID.
 
-        @param num: The numerical ID of the post.
+        :param num: The numerical ID of the post.
 
-        @return The entry objects, or None.
-        '''
+        :returns: The entry objects, or None.
+        """
         return Entry.query.get(num)
 
     def delete(self, e):
-        '''
+        """
         Deletes an entry from the database.
 
-        @param e: An entry to delete. Can be an integer for the entry id or an
+        :param e: An entry to delete. Can be an integer for the entry id or an
                   entry object.
-        '''
+        """
         # FIXME
         # Should deal with parents and children so as not to leave orphans
         entry = e

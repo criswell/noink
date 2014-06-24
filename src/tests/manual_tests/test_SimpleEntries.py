@@ -49,6 +49,7 @@ class SimpleEntries:
             parent = None
             if randint(0,5) > 3 and len(parents) > 1:
                 parent = parents[randint(0,len(parents)-1)]
+                print("A parent is {0}".format(parent))
             try:
                 entry = self.entryDB.add(e[0], e[1], u, None, e[2], e[3], e[5], parent)
                 if e[4]:
@@ -71,10 +72,8 @@ class SimpleEntries:
     def run(self, debug):
         print("mainApp.jinja_env")
         print("-----------------")
-        print(dir(mainApp.jinja_env))
         print("\nmainApp.jinja_loader")
         print("___________________")
-        print(dir(mainApp.jinja_loader))
         print("\n%s" % mainApp.jinja_loader.searchpath)
         mainApp.run(host="0.0.0.0", debug=debug)
 
