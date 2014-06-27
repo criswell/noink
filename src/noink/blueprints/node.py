@@ -35,13 +35,23 @@ def show_node(num, name):
     if entry == None and url == None:
         abort(404)
 
+    children = []
     try:
         if entry is not None:
             es = entry_db.find_editors_by_entry(entry.id)
             if len(es) > 0:
                 editors = es
+
+            if entry.children:
+                children.append(entry)
+                children.extend(sorted(entry.children, key=lambda e: e.weight))
+            elif entry.parent_id is not None:
+                te = entry_db.find_by_id(entry.parent_id)
+                children.append(te)
+                children.extend(sorted(te.children, key=lambda e: e.weight))
     except:
         editors = None
 
+    #import ipdb; ipdb.set_trace()
     return render_template('node.html', entry=entry, editors=editors,
-        state=get_state())
+        state=get_state(), children=children)

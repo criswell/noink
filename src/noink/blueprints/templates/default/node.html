@@ -1,4 +1,5 @@
 {% from "macros.html" import nomacro_tagURL %}
+{% from "macros.html" import nomacro_entryURL %}
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -13,11 +14,17 @@
       <div class='well'>
         {% include "entry_embed.html" %}
       </div>
+      {% if children|length > 0  %}
       <ul>
-      {% for child in entry.children %}
+      {% for child in children %}
+      {% if child.id == entry.id %}
+        <li><h4>{{ child.title }}</h4></li>
+      {% else %}
         <li><a href="{{ nomacro_entryURL(child) }}"><h4>{{ child.title }}</h4></a></li>
+      {% endif %}
       {% endfor %}
       </ul>
+      {% endif %}
       <p class='text-right'>
       {% if entry.tagmap|length > 0 %}
         <strong>Tags:</strong>
