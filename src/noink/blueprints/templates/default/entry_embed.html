@@ -11,13 +11,17 @@
 {% if is_edit is not defined or not is_edit -%}
   <ul class="list-inline">
       {% if entry is editable -%}
-      <li><a href="/edit/{{ entry.id }}">Edit</a></li>
+      <li><a href="/edit/{{ entry.id }}">[Edit]</a></li>
       {%- endif -%}
       {%- if entry is possible_parent -%}
-      <li><a href="/new?parent={{ entry.id }}">Add Child</a></li>
+      {%- if entry.parent_id is not none -%}
+      <li><a href="/new?parent={{ entry.parent_id }}">[Add Child]</a></li>
+      {%- else -%}
+      <li><a href="/new?parent={{ entry.id }}">[Add Child]</a></li>
+      {%- endif -%}
       {%- endif -%}
       {%- if entry is deletable -%}
-      <li><a href="/delete/{{ entry.id }}">Delete</a></li>
+      <li><a href="/delete/{{ entry.id }}">[Delete]</a></li>
       {%- endif %}
   </ul>
 {%- endif %}

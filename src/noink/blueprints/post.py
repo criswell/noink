@@ -86,7 +86,7 @@ def _edit_post(eid=None):
         groups = []
         if current_user.primary_group in avail_groups:
             # Make sure primary group is first in the list, if it's there
-            avail_groups.remove(current_user.primary_group)
+            #avail_groups.remove(current_user.primary_group)
             groups.append(current_user.primary_group)
         groups.extend(avail_groups)
 
