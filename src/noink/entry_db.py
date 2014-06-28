@@ -71,6 +71,10 @@ class EntryDB:
             mainDB.session.add(e)
             mainDB.session.commit()
 
+        # FIXME
+        # When a child is added, we need to also trigger page refreshes for
+        # each member of the parent's children
+
         pe = PEntry(e)
         self.event_log.add('add_entry', author.id, False, pickle(pe), e.title)
         return e

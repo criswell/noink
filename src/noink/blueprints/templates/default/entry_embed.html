@@ -13,6 +13,9 @@
       {% if entry is editable -%}
       <li><a href="/edit/{{ entry.id }}">Edit</a></li>
       {%- endif -%}
+      {%- if entry is possible_parent -%}
+      <li><a href="/new?parent={{ entry.id }}">Add Child</a></li>
+      {%- endif -%}
       {%- if entry is deletable -%}
       <li><a href="/delete/{{ entry.id }}">Delete</a></li>
       {%- endif %}
