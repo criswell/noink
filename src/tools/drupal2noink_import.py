@@ -18,7 +18,7 @@ if len(sys.argv) != 3:
 conn = sqlite3.connect(sys.argv[1])
 c = conn.cursor()
 
-usermap = []
+usermap = {}
 
 with open(sys.argv[2], 'r') as mapfile:
     for i in mapfile.readlines():
