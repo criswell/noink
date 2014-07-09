@@ -29,7 +29,7 @@ with open(sys.argv[2], 'r') as mapfile:
 user_db = UserDB()
 entry_db = EntryDB()
 
-admin = user_db.find_user_by_name(mainApp['ADMIN_USER'])
+admin = user_db.find_user_by_name(mainApp.config['ADMIN_USER'])
 
 all_urls = {}
 for r in c.execute("select * from url_alias"):
