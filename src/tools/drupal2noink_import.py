@@ -42,7 +42,7 @@ class Entry(object):
         self.vid = row[1]
         self.type = row[2]
         self.title = row[3]
-        self.user = user[0][0]
+        self.user = str(user[0][0])
         self.created = row[6]
         self.updated = row[7]
         self.body = node[4]
