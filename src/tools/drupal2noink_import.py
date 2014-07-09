@@ -72,7 +72,8 @@ def gen_entry(row):
     en = Entry(row, user, node, terms, url)
 
     parent_info = c.execute(
-            "select parent,weight from book where nid={0}".format(row[0]))
+            "select parent,weight from book where nid={0}".format(
+                row[0])).fetchall()
     if len(parent_info) == 1:
         en.parent = parent_info[0][0]
         en.weight = parent_info[0][1]
