@@ -24,7 +24,7 @@ with open(sys.argv[2], 'r') as mapfile:
     for i in mapfile.readlines():
         k = i.split(',')
         if len(k) == 2:
-            usermap[k[1]] = k[0]
+            usermap[k[1]] = int(k[0])
 
 user_db = UserDB()
 entry_db = EntryDB()
