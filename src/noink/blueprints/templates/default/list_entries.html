@@ -20,7 +20,11 @@
           <p class="muted test-right">{{ entry.date }}</p>
         </small></div>
       </div><div class="row">
+        {% if entry.html -%}
+        <p>{{ entry.entry|nofilter_breaksplit|first|nofilter_newlines|safe }}</p>
+        {%- else -%}
         <p>{{ entry.entry|nofilter_breaksplit|first|escape|nofilter_newlines|safe }}</p>
+        {%- endif %}
         <a href="{{ nomacro_entryURL(entry) }}">more...</a>
       </div></div>
       {% endfor %}
