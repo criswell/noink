@@ -14,7 +14,7 @@ from noink.blueprints.utils import check_login_required
 node = Blueprint('node', __name__)
 
 @node.route("/node/<num>", defaults={'name':None})
-@node.route("/<name>", defaults={'num':-1})
+@node.route("/<path:name>", defaults={'num':-1})
 @check_login_required
 def show_node(num, name):
     """
