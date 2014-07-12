@@ -29,7 +29,12 @@ with open(sys.argv[2], 'r') as mapfile:
 user_db = UserDB()
 entry_db = EntryDB()
 
-admin = user_db.find_user_by_name(mainApp.config['ADMIN_USER'])[0]
+all_admin = user_db.find_user_by_name(mainApp.config['ADMIN_USER'])
+if len(all_admin) == 1:
+    admin = all_admin[0]
+else:
+    print("Can't find admin: {0}".format(mainApp.config['ADMIN_USER']))
+    sys.exit(1)
 
 all_urls = {}
 for r in c.execute("select * from url_alias"):
@@ -85,9 +90,19 @@ def get_nodes():
     for row in lc.execute("select * from node order by nid"):
         yield gen_entry(row)
 
+parent_list = {}
 for e in get_nodes():
     u = user_db.find_user_by_id(usermap[e.user])
     if u is None:
         u = admin
-    entry_db.add(e.title, e.teaser + e.body, u, None, e.weight, e.url, True,
-        e.parent)
+
+    ae = entry_db.add(e.title, e.teaser + e.body, u, None, e.weight,
+            e.url, True, None)
+
+    if e.parent is not None:
+        parent_list[ae.id] = e.parent
+
+for i in parent_list:
+    e = entry_db.find_by_id(int(i))
+    e.parent_id = int(parent_list[i])
+    entry_db.update_entry(e)
