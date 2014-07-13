@@ -16,7 +16,6 @@ if len(sys.argv) != 3:
     sys.exit(1)
 
 conn = sqlite3.connect(sys.argv[1])
-conn.text_factory = str
 c = conn.cursor()
 
 usermap = {}
