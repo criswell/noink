@@ -88,7 +88,10 @@ def gen_entry(row):
 def get_nodes():
     lc = conn.cursor()
     for row in lc.execute("select * from node order by nid"):
-        yield gen_entry(row)
+        try:
+            yield gen_entry(row)
+        except:
+            print("!!Problem with number {0}".format(row[4]))
 
 parent_list = {}
 eid = 0
