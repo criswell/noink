@@ -77,7 +77,7 @@ class EntryDB:
 
         pe = PEntry(e)
         self.event_log.add('add_entry', author.id, False,
-                pickle(pe).encode('utf-8'), e.title.encode('utf-8'))
+                pickle(pe), e.title.encode('utf-8'))
         return e
 
     def add_entry_object(self, entry):
