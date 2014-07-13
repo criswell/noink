@@ -33,8 +33,7 @@ class EventLog:
         if name in event_table:
             now = datetime.datetime.now()
             if len(args) > 0:
-                e = Event(name,
-                    event_table[name].format(*args).encode('utf-8'), now, user,
+                e = Event(name, event_table[name].format(*args), now, user,
                     blob)
             else:
                 e = Event(name, event_table[name], now, user,

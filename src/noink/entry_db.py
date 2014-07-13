@@ -76,8 +76,8 @@ class EntryDB:
         # each member of the parent's children
 
         pe = PEntry(e)
-        self.event_log.add('add_entry', author.id, False, pickle(pe),
-                e.title.encode('utf-8'))
+        self.event_log.add('add_entry', author.id, False,
+                pickle(pe).encode('utf-8'), e.title.encode('utf-8'))
         return e
 
     def add_entry_object(self, entry):
