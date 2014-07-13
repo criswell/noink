@@ -77,7 +77,7 @@ class EntryDB:
 
         pe = PEntry(e)
         self.event_log.add('add_entry', author.id, False,
-                pickle(pe), e.title.encode('utf-8'))
+                pickle(pe), repr(e.title))
         return e
 
     def add_entry_object(self, entry):
@@ -90,7 +90,7 @@ class EntryDB:
         mainDB.session.commit()
         pe = PEntry(entry)
         self.event_log.add('add_entry', entry.author.id, False, pickle(pe),
-            entry.title)
+            repr(entry.title))
 
     def update_entry(self, entry):
         """
@@ -101,7 +101,7 @@ class EntryDB:
         mainDB.session.commit()
         pe = PEntry(entry)
         self.event_log.add('update_entry', entry.author.id, False, pickle(pe),
-            entry.title)
+            repr(entry.title))
 
     def create_temp_entry(self, title, entry, author, group=None, weight=0,
             url=None, html=False, parent=None, static=False):
