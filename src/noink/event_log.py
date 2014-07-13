@@ -35,10 +35,10 @@ class EventLog:
             if len(args) > 0:
                 e = Event(name,
                     event_table[name].format(*args).encode('utf-8'), now, user,
-                    blob.encode('utf-8'))
+                    blob)
             else:
                 e = Event(name, event_table[name], now, user,
-                    blob.encode('utf-8'))
+                    blob)
 
             e.processed = processed
             if processed:
