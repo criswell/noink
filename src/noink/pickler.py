@@ -14,7 +14,7 @@ from noink.util import string_types as _string_types
 class PEntry:
     def __init__(self, entry):
         self.id = deepcopy(entry.id)
-        self.title = deepcopy(entry.title)
+        self.title = deepcopy(entry.title.encode('utf-8'))
         self.url = deepcopy(entry.url)
 
 def pickle(obj):
