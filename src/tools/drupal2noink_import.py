@@ -98,7 +98,7 @@ for e in get_nodes():
         u = admin
 
     eid = eid + 1
-    print("{0}:{1}".format(eid, e.title))
+    print(u"{0}:{1}".format(eid, e.title))
 
     ae = entry_db.add(e.title, e.teaser + e.body, u, None, e.weight,
             e.url, True, None)
