@@ -91,7 +91,7 @@ def get_nodes():
         try:
             yield gen_entry(row)
         except:
-            print("!!Problem with number {0}".format(row[4]))
+            print("!!Problem with entry number {0}".format(row[1]))
 
 parent_list = {}
 eid = 0
