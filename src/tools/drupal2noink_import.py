@@ -100,7 +100,7 @@ for e in get_nodes():
     eid = eid + 1
     print("{0}:{1}".format(eid, e.title.encode('utf-8')))
 
-    ae = entry_db.add(e.title, e.teaser + e.body, u, None, e.weight,
+    ae = entry_db.add(e.title, e.body, u, None, e.weight,
             e.url, True, None)
 
     if e.parent is not None:
