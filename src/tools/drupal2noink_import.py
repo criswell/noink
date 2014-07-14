@@ -93,8 +93,13 @@ def get_nodes():
         except:
             print("!!Problem with entry number {0}".format(row[1]))
 
+def add_blank_entry():
+    return entry_db.add("Delme", "Delme", admin)
+
 parent_list = {}
 eid = 0
+entries_to_delete = []
+
 for e in get_nodes():
     u = user_db.find_user_by_id(usermap[e.user])
     if u is None:
@@ -102,6 +107,10 @@ for e in get_nodes():
 
     eid = eid + 1
     print("{0}:{1}".format(eid, e.title.encode('utf-8')))
+
+    while eid > e.nid:
+        entries_to_delete.append(add_blank_entry())
+        eid = eid + 1
 
     ae = entry_db.add(e.title, e.body, u, None, e.weight,
             e.url, True, None)
