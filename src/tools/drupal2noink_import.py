@@ -108,7 +108,7 @@ for e in get_nodes():
     eid = eid + 1
     print("{0}:{1}".format(eid, e.title.encode('utf-8')))
 
-    while eid > e.nid:
+    while eid < e.nid:
         entries_to_delete.append(add_blank_entry())
         eid = eid + 1
 
