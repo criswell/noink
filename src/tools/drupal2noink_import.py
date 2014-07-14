@@ -118,6 +118,10 @@ for e in get_nodes():
     if e.parent is not None:
         parent_list[ae.id] = e.parent
 
+# Delete missing nodes
+for e in entries_to_delete:
+    entry_db.delete(e)
+
 for i in parent_list:
     e = entry_db.find_by_id(int(i))
     e.parent_id = int(parent_list[i])
