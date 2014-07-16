@@ -30,7 +30,8 @@ class EntryDB:
             self._setup = True
 
     def add(self, title, entry, author, group=None, weight=0, url=None,
-            html=False, parent=None, static=False):
+            html=False, parent=None, static=False,
+            postdate=datetime.datetime.now()):
         """
         Adds an entry to the system.
 
@@ -48,17 +49,16 @@ class EntryDB:
         :param html: Flag detailing whether this post is in HTML or not
         :param parent: The (optional) parent for this post.
         :param static: (Optional) Whether or not the post is static.
+        :param postdate: (Optional) The date of the post, current date default.
 
         :returns: New entry object just added
         """
 
-        now = datetime.datetime.now()
-
         if group is None:
             group = author.primary_group
 
-        e = Entry(title, author, group, now, entry, weight, url, html, parent,
-                static)
+        e = Entry(title, author, group, postdate, entry, weight, url, html,
+                parent, static)
 
         if type(url) is StringType:
             if self.find_by_URL(url):
@@ -104,7 +104,8 @@ class EntryDB:
             repr(entry.title))
 
     def create_temp_entry(self, title, entry, author, group=None, weight=0,
-            url=None, html=False, parent=None, static=False):
+            url=None, html=False, parent=None, static=False,
+            postdate=datetime.datetime.now()):
         '''
         Create a temporary entry object. Will not add it to the database.
 
@@ -125,13 +126,11 @@ class EntryDB:
 
         :returns: New entry object
         '''
-        now = datetime.datetime.now()
-
         if group is None:
             group = author.primary_group
 
-        e = Entry(title, author, group, now, entry, weight, url, html, parent,
-                static)
+        e = Entry(title, author, group, postdate, entry, weight, url, html,
+                parent, static)
 
         if type(url) is StringType:
             if self.find_by_URL(url):

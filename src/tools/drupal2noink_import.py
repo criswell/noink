@@ -5,6 +5,7 @@
 
 import sqlite3
 import sys
+import datetime
 
 from noink import mainApp
 from noink.user_db import UserDB
@@ -113,7 +114,7 @@ for e in get_nodes():
         eid = eid + 1
 
     ae = entry_db.add(e.title, e.body, u, None, e.weight,
-            e.url, True, None)
+            e.url, True, None, datetime.datetime.fromtimestamp(e.created))
 
     if e.parent is not None:
         parent_list[ae.id] = e.parent
