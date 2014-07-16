@@ -53,7 +53,6 @@ class EntryDB:
 
         :returns: New entry object just added
         """
-
         if group is None:
             group = author.primary_group
 
