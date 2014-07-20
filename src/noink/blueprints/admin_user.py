@@ -49,6 +49,7 @@ def admin_user_page(uid):
         group = []
         if uid is None:
             uid = current_user.id
+            # We do this because ptherwise we get a proxy to the object
             user = user_db.get_user(current_user.id)
         else:
             user = user_db.get_user(uid)
