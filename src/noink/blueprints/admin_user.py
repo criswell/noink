@@ -49,7 +49,7 @@ def admin_user_page(uid):
         group = []
         if uid is None:
             uid = current_user.id
-            user = current_user
+            user = user_db.get_user(current_user.id)
         else:
             user = user_db.get_user(uid)
 
@@ -152,6 +152,7 @@ def admin_user_page(uid):
                                     all_groups = set(group)
                                     avail_groups = list(gs - all_groups)
                                 else:
+                                    print("HERE")
                                     flash(_('Unable to remove user "{0}" from'\
                                             ' group "{1}".'.format(user.name,
                                             rm_g.name)))

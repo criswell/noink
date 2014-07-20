@@ -41,9 +41,6 @@
     {% for g in groups -%}
     {{ nomacro_roledisplay_group(g, roles_by_group, avail_roles_by_group) }}
     {%- endfor %}
-    {% for g in avail_groups -%}
-    {{ nomacro_roledisplay_group(g, roles_by_group, avail_roles_by_group) }}
-    {%- endfor %}
   </div>
 </div>
 
