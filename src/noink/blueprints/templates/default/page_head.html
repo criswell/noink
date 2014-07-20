@@ -3,12 +3,13 @@
   <a href="/"><h1>{{ state.site_name }}</h1></a>
   {% if not state.icebox %}
   <p class="pull-right">
-    {% if state.current_user.is_anonymous() %}
-      <a href="/login">Login</a>
-    {% else %}
-      <a href="/admin/user">{{ state.current_user.fullname }}</a> |
-      <a href="/admin">Admin</a> | <a href="/logout">Logout</a>
-    {% endif %}
+  {% if state.current_user.is_anonymous() %}
+  <a href="{{ url_for('login.login_page', next=request.url) }}">Login</a>
+  {% else %}
+  <a href="/admin/user">{{ state.current_user.fullname }}</a> |
+  <a href="/admin">Admin</a> | <a href="{{
+    url_for('logout.logout_user', next=request.url) }}">Logout</a>
+  {% endif %}
   </p>
   {% endif %}
 </div>
