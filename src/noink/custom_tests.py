@@ -33,13 +33,16 @@ def _role_test(entry, activity):
                     return True
     return False
 
-def _is_admin():
-    is_admin = False
+def is_admin():
+    """
+    Test to determine if the user is an admin or not
+    """
+    is_a = False
     user_db = UserDB()
     if current_user.is_authenticated() and current_user.is_active():
         admin_group = user_db.get_group(mainApp.config['ADMIN_GROUP'])
-        is_admin = user_db.in_group(current_user, admin_group)
-    return is_admin
+        is_a = user_db.in_group(current_user, admin_group)
+    return is_a
 
 @mainApp.template_test('editable')
 def is_editable(entry):
