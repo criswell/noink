@@ -29,7 +29,8 @@ def _role_test(entry, activity):
         for m in rm:
             if m.group_id == entry.group_id:
                 activities = role_db.get_activities(m.role)
-                return activities.get(activity, False)
+                if activities.get(activity, False):
+                    return True
     return False
 
 def _is_admin():
@@ -47,7 +48,7 @@ def is_editable(entry):
 
     :param entry: The entry to check against.
     """
-    return _role_test(entry, 'edit_post') or _is_admin()
+    return _role_test(entry, 'edit_post')
 
 @mainApp.template_test('deletable')
 def is_deletable(entry):
@@ -56,7 +57,7 @@ def is_deletable(entry):
 
     :param entry: The entry to check against.
     """
-    return _role_test(entry, 'delete_post') or _is_admin()
+    return _role_test(entry, 'delete_post')
 
 @mainApp.template_test('possible_parent')
 def is_possible_parent(entry):
@@ -67,5 +68,5 @@ def is_possible_parent(entry):
     """
     can_edit = _role_test(entry, 'edit_post')
     can_make = _role_test(entry, 'new_post')
-    return (can_edit & can_make) or _is_admin()
+    return (can_edit & can_make)
 
