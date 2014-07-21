@@ -27,10 +27,8 @@ def _role_test(entry, activity):
         role_db = RoleDB()
         rm = role_db.get_roles(current_user)
         for m in rm:
-            print("{0} and {1}".format(m, entry.group_id))
             if m.group_id == entry.group_id:
                 activities = role_db.get_activities(m.role)
-                print(activities)
                 return activities.get(activity, False)
     return False
 
