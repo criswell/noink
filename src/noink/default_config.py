@@ -55,17 +55,20 @@ DEFAULT_GROUP_DESC = 'Default user group'
 
 # The name of the default role. This is the role which all new users of
 # the system automatically get.
-DEFAULT_ROLE_NAME = 'default'
+DEFAULT_ROLE_NAME = 'author'
 
 # The description of the default role.
-DEFAULT_ROLE_DESC = "Default role for all users."
+DEFAULT_ROLE_DESC = "Standard author role."
 
 # The activities of the default role. These are the activities persons
 # in the default role can do. Generally speaking, you wont want to
 # modify this unless you know what you're doing. Any activity entries
 # that are missing from this dictionary will be set to False
 DEFAULT_ROLE_ACTIVITIES = {
-        'edit_self': True
+        'edit_self': True,
+        'edit_post': True,
+        'new_post': True,
+        'delete_post': True
     }
 
 # The top level group is the group that someone must have 'new_post' access

@@ -49,9 +49,10 @@ class testMain(object):
             'ADMIN_ROLE_DESC = "Test admin role"\n',
             'TOP_LEVEL_GROUP = "top"\n',
             'TOP_LEVEL_GROUP_DESC = "Top group"\n',
-            'DEFAULT_ROLE_NAME = "default"\n',
-            'DEFAULT_ROLE_DESC = "default role"\n',
-            'DEFAULT_ROLE_ACTIVITIES = { "edit_self":True }\n',
+            'DEFAULT_ROLE_NAME = "author"\n',
+            'DEFAULT_ROLE_DESC = "Standard author role."\n',
+            '''DEFAULT_ROLE_ACTIVITIES = { "edit_self":True,"edit_post":True,
+            "new_post":True, "delete_post":True }\n''',
             'ICEBOX_PATH = "../output/"\n',
             'ICEBOX_STATIC_PATH="../../noink/blueprints/static/default"\n'
         ]
