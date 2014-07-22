@@ -118,7 +118,7 @@ class UserDB:
             exists = False
 
         if exists:
-            raise DuplicateUser("%s already exists in database with id '%s'".
+            raise DuplicateUser("{0} already exists in database with id '{1}'".
                 format(username, str(exists)))
         else:
             from noink.role_db import RoleDB
@@ -163,7 +163,7 @@ class UserDB:
         exists = Group.query.filter_by(name=group_name).first()
 
         if exists:
-            raise DuplicateGroup("%s already exists in database with id '%s'".
+            raise DuplicateGroup("{0} already exists in database with id '{0}'".
                 format(group_name, exists.id))
         else:
             g = Group(group_name, description)
@@ -242,7 +242,7 @@ class UserDB:
 
         if gms is None:
             raise UserHasNoGroups(
-                "%s does not have any group mappings! Every user should be "\
+                "{0} does not have any group mappings! Every user should be "\
                 "a member of at least one group!".format(user))
 
         groups = []
