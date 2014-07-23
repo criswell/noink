@@ -30,9 +30,13 @@ def show(tag):
     entryDB = EntryDB()
     if tag:
         entries = entryDB.find_by_tags([tag])
+        static_entries = None
         count = per_page
     else:
         entries = entryDB.find_recent_by_num(per_page, page_num * per_page)
+        static_entries = None
+        if page_num == 0:
+            static_entries = entryDB.find_static()
         count = entryDB.count()
 
     total_pages = 0
@@ -40,4 +44,5 @@ def show(tag):
         total_pages = int(ceil(float(count) / float(per_page)))
 
     return render_template('list_entries.html', entries=entries,
-        state=get_state(), page_num=page_num, total_pages=total_pages)
+        state=get_state(), page_num=page_num, total_pages=total_pages,
+        static_entries=static_entries)

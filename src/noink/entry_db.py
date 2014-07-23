@@ -292,6 +292,13 @@ class EntryDB:
         else:
             raise TypeError("Expected integer for num")
 
+    def find_static(self):
+        """
+        Returns the static entries.
+        """
+        return Entry.query.order_by(Entry.date.desc()).filter_by(
+                static=True)
+
     def count(self):
         """
         Returns the number of possible entries.
