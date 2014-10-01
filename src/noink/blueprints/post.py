@@ -49,8 +49,8 @@ def update_entry_object(entry):
     """
     entry.entry = request.form.get('entry', '')
     entry.title = request.form.get('title', '')
-    entry.html = request.form.get('html', False)
-    entry.static = request.form.get('static', False)
+    entry.html = bool(request.form.get('html', False))
+    entry.static = bool(request.form.get('static', False))
     purl = request.form.get('url', None)
     if purl == '':
         purl = None
